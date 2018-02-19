@@ -1,3 +1,68 @@
-blockquote {
-  font-style: italic
+/* DivTable.com */
+.divTable{
+	display: table;
+	width: 100%;
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	display: table-header-group;
+}
+.divTableCellLogo {
+	border: 0px solid #999999;
+	display: table-cell;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+  vertical-align: top;
+  height: 100px;
+  width: 120px;
+  text-align: left;
+}
+.divTableCellInfo, .divTableHead {
+	border: 0px solid #999999;
+	display: table-cell;
+	padding: 5px 5px;
+  vertical-align: middle;
+  height: 100px;
+  text-align: left;
+}
+.divTableHeading {
+	display: table-header-group;
+}
+.divTableFoot {
+	display: table-footer-group;
+}
+.divTableBody {
+	display: table-row-group;
+}
+.divReferences {
+    padding-left: 1.5em;
+    text-indent: -1.5em;
+}
+.divIndent {
+		display: inline-block;
+		text-indent: 1.5em;
+}
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+	margin-bottom: 50px; /* Margin bottom by footer height */
+}
+.footer {
+	display: inline-block;
+  position: absolute;
+  width: 100%;
+	bottom: 0px;
+  height: 50px; /* Set the fixed height of the footer here */
+	padding: 0px;
+	margin: 0px;
+	color: white;
+  text-align: center;
+	line-height: 50px;
+	background-color: #218CBA; /* #218CBA = blue, #F8F8F8 = light of gray of navbar */
 }
