@@ -1,0 +1,17 @@
+name: "Ekarin Eric Pongpipat"
+output_dir: "."
+exclude: ["README.md"]
+navbar:
+  title: "Ekarin Eric Pongpipat, M.A."
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "CV"
+      href: CV.html
+output:
+  html_document:
+    theme: lumen
+    highlight: fruit
+    include:
+      after_body: footer.html
+    css: styles.css
