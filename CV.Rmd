@@ -72,6 +72,10 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 </div>
 <div class="divTableCellInfo"> 
 <B>Graduate Research Assistant</B> (2017 - Present)
+<BR>Cognitive Neuroscience of Aging Laboratory
+<BR>Center for Vital Longevity
+<BR>School of Behavioral and Brain Sciences
+<BR>The University of Texas at Dallas
 </div>
 </div>
 
@@ -81,6 +85,9 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 </div>
 <div class="divTableCellInfo"> 
 <B>Graduate Research Assistant</B> (2014 - 2016)
+<BR>Lifespan Human Senses Laboratory
+<BR>Department of Psychology
+<BR>San Diego State University
 </div>
 </div>
 
@@ -90,6 +97,9 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 </div>
 <div class="divTableCellInfo"> 
 <B>Undergraduate Research Assistant</B> (2011 - 2013)
+<BR>Neuroscience Laboratory
+<BR>Department of Psychology
+<BR>California State University, Northridge
 </div>
 </div>
 
@@ -108,8 +118,9 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 </div>
 <div class="divTableCellInfo"> 
 <B>Graduate Teaching Assistant</B> (2017 - Present)
+<BR>The University of Texas at Dallas
 <BR>Statistics for Psychology, PSY2317 (Fall 2014, Spring 2015)
-<BR>
+<BR><div class="divIndent">Working with Dr. Nancy Juhn</div>
 </div>
 </div>
 
@@ -119,6 +130,7 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 </div>
 <div class="divTableCellInfo"> 
 <B>Graduate Teaching Assistant</B> (2014 - 2016)
+<BR>San Diego State University
 <BR>1. Advanced Statistics in Psychology, PSY670A/B (Fall 2015, Spring 2016)
 <BR><div class="divIndent">Worked with Dr. Melody Sadler</div>
 <BR>2. Statistical Methods in Psychology Laboratory, PSY280L (Fall 2014, Spring 2015)
@@ -176,7 +188,7 @@ honors_awards <- tibble("2017 (Fall)","CSU Northridge","Dean's List")
 colnames(honors_awards) <- c("Year","Institution","Award")
 
 honors_awards <- honors_awards %>% 
-  add_row(., Year = "2010 (September)", Institution = "Cope Health Solutions", Award = "Cope Health Solutions Clinical Care Extender Intern of the Rotation Award", .before = 1) %>%
+  add_row(., Year = "2010 (September)", Institution = "Cope Health Solutions", Award = "Clinical Care Extender Intern of the Rotation Award", .before = 1) %>%
   add_row(., Year = "2010 (Spring)", Institution = "CSU Northridge", Award = "Dean's List", .before = 1) %>%
   add_row(., Year = "2011 (Fall)", Institution = "CSU Northridge", Award = "Dean's List", .before = 1) %>%
   add_row(., Year = "2011 (Spring)", Institution = "CSU Northridge", Award = "Dean's List", .before = 1) %>%

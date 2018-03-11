@@ -1,0 +1,8 @@
+---
+title: "Blog"
+output: 
+  html_document:
+    highlight: textmate
+    theme: lumen
+---
+
