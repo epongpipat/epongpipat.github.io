@@ -1,11 +1,12 @@
 ---
 title: "Calculate Motion Regressors"
-subtitle: "A quick guide to calculating motion regressors"
-date: "2018-03-13"
+subtitle: "A quick guide to calculating motion regressors (with visuals)."
+date: "Date Posted"
 output: 
   html_document:
     highlight: textmate
     theme: lumen
+    code_folding: hide
     toc: yes
     toc_depth: 3
     toc_float:
@@ -15,6 +16,8 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse); library(gridExtra)
 ```
 
 *Tags:* <span class="badge badge-pill badge-dark">fMRI</span>
@@ -24,7 +27,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 6-Rigid Body Motion Regressors
 
-The first six motion parameters are motion parameters that are obtained from a software of choice and include:
+The first six motion parameters are the stanard output motion parameters and include:
 
 1. x, translation in x-direction
 2. y, translation in the y-direction
@@ -35,13 +38,23 @@ The first six motion parameters are motion parameters that are obtained from a s
 
 ```{r}
 
+x <- ggplot()
+y <- ggplot()
+z <- ggplot()
+
+roll <- ggplot()
+pitch <- ggplot()
+yaw <- ggplot()
+
+grid.arrange(x, y, z, roll, pitch, yaw, nrow = 2, ncol = 3)
+
 ```
 
 <BR><BR>
 
 ## 12-Motion Regressors
 
-The next six motion parameters are the original six rigid body motion parameters squared and include:
+The next six motion parameters are the original six rigid body motion parameters squared:
 
 7. x^2, translation in x-direction squared
 8. y^2, translation in the y-direction squared
@@ -49,10 +62,6 @@ The next six motion parameters are the original six rigid body motion parameters
 10. roll^2, rotation around the x-axis squared
 11. pitch^2, rotation around the y-axis squared
 12. yaw^2, rotation around the z-axis squared
-
-```{r}
-
-```
 
 <BR><BR>
 
@@ -66,10 +75,6 @@ The next six motion parameters are the first temporal derivates of the original 
 16. roll_td, first temporal derivative of rotation around the x-axis
 17. pitch_td, first temporal derivative of rotation around the y-axis
 18. yaw_td, first temporal derivative of rotation around the z-axis
-
-```{r}
-
-```
 
 <BR><BR>
 
@@ -101,10 +106,6 @@ The next six motion parameters are the second temporal derivatives of the origin
 29. pitch_td2, second temporal derivative of rotation around the y-axis 
 30. yaw_td2, second temporal derivative of rotation around the z-axis
 
-```{r}
-
-```
-
 <BR><BR>
 
 ## 36-Motion Regressors
@@ -118,56 +119,51 @@ The next six motion parameters are the second temporal derivatives squared.
 35. pitch_td2_sq, second temporal derivative of rotation around the y-axis squared
 36. yaw_td2_sq, second temporal derivative of rotation around the z-axis square
 
-```{r}
-
-```
-
 <BR><BR>
 
 ## R Script
-```{r}
+```{r, eval=FALSE}
 
 # load 6-motion parameters
-m1 <- rnorm(1:10)
-m2 <- rnorm(1:10)
-m3 <- rnorm(1:10)
-m4 <- rnorm(1:10)
-m5 <- rnorm(1:10)
-m6 <- rnorm(1:10)
-
-dataset <- data.frame(m1,m2,m3,m4,m5,m6)
-colnames(dataset) <- c("x","y","z","roll","pitch","yaw")
+ds.motion <- read.csv(file.choose()) # read 6-rigid body motion parameters and assign to ds.motion
+colnames(ds.motion) <- c("x","y","z","roll","pitch","yaw") # rename columns
 
 # 12-motion parameters
 
-dataset.sq <- dataset^2 # square 6-rigid body motion parameters
-colnames(dataset.sq) <- c("x.sq","y.sq","z.sq","roll.sq","pitch.sq","yaw.sq") # rename columns
+ds.motion.sq <- ds.motion^2 # square 6-rigid body motion parameters
+colnames(ds.motion.sq) <- c("x.sq","y.sq","z.sq","roll.sq","pitch.sq","yaw.sq") # rename columns
 
-dataset.12mp <- data.frame(dataset,dataset.sq) # combine the 12-motion parameters into one dataset
+ds.motion.12mp <- data.frame(ds.motion,ds.motion.sq) # combine the 12-motion parameters into one dataset
 
 # 24-motion parameters
 
-dataset.td1 <- sapply(dataset, FUN=function(x) c(NA,diff(x))) # subtract motion from prior motion time point
-colnames(dataset.td1) <- c("x.td1","y.td1","z.td1","roll.td1","pitch.td1","yaw.td1") # rename columns 
+ds.motion.td1 <- sapply(ds.motion, FUN=function(x) c(NA,diff(x))) # subtract motion from prior motion time point
+colnames(ds.motion.td1) <- c("x.td1","y.td1","z.td1","roll.td1","pitch.td1","yaw.td1") # rename columns 
 
-dataset.td1.sq <- dataset.td1^2 # square td1
-colnames(dataset.td1.sq ) <- c("x.td1.sq ","y.td1.sq ","z.td1.sq ","roll.td1.sq ","pitch.td1.sq ","yaw.td1.sq ") # rename columns
+ds.motion.td1.sq <- ds.motion.td1^2 # square td1
+colnames(ds.motion.td1.sq ) <- c("x.td1.sq ","y.td1.sq ","z.td1.sq ","roll.td1.sq ","pitch.td1.sq ","yaw.td1.sq ") # rename columns
 
-dataset.24mp <- data.frame(dataset.12mp,dataset.td1,dataset.td1.sq) # combine the 24-motion parameters into one dataset
+ds.motion.24mp <- data.frame(ds.motion.12mp,ds.motion.td1,ds.motion.td1.sq) # combine the 24-motion parameters into one dataset
 
 # 36-motion parameters
 
-dataset.td2 <- sapply(dataset, FUN=function(x) c(NA,NA,diff(x, lag=2))) # subtract motion from the motion of two prior time points
-colnames(dataset.td2) <- c("x.td2","y.td2","z.td2","roll.td2","pitch.td2","yaw.td2") # rename columns
+ds.motion.td2 <- sapply(dataset, FUN=function(x) c(NA,NA,diff(x, lag=2))) # subtract motion from the motion of two prior time points
+colnames(ds.motion.td2) <- c("x.td2","y.td2","z.td2","roll.td2","pitch.td2","yaw.td2") # rename columns
 
-dataset.td2.sq <- dataset.td2^2 # square td2
-colnames(dataset.td2.sq ) <- c("x.td2.sq ","y.td2.sq ","z.td2.sq ","roll.td2.sq ","pitch.td2.sq ","yaw.td2.sq ") # rename columns 
+ds.motion.td2.sq <- ds.motion.td2^2 # square td2
+colnames(ds.motion.td2.sq ) <- c("x.td2.sq ","y.td2.sq ","z.td2.sq ","roll.td2.sq ","pitch.td2.sq ","yaw.td2.sq ") # rename columns 
 
-dataset.36mp <- data.frame(dataset.24mp,dataset.td2,dataset.td2.sq) # combine the 36-motion parameters into one dataset
+ds.motion.36mp <- data.frame(ds.motion.24mp,ds.motion.td2,ds.motion.td2.sq) # combine the 36-motion parameters into one dataset
 
 ```
 
 <BR><BR>
 
 ## References
-[1]: 
+
+<div class="divReferences">
+Friston, K. J., Williams, S., Howard, R., Frackowiak, R. S. J., & Turner, R. (1996). Movement-related effects in fMRI time-series. *Magnetic Resonance in Medicine, 35*(3), 346–355. http://doi.org/10.1002/mrm.1910350312
+
+Yan, C.-G., Cheung, B., Kelly, C., Colcombe, S., Craddock, R. C., Di Martino, A., … Milham, M. P. (2013). A comprehensive assessment of regional variation in the impact of head micromovements on functional connectomics. *NeuroImage, 76*, 183–201. http://doi.org/10.1016/j.neuroimage.2013.03.004
+
+</div>

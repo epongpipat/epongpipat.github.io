@@ -1,10 +1,8 @@
 ---
 title: "Introductory Univariate Statistics in Psychology Performed as General Linear Models (GLM) in R"
 subtitle: "A terse comparison of typical introductory univariate statistics in psychology performed as GLMs in R"
-date: "2018-03-13"
+date: "Date Posted"
 output:
-  blog_down::html_page:
-    toc: true
   html_document:
     highlight: textmate
     theme: lumen
@@ -22,6 +20,10 @@ library(psych)
 
 *Tags:* <span class="badge badge-pill badge-light">Statistics</span>
 <span class="badge badge-pill badge-primary">R</span>
+
+<BR><BR>
+
+Note that the test statistic and its respective *p*-value are identical using either method (i.e., the typical univariate introductory statistics for psychology vs. GLM). Also, note that the GLM provides the same information as the ANOVA with the addition of 1 degree of freedom (*df*) tests. Thus, to take advantage of the 1 *df* test with categorical predictors (e.g., in the ANOVA), meaningful *a priori* contrasts are preferred over pre-programmed contrasts, especially in research.
 
 <BR><BR>
 
@@ -118,7 +120,7 @@ confint(model)
 
 <BR><BR><BR>
 
-## Indepdent samples *t*-test
+## Independent samples *t*-test
 
 ```{r dataset_independent_samples_ttest}
 
@@ -309,5 +311,3 @@ confint(model)
 
 </div>
 </div>
-
-Note: For categorical predictors (e.g., in the ANOVA), meaningful *a priori* contrasts are preferred over pre-programmed contrasts, especially in research.
