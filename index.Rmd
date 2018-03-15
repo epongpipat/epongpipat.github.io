@@ -1,8 +1,3 @@
 ---
-title: "Home"
-output: 
-  html_document:
-    highlight: textmate
-    theme: lumen
+site: blogdown:::blogdown_site
 ---
-

@@ -1,7 +1,0 @@
----
-title: "About"
-output: 
-  html_document:
-    highlight: textmate
-    theme: lumen
----
