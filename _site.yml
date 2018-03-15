@@ -1,0 +1,10 @@
+name: "Ekarin Eric Pongpipat, M.A."
+output_dir: "."
+output:
+  html_document:
+    theme: lumen
+    highlight: fruit
+    include:
+      before_body: _navbar.html
+      after_body: footer.html
+    css: style.css

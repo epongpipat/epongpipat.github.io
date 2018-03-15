@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<meta name="date" content="2018-03-13" />
+
+<title>Calculate Motion Regressors</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<nav class="navbar navbar-default navbar-expand-lg navbar-dark bg-primary navbar-fixed-top">
+
+  <div class="container">
+      <a class="navbar-brand" href="index.html">Ekarin Eric Pongpipat, M.A.</a>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    <div id="navbarColor01" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.html">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="CV.html">CV</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="blog.html">Blog</a>
+        </li>
+      </ul>
+    </div><!--/.nav-collapse -->
+
+  </div><!--/.container -->
+
+</nav><!--/.navbar -->
+<nav class="navbar navbar-default navbar-expand-lg navbar-dark bg-primary navbar-fixed-top">
+
+  <div class="container">
+      <a class="navbar-brand" href="index.html">Ekarin Eric Pongpipat, M.A.</a>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    <div id="navbarColor01" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.html">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="CV.html">CV</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="blog.html">Blog</a>
+        </li>
+      </ul>
+    </div><!--/.nav-collapse -->
+
+  </div><!--/.container -->
+
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Calculate Motion Regressors</h1>
+<h3 class="subtitle"><em>A quick guide to calculating motion regressors</em></h3>
+<h4 class="date"><em>2018-03-13</em></h4>
+
+</div>
+
+
+<p><em>Tags:</em> <span class="badge badge-pill badge-dark">fMRI</span> <span class="badge badge-pill badge-primary">R</span></p>
+<p><BR><BR></p>
+<div id="rigid-body-motion-regressors" class="section level2">
+<h2>6-Rigid Body Motion Regressors</h2>
+<p>The first six motion parameters are motion parameters that are obtained from a software of choice and include:</p>
+<ol style="list-style-type: decimal">
+<li>x, translation in x-direction</li>
+<li>y, translation in the y-direction</li>
+<li>z, translation in the z-direction</li>
+<li>roll, rotation around the x-axis</li>
+<li>pitch, rotation around the y-axis</li>
+<li>yaw, rotation around the z-axis</li>
+</ol>
+<p><BR><BR></p>
+</div>
+<div id="motion-regressors" class="section level2">
+<h2>12-Motion Regressors</h2>
+<p>The next six motion parameters are the original six rigid body motion parameters squared and include:</p>
+<ol start="7" style="list-style-type: decimal">
+<li>x^2, translation in x-direction squared</li>
+<li>y^2, translation in the y-direction squared</li>
+<li>z^2, translation in the z-direction squared</li>
+<li>roll^2, rotation around the x-axis squared</li>
+<li>pitch^2, rotation around the y-axis squared</li>
+<li>yaw^2, rotation around the z-axis squared</li>
+</ol>
+<p><BR><BR></p>
+</div>
+<div id="motion-regressors-1" class="section level2">
+<h2>18-Motion Regressors</h2>
+<p>The next six motion parameters are the first temporal derivates of the original six rigid body motion parameters. Specifically, it is the motion minus the motion from the previous time point.</p>
+<ol start="13" style="list-style-type: decimal">
+<li>x_td, first temporal derivative of translation in the x-direction</li>
+<li>y_td, first temporal derivative of translation in the y-direction</li>
+<li>z_td, first temporal derivative of translation in the z-direction</li>
+<li>roll_td, first temporal derivative of rotation around the x-axis</li>
+<li>pitch_td, first temporal derivative of rotation around the y-axis</li>
+<li>yaw_td, first temporal derivative of rotation around the z-axis</li>
+</ol>
+<p><BR><BR></p>
+</div>
+<div id="motion-regressors-2" class="section level2">
+<h2>24-Motion Regressors</h2>
+<p>The next six motion parameters are the first temporal derivatives squared.</p>
+<ol start="19" style="list-style-type: decimal">
+<li>x_td_sq, first temporal derivative of translation in the x-direction squared</li>
+<li>y_td_sq, first temporal derivative of translation in the y-direction squared</li>
+<li>z_td_sq, first temporal derivative of translation in the z-direction squared</li>
+<li>roll_td_sq, first temporal derivative of rotation around the x-axis squared</li>
+<li>pitch_td_sq, first temporal derivative of rotation around the y-axis squared</li>
+<li>yaw_td_sq, first temporal derivative of rotation around the z-axis squared</li>
+</ol>
+<p><BR><BR></p>
+</div>
+<div id="motion-regressors-3" class="section level2">
+<h2>30-Motion Regressors</h2>
+<p>The next six motion parameters are the second temporal derivatives of the original six rigid body motion parameters. Specifically, it is the motion minus the motion from the two previous time points.</p>
+<ol start="25" style="list-style-type: decimal">
+<li>x_td2, second temporal derivative of translation in the x-direction</li>
+<li>y_td2, second temporal derivative of translation in the y-direction</li>
+<li>z_td2, second temporal derivative of translation in the z-direction</li>
+<li>roll_td2, second temporal derivative of rotation around the x-axis</li>
+<li>pitch_td2, second temporal derivative of rotation around the y-axis</li>
+<li>yaw_td2, second temporal derivative of rotation around the z-axis</li>
+</ol>
+<p><BR><BR></p>
+</div>
+<div id="motion-regressors-4" class="section level2">
+<h2>36-Motion Regressors</h2>
+<p>The next six motion parameters are the second temporal derivatives squared.</p>
+<ol start="31" style="list-style-type: decimal">
+<li>x_td2_sq, second temporal derivative of translation in the x-direction squared</li>
+<li>y_td2_sq, second temporal derivative of translation in the y-direction squared</li>
+<li>z_td2_sq, second temporal derivative of translation in the z-direction squared</li>
+<li>roll_td2_sq, second temporal derivative of rotation around the x-axis squared</li>
+<li>pitch_td2_sq, second temporal derivative of rotation around the y-axis squared</li>
+<li>yaw_td2_sq, second temporal derivative of rotation around the z-axis square</li>
+</ol>
+<p><BR><BR></p>
+</div>
+<div id="r-script" class="section level2">
+<h2>R Script</h2>
+<pre class="r"><code># load 6-motion parameters
+m1 &lt;- rnorm(1:10)
+m2 &lt;- rnorm(1:10)
+m3 &lt;- rnorm(1:10)
+m4 &lt;- rnorm(1:10)
+m5 &lt;- rnorm(1:10)
+m6 &lt;- rnorm(1:10)
+
+dataset &lt;- data.frame(m1,m2,m3,m4,m5,m6)
+colnames(dataset) &lt;- c(&quot;x&quot;,&quot;y&quot;,&quot;z&quot;,&quot;roll&quot;,&quot;pitch&quot;,&quot;yaw&quot;)
+
+# 12-motion parameters
+
+dataset.sq &lt;- dataset^2 # square 6-rigid body motion parameters
+colnames(dataset.sq) &lt;- c(&quot;x.sq&quot;,&quot;y.sq&quot;,&quot;z.sq&quot;,&quot;roll.sq&quot;,&quot;pitch.sq&quot;,&quot;yaw.sq&quot;) # rename columns
+
+dataset.12mp &lt;- data.frame(dataset,dataset.sq) # combine the 12-motion parameters into one dataset
+
+# 24-motion parameters
+
+dataset.td1 &lt;- sapply(dataset, FUN=function(x) c(NA,diff(x))) # subtract motion from prior motion time point
+colnames(dataset.td1) &lt;- c(&quot;x.td1&quot;,&quot;y.td1&quot;,&quot;z.td1&quot;,&quot;roll.td1&quot;,&quot;pitch.td1&quot;,&quot;yaw.td1&quot;) # rename columns 
+
+dataset.td1.sq &lt;- dataset.td1^2 # square td1
+colnames(dataset.td1.sq ) &lt;- c(&quot;x.td1.sq &quot;,&quot;y.td1.sq &quot;,&quot;z.td1.sq &quot;,&quot;roll.td1.sq &quot;,&quot;pitch.td1.sq &quot;,&quot;yaw.td1.sq &quot;) # rename columns
+
+dataset.24mp &lt;- data.frame(dataset.12mp,dataset.td1,dataset.td1.sq) # combine the 24-motion parameters into one dataset
+
+# 36-motion parameters
+
+dataset.td2 &lt;- sapply(dataset, FUN=function(x) c(NA,NA,diff(x, lag=2))) # subtract motion from the motion of two prior time points
+colnames(dataset.td2) &lt;- c(&quot;x.td2&quot;,&quot;y.td2&quot;,&quot;z.td2&quot;,&quot;roll.td2&quot;,&quot;pitch.td2&quot;,&quot;yaw.td2&quot;) # rename columns
+
+dataset.td2.sq &lt;- dataset.td2^2 # square td2
+colnames(dataset.td2.sq ) &lt;- c(&quot;x.td2.sq &quot;,&quot;y.td2.sq &quot;,&quot;z.td2.sq &quot;,&quot;roll.td2.sq &quot;,&quot;pitch.td2.sq &quot;,&quot;yaw.td2.sq &quot;) # rename columns 
+
+dataset.36mp &lt;- data.frame(dataset.24mp,dataset.td2,dataset.td2.sq) # combine the 36-motion parameters into one dataset</code></pre>
+<p><BR><BR></p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+</div>
+
+</div> <!-- articleBandContent -->
+</div> <!-- pageContent -->
+</div> <!-- forPagesWithTOC -->
+<footer class="footer">
+  <div class="divTable">
+    <div class="divTableBody">
+      <div class="divTableRow">
+        <div class="container">
+          <div class="divTableCellFooter">
+            &copy; 2018 Ekarin Eric Pongpipat, M.A. All rights reserved.
+          </div>
+          <div class="divTableCellFooter" style="width: 50px">
+            <a href="mailto:epongpipat@gmail.com"><img src="images/logo_email.png" border="0" style="height: 20px;" alt="Email" class="imgLink"></a>
+          </div>
+          <div class="divTableCellFooter" style="width: 50px">
+            <a href="https://www.linkedin.com/in/epongpipat/"><img src="images/logo_linkedin.png" border="0" style="height: 20px;" alt="LinkedIn" class="imgLink"></a>
+          </div>
+          <div class="divTableCellFooter" style="width: 50px">
+            <a href="https://github.com/epongpipat"><img src="images/logo_github.png" border="0" style="height: 20px;" alt="GitHub" class="imgLink"></a>
+          </div>
+          <div class="divTableCellFooter" style="width: 50px">
+            <a href="https://www.researchgate.net/profile/Ekarin_Pongpipat"><img src="images/logo_researchgate.png" border="0" style="height: 20px;" alt="ResearchGate" class="imgLink"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
