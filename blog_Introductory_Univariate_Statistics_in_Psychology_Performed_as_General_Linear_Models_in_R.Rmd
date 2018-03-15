@@ -1,0 +1,313 @@
+---
+title: "Introductory Univariate Statistics in Psychology Performed as General Linear Models (GLM) in R"
+subtitle: "A terse comparison of typical introductory univariate statistics in psychology performed as GLMs in R"
+date: "2018-03-13"
+output:
+  blog_down::html_page:
+    toc: true
+  html_document:
+    highlight: textmate
+    theme: lumen
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(psych)
+```
+
+*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
+<span class="badge badge-pill badge-primary">R</span>
+
+<BR><BR>
+
+## One sample *t*-test
+
+```{r dataset_one_sample_ttest}
+
+x <- rnorm(1:10)
+dataset <- data.frame(x)
+describe(dataset)
+
+```
+
+<div class="divTable">
+<div class="divTableBody">
+
+<div class="divTableRow">
+<div class="divTableCell" style="width: 50%">
+
+<CENTER>**Typical**</CENTER>
+
+```{r}
+
+t.test(x)
+
+```
+
+</div>
+<div class="divTableCell" style="width: 50%">
+
+<CENTER>**GLM**</CENTER>
+
+```{r}
+
+model <- lm(x ~ 1)
+summary(model)
+confint(model)
+
+```
+
+</div>
+</div>
+
+</div>
+</div>
+
+<BR><BR><BR>
+
+## Dependent samples *t*-test
+
+```{r dataset_dependent_samples_ttest}
+
+x1 <- rnorm(1:10)
+x2 <- rnorm(1:10)
+diff <- x2-x1
+dataset <- data.frame(x1, x2, diff)
+dataset
+describe(dataset)
+
+```
+
+<div class="divTable">
+<div class="divTableBody">
+
+<div class="divTableRow">
+<div class="divTableCell" style="width: 50%">
+
+<CENTER>**Typical**</CENTER>
+
+```{r}
+
+t.test(diff)
+
+```
+
+</div>
+<div class="divTableCell" style="width: 50%">
+
+<CENTER>**GLM**</CENTER>
+
+```{r}
+
+model <- lm(diff ~ 1)
+summary(model)
+confint(model)
+
+```
+
+</div>
+</div>
+
+</div>
+</div>
+
+<BR><BR><BR>
+
+## Indepdent samples *t*-test
+
+```{r dataset_independent_samples_ttest}
+
+y <- rnorm(1:10)
+x <- c("group1","group1","group1","group1","group1","group2","group2","group2","group2","group2")
+dataset <- data.frame(y, x)
+dataset
+describeBy(dataset$y, group=dataset$x)
+
+```
+
+<div class="divTable">
+<div class="divTableBody">
+
+<div class="divTableRow">
+<div class="divTableCell" style="width: 50%">
+
+<CENTER>**Typical**</CENTER>
+
+```{r}
+
+t.test(y ~ x, var.equal=TRUE)
+
+```
+
+</div>
+<div class="divTableCell" style="width: 50%">
+
+<CENTER>**GLM**</CENTER>
+
+```{r}
+
+model <- lm(y ~ x)
+summary(model)
+confint(model)
+
+```
+
+</div>
+</div>
+
+</div>
+</div>
+
+<BR><BR><BR>
+
+## One-way ANOVA
+
+```{r dataset_one_way_anova}
+
+y <- rnorm(1:15)
+x <- c("group1","group1","group1","group1","group1","group2","group2","group2","group2","group2","group3","group3","group3","group3","group3")
+dataset <- data.frame(y, x)
+dataset
+describeBy(dataset$y, group = x)
+
+```
+
+<div class="divTable">
+<div class="divTableBody">
+
+<div class="divTableRow">
+<div class="divTableCell" style="width: 50%">
+
+<CENTER>**Typical**</CENTER>
+
+```{r}
+
+model <- aov(y ~ x)
+anova(model)
+
+```
+
+</div>
+<div class="divTableCell" style="width: 50%">
+
+<CENTER>**GLM**</CENTER>
+
+```{r}
+
+model <- lm(y ~ x)
+anova(model)
+summary(model)
+confint(model)
+
+```
+
+</div>
+</div>
+
+</div>
+</div>
+
+<BR><BR><BR>
+
+## Factorial ANOVA
+
+```{r dataset_factorial_anova}
+
+y <- rnorm(1:15)
+x1 <- c("group1","group1","group1","group1","group1","group2","group2","group2","group2","group2","group3","group3","group3","group3","group3")
+x2 <- c("group1","group2","group3","group1","group2","group3","group1","group2","group3","group1","group2","group3","group1","group2","group3")
+dataset <- data.frame(y, x1, x2)
+dataset
+describeBy(dataset$y, group = list(dataset$x1, dataset$x2))
+
+```
+
+<div class="divTable">
+<div class="divTableBody">
+
+<div class="divTableRow">
+<div class="divTableCell" style="width: 50%">
+
+<CENTER>**Typical**</CENTER>
+
+```{r}
+
+model <- aov(y ~ x1*x2)
+anova(model)
+
+```
+
+</div>
+<div class="divTableCell" style="width: 50%">
+
+<CENTER>**GLM**</CENTER>
+
+```{r}
+
+model <- lm(y ~ x1*x2)
+anova(model)
+summary(model)
+confint(model)
+
+```
+
+</div>
+</div>
+
+</div>
+</div>
+
+<BR><BR><BR>
+
+## Correlation
+
+```{r dataset_correlation}
+
+y <- rnorm(1:10)
+x <- rnorm(1:10)
+dataset <- data.frame(y,x)
+dataset
+describe(dataset)
+
+```
+
+<div class="divTable">
+<div class="divTableBody">
+
+<div class="divTableRow">
+<div class="divTableCell" style="width: 50%">
+
+<CENTER>**Typical**</CENTER>
+
+```{r}
+
+cor.test(x, y)
+
+```
+
+</div>
+<div class="divTableCell" style="width: 50%">
+
+<CENTER>**GLM**</CENTER>
+
+```{r}
+
+model <- lm(scale(y) ~ scale(x))
+anova(model)
+summary(model)
+confint(model)
+
+```
+
+</div>
+</div>
+
+</div>
+</div>
+
+Note: For categorical predictors (e.g., in the ANOVA), meaningful *a priori* contrasts are preferred over pre-programmed contrasts, especially in research.
