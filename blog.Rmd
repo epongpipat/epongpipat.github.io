@@ -35,7 +35,7 @@ output:
 <div class="divBlogTitle">
 [Calculate Motion Regressors](blog_Calculate_Motion_Regressors.html)
 </div>
-A quick guide to calculating motion regressors.
+A quick guide to calculating motion regressors (with visuals).
 <BR>*Tags:* <span class="badge badge-pill badge-dark">fMRI</span>
 <span class="badge badge-pill badge-primary">R</span>
 </div></div>
