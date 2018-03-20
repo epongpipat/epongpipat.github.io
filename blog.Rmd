@@ -1,6 +1,6 @@
 ---
 title: "Blog"
-subtitle: "Mostly a reference"
+subtitle: "Mostly a reference for myself (and hopefully others)"
 output: 
   html_document:
     highlight: textmate
@@ -22,23 +22,25 @@ output:
 <!-- 2018-03-13 -->
 <!-- </div><div class="divTableCell"> -->
 <!-- <div class="divBlogTitle"> -->
-<!-- [Calculate Motion Regressors](blog_Calculate_Motion_Regressors.html) -->
-<!-- </div> -->
-<!-- A quick guide to calculating motion regressors. -->
-<!-- <BR>*Tags:* <span class="badge badge-pill badge-dark">fMRI</span> -->
-<!-- <span class="badge badge-pill badge-primary">R</span> -->
-<!-- </div></div> -->
-
-<!-- <div class="divTableRow"><div class="divTableCell"> -->
-<!-- 2018-03-13 -->
-<!-- </div><div class="divTableCell"> -->
-<!-- <div class="divBlogTitle"> -->
 <!-- [Introductory Univariate Statistics in Psychology Performed as General Linear Models (GLM) in R](blog_Introductory_Univariate_Statistics_in_Psychology_Performed_as_General_Linear_Models_in_R.html) -->
 <!-- </div> -->
 <!-- A terse comparison of typical introductory univariate statistics in psychology performed as GLMs in R. -->
 <!-- <BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span> -->
 <!-- <span class="badge badge-pill badge-primary">R</span> -->
 <!-- </div></div> -->
+
+<div class="divTableRow"><div class="divTableCell">
+2018-03-13
+</div><div class="divTableCell">
+<div class="divBlogTitle">
+[Calculate Motion Regressors](blog_Calculate_Motion_Regressors.html)
+</div>
+A quick guide to calculating motion regressors.
+<BR>*Tags:* <span class="badge badge-pill badge-dark">fMRI</span>
+<span class="badge badge-pill badge-primary">R</span>
+</div></div>
+
+<BR>
 
 <div class="divTableRow"><div class="divTableCell">
 2018-02-11

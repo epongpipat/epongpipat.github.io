@@ -10,6 +10,7 @@
 
 
 
+<meta name="date" content="2018-03-20" />
 
 <title>Calculate Motion Regressors</title>
 
@@ -342,134 +343,648 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Calculate Motion Regressors</h1>
-<h3 class="subtitle"><em>A quick guide to calculating motion regressors (with visuals).</em></h3>
-<h4 class="date"><em>Date Posted</em></h4>
+<h3 class="subtitle"><em>A quick guide to calculating motion regressors (with visuals)</em></h3>
+<h4 class="date"><em>2018-03-20</em></h4>
 
 </div>
 
 
 <p><em>Tags:</em> <span class="badge badge-pill badge-dark">fMRI</span> <span class="badge badge-pill badge-primary">R</span></p>
+<p><BR></p>
+<p>These motion covariates can be used as potential control variables for resting-state and task-based functional connectivity.</p>
 <p><BR><BR></p>
 <div id="rigid-body-motion-regressors" class="section level2">
 <h2>6-Rigid Body Motion Regressors</h2>
-<p>The first six motion parameters are the stanard output motion parameters and include:</p>
+<p>The first six motion parameters are the standard outputted motion parameters and include:</p>
 <ol style="list-style-type: decimal">
-<li>x, translation in x-direction</li>
-<li>y, translation in the y-direction</li>
-<li>z, translation in the z-direction</li>
-<li>roll, rotation around the x-axis</li>
-<li>pitch, rotation around the y-axis</li>
-<li>yaw, rotation around the z-axis</li>
+<li><span class="math inline">\(X\)</span>, translation in the x-direction</li>
+<li><span class="math inline">\(Y\)</span>, translation in the y-direction</li>
+<li><span class="math inline">\(Z\)</span>, translation in the z-direction</li>
+<li><span class="math inline">\(Roll\)</span>, rotation around the x-axis</li>
+<li><span class="math inline">\(Pitch\)</span>, rotation around the y-axis</li>
+<li><span class="math inline">\(Yaw\)</span>, rotation around the z-axis</li>
 </ol>
-<pre class="r"><code>x &lt;- ggplot()
-y &lt;- ggplot()
-z &lt;- ggplot()
+<pre class="r"><code># load 6-rigidy body motion parameters
+motion_demeaned &lt;- read.csv(&quot;blog_Calculate_Motion_Regressors_files/example_motion_demeand.csv&quot;,header = FALSE)
 
-roll &lt;- ggplot()
-pitch &lt;- ggplot()
-yaw &lt;- ggplot()
+# motion_demeaned &lt;- t(apply(motion_demeaned, 1, sample, replace=TRUE))
+# 
+# motion_demeaned &lt;- as.data.frame(motion_demeaned)
 
-grid.arrange(x, y, z, roll, pitch, yaw, nrow = 2, ncol = 3)</code></pre>
-<p><img src="blog_Calculate_Motion_Regressors_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+# rename columns
+colnames(motion_demeaned) &lt;- c(&quot;x&quot;,&quot;y&quot;,&quot;z&quot;,&quot;roll&quot;,&quot;pitch&quot;,&quot;yaw&quot;)
+
+# add duration for graphs
+motion_demeaned$duration &lt;- c(1:780)
+
+# plot x
+motion_x &lt;- ggplot(motion_demeaned, mapping = aes(x = duration, y = x)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;X&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot y
+motion_y &lt;- ggplot(motion_demeaned, mapping = aes(x = duration, y = y)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Y&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot z
+motion_z &lt;- ggplot(motion_demeaned, mapping = aes(x = duration, y = z)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Z&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot roll
+motion_roll &lt;- ggplot(motion_demeaned, mapping = aes(x = duration, y = roll)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Roll&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot pitch
+motion_pitch &lt;- ggplot(motion_demeaned, mapping = aes(x = duration, y = pitch)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Pitch&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot yaw
+motion_yaw &lt;- ggplot(motion_demeaned, mapping = aes(x = duration, y = yaw)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Yaw&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot 6-rigid body motion parameters into one figure
+grid.arrange(motion_x, motion_y, motion_z, motion_roll, motion_pitch, motion_yaw, nrow = 2, ncol = 3, top = &quot;6-Rigid Body Motion Parameters&quot;)</code></pre>
+<p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m6-1.png" width="672" /></p>
 <p><BR><BR></p>
 </div>
 <div id="motion-regressors" class="section level2">
 <h2>12-Motion Regressors</h2>
 <p>The next six motion parameters are the original six rigid body motion parameters squared:</p>
 <ol start="7" style="list-style-type: decimal">
-<li>x^2, translation in x-direction squared</li>
-<li>y^2, translation in the y-direction squared</li>
-<li>z^2, translation in the z-direction squared</li>
-<li>roll^2, rotation around the x-axis squared</li>
-<li>pitch^2, rotation around the y-axis squared</li>
-<li>yaw^2, rotation around the z-axis squared</li>
+<li><span class="math inline">\(X^2\)</span>, translation in the x-direction squared</li>
+<li><span class="math inline">\(Y^2\)</span>, translation in the y-direction squared</li>
+<li><span class="math inline">\(Z^2\)</span>, translation in the z-direction squared</li>
+<li><span class="math inline">\(Roll^2\)</span>, rotation around the x-axis squared</li>
+<li><span class="math inline">\(Pitch^2\)</span>, rotation around the y-axis squared</li>
+<li><span class="math inline">\(Yaw^2\)</span>, rotation around the z-axis squared</li>
 </ol>
+<pre class="r"><code># square 6-rigid body motion parameters
+motion_demeaned.sq &lt;- motion_demeaned^2 
+
+# save as data frame
+motion_demeaned.sq &lt;- as.data.frame(motion_demeaned.sq)
+
+# rename columns
+colnames(motion_demeaned.sq) &lt;- c(&quot;x.sq&quot;,&quot;y.sq&quot;,&quot;z.sq&quot;,&quot;roll.sq&quot;,&quot;pitch.sq&quot;,&quot;yaw.sq&quot;,&quot;duration&quot;)
+
+# add duration for graphs
+motion_demeaned.sq$duration &lt;- c(1:780)
+
+# plot x.sq
+motion_x.sq &lt;- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = x.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;X&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot y.sq
+motion_y.sq &lt;- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = y.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Y&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot z.sq
+motion_z.sq &lt;- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = z.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Z&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot roll.sq
+motion_roll.sq &lt;- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = roll.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Roll&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot pitch.sq
+motion_pitch.sq &lt;- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = pitch.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Pitch&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot yaw.sq
+motion_yaw.sq &lt;- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = yaw.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Yaw&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot motion.sq into one figure
+grid.arrange(motion_x.sq, motion_y.sq, motion_z.sq, motion_roll.sq, motion_pitch.sq, motion_yaw.sq, nrow = 2, ncol = 3, top = &quot;6-Rigid Body Motion Parameters Squared&quot;)</code></pre>
+<p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m12-1.png" width="672" /></p>
 <p><BR><BR></p>
 </div>
 <div id="motion-regressors-1" class="section level2">
 <h2>18-Motion Regressors</h2>
 <p>The next six motion parameters are the first temporal derivates of the original six rigid body motion parameters. Specifically, it is the motion minus the motion from the previous time point.</p>
 <ol start="13" style="list-style-type: decimal">
-<li>x_td, first temporal derivative of translation in the x-direction</li>
-<li>y_td, first temporal derivative of translation in the y-direction</li>
-<li>z_td, first temporal derivative of translation in the z-direction</li>
-<li>roll_td, first temporal derivative of rotation around the x-axis</li>
-<li>pitch_td, first temporal derivative of rotation around the y-axis</li>
-<li>yaw_td, first temporal derivative of rotation around the z-axis</li>
+<li><span class="math inline">\(X_{TD}\)</span>, first temporal derivative of the translation in the x-direction</li>
+<li><span class="math inline">\(Y_{TD}\)</span>, first temporal derivative of the translation in the y-direction</li>
+<li><span class="math inline">\(Z_{TD}\)</span>, first temporal derivative of the translation in the z-direction</li>
+<li><span class="math inline">\(Roll_{TD}\)</span> first temporal derivative of rotation around the x-axis</li>
+<li><span class="math inline">\(Pitch_{TD}\)</span>, first temporal derivative of rotation around the y-axis</li>
+<li><span class="math inline">\(Yaw_{TD}\)</span>, first temporal derivative of rotation around the z-axis</li>
 </ol>
+<pre class="r"><code># calculate first temporal derivative
+motion_demeaned.td1 &lt;- sapply(motion_demeaned, FUN=function(x) c(NA,diff(x))) 
+
+# save as dataframe
+motion_demeaned.td1 &lt;- as.data.frame(motion_demeaned.td1)
+
+# rename columns
+colnames(motion_demeaned.td1) &lt;- c(&quot;x.td1&quot;,&quot;y.td1&quot;,&quot;z.td1&quot;,&quot;roll.td1&quot;,&quot;pitch.td1&quot;,&quot;yaw.td1&quot;,&quot;duration&quot;) 
+
+# add duration for graphs
+motion_demeaned.td1$duration &lt;- c(1:780)
+
+# plot x.td1
+motion_x.td1 &lt;- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = x.td1)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;X&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot y.td1
+motion_y.td1 &lt;- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = y.td1)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Y&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot z.td1
+motion_z.td1 &lt;- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = z.td1)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Z&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot roll.td1
+motion_roll.td1 &lt;- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = roll.td1)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Roll&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot pitch.td1
+motion_pitch.td1 &lt;- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = pitch.td1)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Pitch&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot yaw.td1
+motion_yaw.td1 &lt;- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = yaw.td1)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Yaw&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot motion.td1 into one figure
+grid.arrange(motion_x.td1, motion_y.td1, motion_z.td1, motion_roll.td1, motion_pitch.td1, motion_yaw.td1, nrow = 2, ncol = 3, top = &quot;First Temporal Derivatives of the 6-Rigid Body Motion Parameters&quot;)</code></pre>
+<p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m18-1.png" width="672" /></p>
 <p><BR><BR></p>
 </div>
 <div id="motion-regressors-2" class="section level2">
 <h2>24-Motion Regressors</h2>
 <p>The next six motion parameters are the first temporal derivatives squared.</p>
 <ol start="19" style="list-style-type: decimal">
-<li>x_td_sq, first temporal derivative of translation in the x-direction squared</li>
-<li>y_td_sq, first temporal derivative of translation in the y-direction squared</li>
-<li>z_td_sq, first temporal derivative of translation in the z-direction squared</li>
-<li>roll_td_sq, first temporal derivative of rotation around the x-axis squared</li>
-<li>pitch_td_sq, first temporal derivative of rotation around the y-axis squared</li>
-<li>yaw_td_sq, first temporal derivative of rotation around the z-axis squared</li>
+<li><span class="math inline">\(X_{TD}^2\)</span>, first temporal derivative of the translation in the x-direction squared</li>
+<li><span class="math inline">\(Y_{TD}^2\)</span>, first temporal derivative of the translation in the y-direction squared</li>
+<li><span class="math inline">\(Z_{TD}^2\)</span>, first temporal derivative of the translation in the z-direction squared</li>
+<li><span class="math inline">\(Roll_{TD}^2\)</span>, first temporal derivative of rotation around the x-axis squared</li>
+<li><span class="math inline">\(Pitch_{TD}^2\)</span> first temporal derivative of rotation around the y-axis squared</li>
+<li><span class="math inline">\(Yaw_{TD}^2\)</span>, first temporal derivative of rotation around the z-axis squared</li>
 </ol>
+<pre class="r"><code># square the first temporal derivative
+motion_demeaned.td1.sq &lt;- motion_demeaned.td1^2 # first temporal derivative squared
+
+# save as dataframe
+motion_demeaned.td1.sq &lt;- as.data.frame(motion_demeaned.td1.sq)
+
+# rename columns
+colnames(motion_demeaned.td1.sq) &lt;- c(&quot;x.td1.sq&quot;,&quot;y.td1.sq&quot;,&quot;z.td1.sq&quot;,&quot;roll.td1.sq&quot;,&quot;pitch.td1.sq&quot;,&quot;yaw.td1.sq&quot;,&quot;duration&quot;) # rename columns
+
+# add duration for graphs
+motion_demeaned.td1.sq$duration &lt;- c(1:780)
+
+# plot x.td1.sq
+motion_x.td1.sq &lt;- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = x.td1.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;X&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot y.td1.sq
+motion_y.td1.sq &lt;- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = y.td1.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Y&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot z.td1.sq
+motion_z.td1.sq &lt;- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = z.td1.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Z&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot roll.td1.sq
+motion_roll.td1.sq &lt;- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = roll.td1.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Roll&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot pitch.td1.sq
+motion_pitch.td1.sq &lt;- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = pitch.td1.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Pitch&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot yaw.td1.sq
+motion_yaw.td1.sq &lt;- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = yaw.td1.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Yaw&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot motion.td1.sq into one figure
+grid.arrange(motion_x.td1.sq, motion_y.td1.sq, motion_z.td1.sq, motion_roll.td1.sq, motion_pitch.td1.sq, motion_yaw.td1.sq, nrow = 2, ncol = 3, top = &quot;First Temporal Derivatives of the 6-Rigid Body Motion Parameters Squared&quot;)</code></pre>
+<p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m24-1.png" width="672" /></p>
 <p><BR><BR></p>
 </div>
 <div id="motion-regressors-3" class="section level2">
 <h2>30-Motion Regressors</h2>
 <p>The next six motion parameters are the second temporal derivatives of the original six rigid body motion parameters. Specifically, it is the motion minus the motion from the two previous time points.</p>
 <ol start="25" style="list-style-type: decimal">
-<li>x_td2, second temporal derivative of translation in the x-direction</li>
-<li>y_td2, second temporal derivative of translation in the y-direction</li>
-<li>z_td2, second temporal derivative of translation in the z-direction</li>
-<li>roll_td2, second temporal derivative of rotation around the x-axis</li>
-<li>pitch_td2, second temporal derivative of rotation around the y-axis</li>
-<li>yaw_td2, second temporal derivative of rotation around the z-axis</li>
+<li><span class="math inline">\(X_{TD2}\)</span>, second temporal derivative of the translation in the x-direction</li>
+<li><span class="math inline">\(Y_{TD2}\)</span>, second temporal derivative of the translation in the y-direction</li>
+<li><span class="math inline">\(Z_{TD2}\)</span>, second temporal derivative of the translation in the z-direction</li>
+<li><span class="math inline">\(Roll_{TD2}\)</span>, second temporal derivative of rotation around the x-axis</li>
+<li><span class="math inline">\(Pitch_{TD2}\)</span>, second temporal derivative of rotation around the y-axis</li>
+<li><span class="math inline">\(Yaw_{TD2}\)</span>, second temporal derivative of rotation around the z-axis</li>
 </ol>
+<pre class="r"><code># calculate second temporal derivative
+motion_demeaned.td2 &lt;- sapply(motion_demeaned, FUN=function(x) c(NA,NA,diff(x, lag = 2))) 
+
+# save as dataframe
+motion_demeaned.td2 &lt;- as.data.frame(motion_demeaned.td2)
+
+# rename columns
+colnames(motion_demeaned.td2) &lt;- c(&quot;x.td2&quot;,&quot;y.td2&quot;,&quot;z.td2&quot;,&quot;roll.td2&quot;,&quot;pitch.td2&quot;,&quot;yaw.td2&quot;,&quot;duration&quot;) 
+
+# add duration for graphs
+motion_demeaned.td2$duration &lt;- c(1:780)
+
+# plot x.td2
+motion_x.td2 &lt;- ggplot(motion_demeaned.td2, mapping = aes(x = duration, y = x.td2)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;X&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot y.td2
+motion_y.td2 &lt;- ggplot(motion_demeaned.td2, mapping = aes(x = duration, y = y.td2)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Y&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot z.td2
+motion_z.td2 &lt;- ggplot(motion_demeaned.td2, mapping = aes(x = duration, y = z.td2)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Z&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot roll.td2
+motion_roll.td2 &lt;- ggplot(motion_demeaned.td2, mapping = aes(x = duration, y = roll.td2)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Roll&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot pitch.td2
+motion_pitch.td2 &lt;- ggplot(motion_demeaned.td2, mapping = aes(x = duration, y = pitch.td2)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Pitch&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot yaw.td2
+motion_yaw.td2 &lt;- ggplot(motion_demeaned.td2, mapping = aes(x = duration, y = yaw.td2)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Yaw&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot motion.td2 into one figure
+grid.arrange(motion_x.td2, motion_y.td2, motion_z.td2, motion_roll.td2, motion_pitch.td2, motion_yaw.td2, nrow = 2, ncol = 3, top = &quot;Second Temporal Derivatives of the 6-Rigid Body Motion Parameters&quot;)</code></pre>
+<p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m30-1.png" width="672" /></p>
 <p><BR><BR></p>
 </div>
 <div id="motion-regressors-4" class="section level2">
 <h2>36-Motion Regressors</h2>
 <p>The next six motion parameters are the second temporal derivatives squared.</p>
 <ol start="31" style="list-style-type: decimal">
-<li>x_td2_sq, second temporal derivative of translation in the x-direction squared</li>
-<li>y_td2_sq, second temporal derivative of translation in the y-direction squared</li>
-<li>z_td2_sq, second temporal derivative of translation in the z-direction squared</li>
-<li>roll_td2_sq, second temporal derivative of rotation around the x-axis squared</li>
-<li>pitch_td2_sq, second temporal derivative of rotation around the y-axis squared</li>
-<li>yaw_td2_sq, second temporal derivative of rotation around the z-axis square</li>
+<li><span class="math inline">\(X_{TD2}^2\)</span>, second temporal derivative of the translation in the x-direction squared</li>
+<li><span class="math inline">\(Y_{TD2}^2\)</span>, second temporal derivative of the translation in the y-direction squared</li>
+<li><span class="math inline">\(Z_{TD2}^2\)</span>, second temporal derivative of the translation in the z-direction squared</li>
+<li><span class="math inline">\(Roll_{TD2}^2\)</span>, second temporal derivative of rotation around the x-axis squared</li>
+<li><span class="math inline">\(Pitch_{TD2}^2\)</span>, second temporal derivative of rotation around the y-axis squared</li>
+<li><span class="math inline">\(Yaw_{TD2}^2\)</span>, second temporal derivative of rotation around the z-axis squared</li>
 </ol>
+<pre class="r"><code># second temporal derivative squared
+motion_demeaned.td2.sq &lt;- motion_demeaned.td2^2 
+
+# save as dataframe
+motion_demeaned.td2.sq &lt;- as.data.frame(motion_demeaned.td2.sq)
+
+# rename columns
+colnames(motion_demeaned.td2.sq) &lt;- c(&quot;x.td2.sq&quot;,&quot;y.td2.sq&quot;,&quot;z.td2.sq&quot;,&quot;roll.td2.sq&quot;,&quot;pitch.td2.sq&quot;,&quot;yaw.td2.sq&quot;,&quot;duration&quot;) 
+
+# add duration for graphs
+motion_demeaned.td2.sq$duration &lt;- c(1:780)
+
+# plot x.td2.sq
+motion_x.td2.sq &lt;- ggplot(motion_demeaned.td2.sq, mapping = aes(x = duration, y = x.td2.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;X&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot y.td2.sq
+motion_y.td2.sq &lt;- ggplot(motion_demeaned.td2.sq, mapping = aes(x = duration, y = y.td2.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Y&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot z.td2.sq
+motion_z.td2.sq &lt;- ggplot(motion_demeaned.td2.sq, mapping = aes(x = duration, y = z.td2.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Z&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;mm&quot;)
+
+# plot roll.td2.sq
+motion_roll.td2.sq &lt;- ggplot(motion_demeaned.td2.sq, mapping = aes(x = duration, y = roll.td2.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Roll&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot pitch.td2.sq
+motion_pitch.td2.sq &lt;- ggplot(motion_demeaned.td2.sq, mapping = aes(x = duration, y = pitch.td2.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Pitch&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot yaw.td2.sq
+motion_yaw.td2.sq &lt;- ggplot(motion_demeaned.td2.sq, mapping = aes(x = duration, y = yaw.td2.sq)) + 
+  geom_line() +
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5)
+        ) +
+  ggtitle(&quot;Yaw&quot;) +
+  xlab(&quot;Duration&quot;) + 
+  ylab(&quot;Degrees&quot;)
+
+# plot motion.td2.sq into one figure
+grid.arrange(motion_x.td2.sq, motion_y.td2.sq, motion_z.td2.sq, motion_roll.td2.sq, motion_pitch.td2.sq, motion_yaw.td2.sq, nrow = 2, ncol = 3, top = &quot;Second Temporal Derivatives of the 6-Rigid Body Motion Parameters Squared&quot;)</code></pre>
+<p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m36-1.png" width="672" /></p>
 <p><BR><BR></p>
 </div>
 <div id="r-script" class="section level2">
 <h2>R Script</h2>
-<pre class="r"><code># load 6-motion parameters
-ds.motion &lt;- read.csv(file.choose()) # read 6-rigid body motion parameters and assign to ds.motion
-colnames(ds.motion) &lt;- c(&quot;x&quot;,&quot;y&quot;,&quot;z&quot;,&quot;roll&quot;,&quot;pitch&quot;,&quot;yaw&quot;) # rename columns
+<pre class="r"><code># ===============================================================
+# 6-motion parameters
 
+# load 6-rigid body motion parameters file and assign to ds.motion
+ds.motion &lt;- read.csv(file.choose()) 
+
+# rename columns
+colnames(ds.motion) &lt;- c(&quot;x&quot;,&quot;y&quot;,&quot;z&quot;,&quot;roll&quot;,&quot;pitch&quot;,&quot;yaw&quot;) 
+
+# ===============================================================
 # 12-motion parameters
 
-ds.motion.sq &lt;- ds.motion^2 # square 6-rigid body motion parameters
-colnames(ds.motion.sq) &lt;- c(&quot;x.sq&quot;,&quot;y.sq&quot;,&quot;z.sq&quot;,&quot;roll.sq&quot;,&quot;pitch.sq&quot;,&quot;yaw.sq&quot;) # rename columns
+# square 6-rigid body motion parameters
+ds.motion.sq &lt;- ds.motion^2 
 
-ds.motion.12mp &lt;- data.frame(ds.motion,ds.motion.sq) # combine the 12-motion parameters into one dataset
+# rename columns
+colnames(ds.motion.sq) &lt;- c(&quot;x.sq&quot;,&quot;y.sq&quot;,&quot;z.sq&quot;,&quot;roll.sq&quot;,&quot;pitch.sq&quot;,&quot;yaw.sq&quot;)
 
+# combine the 12-motion parameters into one dataset
+ds.motion.12mp &lt;- data.frame(ds.motion,ds.motion.sq) 
+
+# save 12-motion parameters as a csv file
+write.csv(ds.motion.12mp, &quot;ds.motoin.12mp.csv&quot;)
+
+# ===============================================================
 # 24-motion parameters
 
-ds.motion.td1 &lt;- sapply(ds.motion, FUN=function(x) c(NA,diff(x))) # subtract motion from prior motion time point
-colnames(ds.motion.td1) &lt;- c(&quot;x.td1&quot;,&quot;y.td1&quot;,&quot;z.td1&quot;,&quot;roll.td1&quot;,&quot;pitch.td1&quot;,&quot;yaw.td1&quot;) # rename columns 
+# subtract motion from prior motion time point
+ds.motion.td1 &lt;- sapply(ds.motion, FUN=function(x) c(NA,diff(x))) 
 
-ds.motion.td1.sq &lt;- ds.motion.td1^2 # square td1
-colnames(ds.motion.td1.sq ) &lt;- c(&quot;x.td1.sq &quot;,&quot;y.td1.sq &quot;,&quot;z.td1.sq &quot;,&quot;roll.td1.sq &quot;,&quot;pitch.td1.sq &quot;,&quot;yaw.td1.sq &quot;) # rename columns
+# rename columns
+colnames(ds.motion.td1) &lt;- c(&quot;x.td1&quot;,&quot;y.td1&quot;,&quot;z.td1&quot;,&quot;roll.td1&quot;,&quot;pitch.td1&quot;,&quot;yaw.td1&quot;)  
 
-ds.motion.24mp &lt;- data.frame(ds.motion.12mp,ds.motion.td1,ds.motion.td1.sq) # combine the 24-motion parameters into one dataset
+# square td1
+ds.motion.td1.sq &lt;- ds.motion.td1^2 
 
+# rename columns
+colnames(ds.motion.td1.sq ) &lt;- c(&quot;x.td1.sq &quot;,&quot;y.td1.sq &quot;,&quot;z.td1.sq &quot;,&quot;roll.td1.sq &quot;,&quot;pitch.td1.sq &quot;,&quot;yaw.td1.sq &quot;) 
+
+# combine the 24-motion parameters into one dataset
+ds.motion.24mp &lt;- data.frame(ds.motion.12mp,ds.motion.td1,ds.motion.td1.sq) 
+
+# save 24-motion parameters as a csv file
+write.csv(ds.motion.24mp, &quot;ds.motoin.24mp.csv&quot;)
+
+# ===============================================================
 # 36-motion parameters
 
-ds.motion.td2 &lt;- sapply(dataset, FUN=function(x) c(NA,NA,diff(x, lag=2))) # subtract motion from the motion of two prior time points
-colnames(ds.motion.td2) &lt;- c(&quot;x.td2&quot;,&quot;y.td2&quot;,&quot;z.td2&quot;,&quot;roll.td2&quot;,&quot;pitch.td2&quot;,&quot;yaw.td2&quot;) # rename columns
+# subtract motion from the motion of two prior time points
+ds.motion.td2 &lt;- sapply(dataset, FUN=function(x) c(NA,NA,diff(x, lag=2))) 
 
-ds.motion.td2.sq &lt;- ds.motion.td2^2 # square td2
-colnames(ds.motion.td2.sq ) &lt;- c(&quot;x.td2.sq &quot;,&quot;y.td2.sq &quot;,&quot;z.td2.sq &quot;,&quot;roll.td2.sq &quot;,&quot;pitch.td2.sq &quot;,&quot;yaw.td2.sq &quot;) # rename columns 
+# rename columns
+colnames(ds.motion.td2) &lt;- c(&quot;x.td2&quot;,&quot;y.td2&quot;,&quot;z.td2&quot;,&quot;roll.td2&quot;,&quot;pitch.td2&quot;,&quot;yaw.td2&quot;) 
 
-ds.motion.36mp &lt;- data.frame(ds.motion.24mp,ds.motion.td2,ds.motion.td2.sq) # combine the 36-motion parameters into one dataset</code></pre>
+# square td2
+ds.motion.td2.sq &lt;- ds.motion.td2^2 
+
+# rename columns 
+colnames(ds.motion.td2.sq ) &lt;- c(&quot;x.td2.sq &quot;,&quot;y.td2.sq &quot;,&quot;z.td2.sq &quot;,&quot;roll.td2.sq &quot;,&quot;pitch.td2.sq &quot;,&quot;yaw.td2.sq &quot;) 
+
+# combine the 36-motion parameters into one dataset
+ds.motion.36mp &lt;- data.frame(ds.motion.24mp,ds.motion.td2,ds.motion.td2.sq) 
+
+# save 36-motion parameters as a csv file
+write.csv(ds.motion.36mp, &quot;ds.motoin.36mp.csv&quot;)</code></pre>
 <p><BR><BR></p>
 </div>
 <div id="references" class="section level2">

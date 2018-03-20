@@ -1,5 +1,5 @@
-name: "Ekarin Eric Pongpipat, M.A."
-output_dir: "."
+name: Ekarin Eric Pongpipat, M.A.
+output_dir: '.'
 output:
   html_document:
     theme: lumen
@@ -8,3 +8,6 @@ output:
       before_body: _navbar.html
       after_body: footer.html
     css: style.css
+    lib_dir: site_libs
+    self_contained: no
+
