@@ -30,7 +30,7 @@ output:
 <!-- </div></div> -->
 
 <div class="divTableRow"><div class="divTableCell">
-2018-03-13
+2018-03-20
 </div><div class="divTableCell">
 <div class="divBlogTitle">
 [Calculate Motion Regressors](blog_Calculate_Motion_Regressors.html)
