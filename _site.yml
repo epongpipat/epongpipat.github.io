@@ -5,9 +5,9 @@ output:
     theme: lumen
     highlight: fruit
     include:
+      in_header: google_analytics.html
       before_body: _navbar.html
       after_body: footer.html
     css: style.css
     lib_dir: site_libs
     self_contained: no
-
