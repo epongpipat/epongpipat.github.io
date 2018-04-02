@@ -23,8 +23,18 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116039246-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116039246-1');
+</script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -163,6 +173,14 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
 
 
 
@@ -322,10 +340,18 @@ div.tocify {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Introductory Univariate Statistics in Psychology Performed as General Linear Models (GLM) in R</h1>
-<h3 class="subtitle"><em>A terse comparison of typical introductory univariate statistics in psychology performed as GLMs in R</em></h3>
+<h3 class="subtitle"><em>A comparison of typical introductory univariate statistics in psychology performed as regressions (or GLMs) in R</em></h3>
 <h4 class="date"><em>Date Posted</em></h4>
 
 </div>
@@ -333,263 +359,394 @@ div.tocify {
 
 <p><em>Tags:</em> <span class="badge badge-pill badge-light">Statistics</span> <span class="badge badge-pill badge-primary">R</span></p>
 <p><BR><BR></p>
-<p>Note that the test statistic and its respective <em>p</em>-value are identical using either method (i.e., the typical univariate introductory statistics for psychology vs. GLM). Also, note that the GLM provides the same information as the ANOVA with the addition of 1 degree of freedom (<em>df</em>) tests. Thus, to take advantage of the 1 <em>df</em> test with categorical predictors (e.g., in the ANOVA), meaningful <em>a priori</em> contrasts are preferred over pre-programmed contrasts, especially in research.</p>
+<p>Typically, introductory univariate statistics psychology courses cover the following inferential analyses (plus or minus a few more):</p>
+<ul>
+<li>one sample <em>t</em>-test</li>
+<li>dependent samples <em>t</em>-test</li>
+<li>independent samples <em>t</em>-test,</li>
+<li>one-way Analysis of Variance (ANOVA),</li>
+<li>factorial ANOVA, and</li>
+<li>correlation</li>
+</ul>
+<p>Although, these conventions may be useful for quickly talking about these particular statistical analyses with others, I generally find it helpful to think about these analyses within the framework of the general linear model (GLM). I believe that thinking of these analyses as derivates of the GLM lends itself to understanding more advanced techniques. Given that, I want to provide some evidence (and R code) for others to see how the aforementioned analyses can be analyzed within the GLM framework with identical answers.</p>
+<p>In the following examples, the conventional name and its respective analysis is conducted on the left, while the same analysis performed in the GLM framework is performed on the right.</p>
+<p>Note: There are other ways to analyze GLM in R than the codes I have provided.</p>
 <p><BR><BR></p>
 <div id="one-sample-t-test" class="section level2">
-<h2>One sample <em>t</em>-test</h2>
-<pre class="r"><code>x &lt;- rnorm(1:10)
-dataset &lt;- data.frame(x)
+<h2>One Sample <em>t</em>-Test</h2>
+<p>First, let’s go over the one-sample <em>t</em>-test, which compares a sample mean to a population mean.</p>
+<p>For example, lets say that I was interested in seeing if people that visit my blog have a different level of resourcefulness than the general population. Resourcefulness was fictitously measured on a Likert-scale from -3 to +3 with -3 representing extremely not resourceful, 0 representing a moderate level of resourcefulness and +3 representing extremely resourceful.</p>
+<p>Let’s also say that the population on average has a moderate level of resourcefulness, <span class="math inline">\(\mu = 0\)</span>, and I collected the resourcefulness level from a sample of 100 individuals that have visited my blog.</p>
+<pre class="r"><code># sample 10 random numbers drawn from -3 and 3 with replacement
+sample &lt;- sample(-3:3, 100, replace=T)
+
+# define sample as dataframe and call it dataset
+dataset &lt;- data.frame(sample)
+
+# view the dataset
+head(dataset)</code></pre>
+<pre><code>##   sample
+## 1     -1
+## 2      1
+## 3      1
+## 4      3
+## 5      0
+## 6      1</code></pre>
+<pre class="r"><code># descriptive statistics using the psych package
 describe(dataset)</code></pre>
-<pre><code>##   vars  n  mean   sd median trimmed  mad   min  max range  skew kurtosis
-## x    1 10 -0.23 0.86  -0.17    -0.2 0.92 -1.75 1.03  2.79 -0.13    -1.21
-##     se
-## x 0.27</code></pre>
+<pre><code>##        vars   n mean   sd median trimmed  mad min max range  skew kurtosis
+## sample    1 100 0.21 2.01      0    0.26 2.97  -3   3     6 -0.09    -1.21
+##         se
+## sample 0.2</code></pre>
+<p><BR></p>
+<p>Before running the analyses in R, let’s compare the differences in the null and research hypotheses using each technique.</p>
+<p><BR></p>
+<div class="divTable">
+<div class="divTableBody">
+<div class="divTableRow">
+<div class="divTableCell" style="width: 50%; text-align: center">
+<CENTER>
+<strong>One-Sample <em>t</em>-Test</strong>
+</CENTER>
+<p><span class="math inline">\(H_0: \mu_{Sample} = 0\)</span> <BR><span class="math inline">\(H_1: \mu_{Sample} \ne 0\)</span></p>
+</div>
+<div class="divTableCell" style="width: 50%; text-align: center; vertical-align: middle">
+<CENTER>
+<strong>GLM</strong>
+</CENTER>
+<p><span class="math inline">\(Model: Resourcefulness = \beta_0 + \varepsilon\)</span></p>
+<p><span class="math inline">\(H_0: \beta_0 = 0\)</span> <BR><span class="math inline">\(H_1: \beta_0 \ne 0\)</span></p>
+</div>
+</div>
+</div>
+</div>
+<p><BR></p>
+<p>In the GLM framework, without additional information (i.e., predictors), the single best predictor of resourcefulness is the sample mean. Thus, the intercept represents the sample mean and is testing if the sample mean of resourcefulness is significantly different than 0.</p>
+<BR>
 <div class="divTable">
 <div class="divTableBody">
 <div class="divTableRow">
 <div class="divTableCell" style="width: 50%">
 <CENTER>
-<strong>Typical</strong>
+<strong>One-Sample <em>t</em>-Test</strong>
 </CENTER>
-<pre class="r"><code>t.test(x)</code></pre>
+<pre class="r"><code># one sample t-test
+t.test(x = sample)</code></pre>
 <pre><code>## 
 ##  One Sample t-test
 ## 
-## data:  x
-## t = -0.85499, df = 9, p-value = 0.4147
+## data:  sample
+## t = 1.044, df = 99, p-value = 0.299
 ## alternative hypothesis: true mean is not equal to 0
 ## 95 percent confidence interval:
-##  -0.8510062  0.3841686
+##  -0.1891367  0.6091367
 ## sample estimates:
-##  mean of x 
-## -0.2334188</code></pre>
+## mean of x 
+##      0.21</code></pre>
 </div>
 <div class="divTableCell" style="width: 50%">
 <CENTER>
 <strong>GLM</strong>
 </CENTER>
-<pre class="r"><code>model &lt;- lm(x ~ 1)
+<pre class="r"><code># write the GLM and save it as model
+# within the lm function, 1 indicates a test of the intercept against zero
+# which is identical to a one sample t-test against zero.
+model &lt;- lm(sample ~ 1)
+
+# summarize the model
 summary(model)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = x ~ 1)
+## lm(formula = sample ~ 1)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -1.52030 -0.63199  0.06807  0.43826  1.26489 
+##    Min     1Q Median     3Q    Max 
+##  -3.21  -1.21  -0.21   1.79   2.79 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)  -0.2334     0.2730  -0.855    0.415
+## (Intercept)   0.2100     0.2012   1.044    0.299
 ## 
-## Residual standard error: 0.8633 on 9 degrees of freedom</code></pre>
-<pre class="r"><code>confint(model)</code></pre>
+## Residual standard error: 2.012 on 99 degrees of freedom</code></pre>
+<pre class="r"><code># confidence interval of the model
+confint(model)</code></pre>
 <pre><code>##                  2.5 %    97.5 %
-## (Intercept) -0.8510062 0.3841686</code></pre>
+## (Intercept) -0.1891367 0.6091367</code></pre>
 </div>
 </div>
 </div>
 </div>
+<p><BR></p>
+<p>Notice that in both analyses the values are identical with respect to place of rounding. The sample mean is 0.21, the <em>t</em>-statistic is 1.04 with 99 degrees of freedom (df), and the <em>p</em>-value is 0.3.</p>
 <p><BR><BR><BR></p>
 </div>
 <div id="dependent-samples-t-test" class="section level2">
-<h2>Dependent samples <em>t</em>-test</h2>
-<pre class="r"><code>x1 &lt;- rnorm(1:10)
-x2 &lt;- rnorm(1:10)
-diff &lt;- x2-x1
-dataset &lt;- data.frame(x1, x2, diff)
-dataset</code></pre>
-<pre><code>##            x1         x2       diff
-## 1   0.1890689  0.0103786 -0.1786903
-## 2   0.7166260 -1.8056495 -2.5222755
-## 3   1.3362676 -0.1679308 -1.5041984
-## 4   0.8553515 -1.9395765 -2.7949280
-## 5   0.2041159 -0.3250616 -0.5291775
-## 6   0.9796677  1.2169705  0.2373028
-## 7  -1.2332029  1.0552476  2.2884505
-## 8  -0.3907130 -0.7098586 -0.3191457
-## 9  -0.2679572 -0.1604383  0.1075189
-## 10 -0.3585534 -0.5881047 -0.2295513</code></pre>
-<pre class="r"><code>describe(dataset)</code></pre>
-<pre><code>##      vars  n  mean   sd median trimmed  mad   min  max range  skew
-## x1      1 10  0.20 0.78   0.20    0.24 0.85 -1.23 1.34  2.57 -0.23
-## x2      2 10 -0.34 1.03  -0.25   -0.34 0.60 -1.94 1.22  3.16 -0.07
-## diff    3 10 -0.54 1.46  -0.27   -0.62 0.66 -2.79 2.29  5.08  0.11
-##      kurtosis   se
-## x1      -1.20 0.25
-## x2      -1.11 0.32
-## diff    -0.66 0.46</code></pre>
+<h2>Dependent Samples <em>t</em>-Test</h2>
+<p>Next, let’s go over the dependent samples t-test, which is essentially the same analysis as the one sample <em>t</em>-test but on a difference score.</p>
+<p>For this analysis, let’s say that I was interested in seeing if people who read my blog had a different level of self-efficacy after visiting my blog than before visiting my blog. Self-efficacy was fictiously measured on a Likert-scale from -3 to +3 where -3 represents extremely low levels of self-efficacy, 0 represents moderate levels of self-efficacy, and +3 represents extremely high levels of self-efficacy. Let’s say that I was able to collect levels of self-confidence before and after visiting my blog from 100 individuals.</p>
+<pre class="r"><code># randomly sample 100 numbers from -3 to 3 with replacement
+before &lt;- sample(-3:3,100,replace = T)
+
+# randomly sample 100 numbers from -3 to 3 with replacement
+after &lt;- sample(-3:3,100,replace = T)
+
+# subtract after from before to obtain a difference score
+difference &lt;- after-before
+
+# save the variables into a dataframe known as dataset 
+dataset &lt;- data.frame(before,after,difference)
+
+# view the dataset
+head(dataset)</code></pre>
+<pre><code>##   before after difference
+## 1     -1     0          1
+## 2     -3     0          3
+## 3     -3    -1          2
+## 4      2     3          1
+## 5     -1    -1          0
+## 6      1     0         -1</code></pre>
+<pre class="r"><code># descriptive statistics
+describe(dataset)</code></pre>
+<pre><code>##            vars   n  mean   sd median trimmed  mad min max range  skew
+## before        1 100  0.04 1.94      0    0.05 2.97  -3   3     6 -0.03
+## after         2 100 -0.13 1.97      0   -0.16 2.97  -3   3     6  0.06
+## difference    3 100 -0.17 2.85      0   -0.20 2.97  -6   6    12  0.13
+##            kurtosis   se
+## before        -1.20 0.19
+## after         -1.21 0.20
+## difference    -0.52 0.28</code></pre>
+<p><BR></p>
+<p>Before running the analyses in R, let’s compare the differences in the null and research hypotheses using each technique.</p>
+<p><BR></p>
+<div class="divTable">
+<div class="divTableBody">
+<div class="divTableRow">
+<div class="divTableCell" style="width: 50%; text-align: center">
+<CENTER>
+<strong>Dependent Samples <em>t</em>-Test</strong>
+</CENTER>
+<p><span class="math inline">\(H_0: \mu_{After}-\mu_{Before} = 0\)</span> or equivalently <span class="math inline">\(H_0: \mu_{Difference} = 0\)</span> <BR><span class="math inline">\(H_1: \mu_{After}-\mu_{Before} \ne 0\)</span> or equivalently <span class="math inline">\(H_1: \mu_{Difference} \ne 0\)</span></p>
+</div>
+<div class="divTableCell" style="width: 50%; text-align: center">
+<CENTER>
+<strong>GLM</strong>
+</CENTER>
+<p><span class="math inline">\(Model: Difference = \beta_0 + \varepsilon\)</span></p>
+<p><span class="math inline">\(H_0: \beta_0 = 0\)</span> <BR><span class="math inline">\(H_1: \beta_0 \ne 0\)</span></p>
+</div>
+</div>
+</div>
+</div>
+<p><BR></p>
+<p>Just like in the one sample <em>t</em>-test, the intercept represents the sample mean. However, in this case the sample mean is the sample mean of the difference since the dependent variable is the difference score of self-confidence levels. Thus, the intercept here is testing if the sample mean of the difference in self-confidence levels is significantly different than 0.</p>
+<p><BR></p>
 <div class="divTable">
 <div class="divTableBody">
 <div class="divTableRow">
 <div class="divTableCell" style="width: 50%">
 <CENTER>
-<strong>Typical</strong>
+<strong>Dependent Samples <em>t</em>-test</strong>
 </CENTER>
-<pre class="r"><code>t.test(diff)</code></pre>
+<pre class="r"><code># dependent samples t-test
+t.test(after,before,paired = TRUE)</code></pre>
 <pre><code>## 
-##  One Sample t-test
+##  Paired t-test
 ## 
-## data:  diff
-## t = -1.1775, df = 9, p-value = 0.2692
-## alternative hypothesis: true mean is not equal to 0
+## data:  after and before
+## t = -0.5965, df = 99, p-value = 0.5522
+## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -1.5904851  0.5015462
+##  -0.7354957  0.3954957
 ## sample estimates:
-##  mean of x 
-## -0.5444694</code></pre>
+## mean of the differences 
+##                   -0.17</code></pre>
 </div>
 <div class="divTableCell" style="width: 50%">
 <CENTER>
 <strong>GLM</strong>
 </CENTER>
-<pre class="r"><code>model &lt;- lm(diff ~ 1)
+<pre class="r"><code># define the GLM and save it as model
+model &lt;- lm(difference ~ 1)
+
+# summarize the model
 summary(model)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = diff ~ 1)
+## lm(formula = difference ~ 1)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -2.2505 -0.7160  0.2701  0.5804  2.8329 
+##    Min     1Q Median     3Q    Max 
+##  -5.83  -1.83   0.17   2.17   6.17 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)  -0.5445     0.4624  -1.177    0.269
+## (Intercept)   -0.170      0.285  -0.596    0.552
 ## 
-## Residual standard error: 1.462 on 9 degrees of freedom</code></pre>
-<pre class="r"><code>confint(model)</code></pre>
-<pre><code>##                 2.5 %    97.5 %
-## (Intercept) -1.590485 0.5015462</code></pre>
+## Residual standard error: 2.85 on 99 degrees of freedom</code></pre>
+<pre class="r"><code># confidence interval of the model parameter estimates
+confint(model)</code></pre>
+<pre><code>##                  2.5 %    97.5 %
+## (Intercept) -0.7354957 0.3954957</code></pre>
 </div>
 </div>
 </div>
 </div>
+<p>Again, note that in both analyses the sample mean difference of -0.17, the <em>t</em>-statistic of -0.6 with 99 degrees of freedom (df), and the <em>p</em>-value of 0.55 are identical with respective to place of rounding.</p>
 <p><BR><BR><BR></p>
 </div>
 <div id="independent-samples-t-test" class="section level2">
-<h2>Independent samples <em>t</em>-test</h2>
-<pre class="r"><code>y &lt;- rnorm(1:10)
-x &lt;- c(&quot;group1&quot;,&quot;group1&quot;,&quot;group1&quot;,&quot;group1&quot;,&quot;group1&quot;,&quot;group2&quot;,&quot;group2&quot;,&quot;group2&quot;,&quot;group2&quot;,&quot;group2&quot;)
-dataset &lt;- data.frame(y, x)
-dataset</code></pre>
-<pre><code>##             y      x
-## 1  -1.4095217 group1
-## 2  -0.1748997 group1
-## 3  -1.2748341 group1
-## 4   0.2416735 group1
-## 5  -1.6602896 group1
-## 6   1.5535715 group2
-## 7  -0.9640159 group2
-## 8   0.3296501 group2
-## 9  -0.6603471 group2
-## 10  0.8583663 group2</code></pre>
-<pre class="r"><code>describeBy(dataset$y, group=dataset$x)</code></pre>
+<h2>Independent Samples <em>t</em>-Test</h2>
+<p>For this analysis, let’s say that I was interested in understanding if level of self-confidence is different after viewing my blog than after visiting a news website. Self-condfidence was measured using the same measure from the prior analysis.</p>
+<p>Let’s say that I randomly assigned 100 participants to either visit my blog or visit a news website, and measured their level of self-confidence afterwards. Those were visited my blog were coded as 0.5 while those who visited a news website were coded as -0.5 under the variable condition.</p>
+<pre class="r"><code>self_confidence &lt;- sample(-3:3,100,replace = T)
+
+# set x to  random groups
+condition &lt;- sample(-0.5:0.5,100,replace=T)
+
+# save the variables into a dataframe as dataset
+dataset &lt;- data.frame(self_confidence, condition)
+
+# view the dataset
+head(dataset)</code></pre>
+<pre><code>##   self_confidence condition
+## 1               0      -0.5
+## 2               2       0.5
+## 3               2      -0.5
+## 4               2      -0.5
+## 5               0       0.5
+## 6               1      -0.5</code></pre>
+<pre class="r"><code># describe the the variable Y for each of the groups
+describeBy(dataset$self_confidence, group=dataset$condition)</code></pre>
 <pre><code>## 
 ##  Descriptive statistics by group 
-## group: group1
-##    vars n  mean   sd median trimmed  mad   min  max range skew kurtosis
-## X1    1 5 -0.86 0.84  -1.27   -0.86 0.57 -1.66 0.24   1.9  0.3     -2.1
-##      se
-## X1 0.37
+## group: -0.5
+##    vars  n  mean   sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 48 -0.02 1.88      0   -0.02 2.22  -3   3     6 0.12    -1.15 0.27
 ## -------------------------------------------------------- 
-## group: group2
-##    vars n mean   sd median trimmed  mad   min  max range skew kurtosis
-## X1    1 5 0.22 1.05   0.33    0.22 1.47 -0.96 1.55  2.52 0.04    -2.01
-##      se
-## X1 0.47</code></pre>
+## group: 0.5
+##    vars  n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## X1    1 52 0.37 1.97      0    0.45 2.97  -3   3     6 -0.16    -1.19 0.27</code></pre>
+<p><BR></p>
+<p>Again, let’s compare the null and research hypotheses before we perform the analyses.</p>
+<p><BR></p>
+<div class="divTable">
+<div class="divTableBody">
+<div class="divTableRow">
+<div class="divTableCell" style="width: 50%; text-align: center">
+<CENTER>
+<strong>Independent Samples <em>t</em>-test</strong>
+</CENTER>
+<p><span class="math inline">\(H_0: \mu_{Blog} - \mu_{News} = 0\)</span> or equivalently <span class="math inline">\(\mu_{Blog} = \mu_{News}\)</span> <BR><span class="math inline">\(H_1: \mu_{Blog} - \mu_{News} \ne 0\)</span> or equivalently <span class="math inline">\(\mu_{Blog} = \mu_{News}\)</span></p>
+</div>
+<div class="divTableCell" style="width: 50%; text-align: center">
+<CENTER>
+<strong>GLM</strong>
+</CENTER>
+<p><span class="math inline">\(Model: Self\_Confidence = \beta_0 + \beta_1*Condition + \varepsilon\)</span> <span class="math inline">\(H_0: \beta_1 = 0\)</span> <BR><span class="math inline">\(H_1: \beta_1 \ne 0\)</span></p>
+</div>
+</div>
+</div>
+</div>
 <div class="divTable">
 <div class="divTableBody">
 <div class="divTableRow">
 <div class="divTableCell" style="width: 50%">
 <CENTER>
-<strong>Typical</strong>
+<strong>Independent Samples <em>t</em>-test</strong>
 </CENTER>
-<pre class="r"><code>t.test(y ~ x, var.equal=TRUE)</code></pre>
+<pre class="r"><code># independent samples t-test
+t.test(self_confidence ~ condition, var.equal=TRUE)</code></pre>
 <pre><code>## 
 ##  Two Sample t-test
 ## 
-## data:  y by x
-## t = -1.8018, df = 8, p-value = 0.1092
+## data:  self_confidence by condition
+## t = -0.99977, df = 98, p-value = 0.3199
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -2.4599545  0.3019159
+##  -1.1528324  0.3803965
 ## sample estimates:
-## mean in group group1 mean in group group2 
-##           -0.8555743            0.2234450</code></pre>
+## mean in group -0.5  mean in group 0.5 
+##        -0.02083333         0.36538462</code></pre>
 </div>
 <div class="divTableCell" style="width: 50%">
 <CENTER>
 <strong>GLM</strong>
 </CENTER>
-<pre class="r"><code>model &lt;- lm(y ~ x)
+<pre class="r"><code># GLM
+model &lt;- lm(self_confidence ~ condition)
+
+# summary of the GLM
 summary(model)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = y ~ x)
+## lm(formula = self_confidence ~ condition)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -1.1875 -0.7420 -0.1565  0.6692  1.3301 
+## -3.3654 -1.3654 -0.1723  1.6346  3.0208 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept)  -0.8556     0.4234  -2.021    0.078 .
-## xgroup2       1.0790     0.5988   1.802    0.109  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   0.1723     0.1932   0.892    0.375
+## condition     0.3862     0.3863   1.000    0.320
 ## 
-## Residual standard error: 0.9469 on 8 degrees of freedom
-## Multiple R-squared:  0.2887, Adjusted R-squared:  0.1998 
-## F-statistic: 3.247 on 1 and 8 DF,  p-value: 0.1092</code></pre>
-<pre class="r"><code>confint(model)</code></pre>
+## Residual standard error: 1.93 on 98 degrees of freedom
+## Multiple R-squared:  0.0101, Adjusted R-squared:  -4.678e-06 
+## F-statistic: 0.9995 on 1 and 98 DF,  p-value: 0.3199</code></pre>
+<pre class="r"><code># confidence interval of the GLM parameter esimates 
+confint(model)</code></pre>
 <pre><code>##                  2.5 %    97.5 %
-## (Intercept) -1.8320430 0.1208944
-## xgroup2     -0.3019159 2.4599545</code></pre>
+## (Intercept) -0.2110316 0.5555829
+## condition   -0.3803965 1.1528324</code></pre>
 </div>
 </div>
 </div>
 </div>
+<p>Note that in both analyses the <em>t</em>-statistic of 1 with 98 degrees of freedom (df), and <em>p</em>-value of 0.32 are identical.</p>
 <p><BR><BR><BR></p>
 </div>
 <div id="one-way-anova" class="section level2">
-<h2>One-way ANOVA</h2>
+<h2>One-Way ANOVA</h2>
 <pre class="r"><code>y &lt;- rnorm(1:15)
 x &lt;- c(&quot;group1&quot;,&quot;group1&quot;,&quot;group1&quot;,&quot;group1&quot;,&quot;group1&quot;,&quot;group2&quot;,&quot;group2&quot;,&quot;group2&quot;,&quot;group2&quot;,&quot;group2&quot;,&quot;group3&quot;,&quot;group3&quot;,&quot;group3&quot;,&quot;group3&quot;,&quot;group3&quot;)
 dataset &lt;- data.frame(y, x)
 dataset</code></pre>
-<pre><code>##             y      x
-## 1   0.9668700 group1
-## 2   1.2859597 group1
-## 3   0.1017180 group1
-## 4   1.3467201 group1
-## 5   1.9488996 group1
-## 6   0.3255983 group2
-## 7   1.8318111 group2
-## 8  -0.8411770 group2
-## 9   1.0391281 group2
-## 10 -0.2512371 group2
-## 11 -0.7043374 group3
-## 12  0.5276345 group3
-## 13  0.4161404 group3
-## 14  1.3478803 group3
-## 15  1.2681431 group3</code></pre>
+<pre><code>##              y      x
+## 1  -3.38200387 group1
+## 2   0.63796243 group1
+## 3  -0.05292127 group1
+## 4  -0.16189419 group1
+## 5  -0.09686955 group1
+## 6   0.34649815 group2
+## 7   1.24055063 group2
+## 8   0.67346533 group2
+## 9  -0.27765638 group2
+## 10  2.26631454 group2
+## 11 -0.68193816 group3
+## 12 -1.32804462 group3
+## 13 -1.46228278 group3
+## 14 -0.19167381 group3
+## 15 -0.12288087 group3</code></pre>
 <pre class="r"><code>describeBy(dataset$y, group = x)</code></pre>
 <pre><code>## 
 ##  Descriptive statistics by group 
 ## group: group1
-##    vars n mean   sd median trimmed  mad min  max range  skew kurtosis  se
-## X1    1 5 1.13 0.68   1.29    1.13 0.47 0.1 1.95  1.85 -0.34    -1.49 0.3
+##    vars n  mean   sd median trimmed mad   min  max range  skew kurtosis
+## X1    1 5 -0.61 1.58   -0.1   -0.61 0.1 -3.38 0.64  4.02 -0.96    -1.04
+##      se
+## X1 0.71
 ## -------------------------------------------------------- 
 ## group: group2
 ##    vars n mean   sd median trimmed  mad   min  max range skew kurtosis
-## X1    1 5 0.42 1.05   0.33    0.42 1.06 -0.84 1.83  2.67 0.13    -1.88
+## X1    1 5 0.85 0.96   0.67    0.85 0.84 -0.28 2.27  2.54  0.3    -1.67
 ##      se
-## X1 0.47
+## X1 0.43
 ## -------------------------------------------------------- 
 ## group: group3
-##    vars n mean   sd median trimmed mad  min  max range  skew kurtosis   se
-## X1    1 5 0.57 0.83   0.53    0.57 1.1 -0.7 1.35  2.05 -0.45    -1.62 0.37</code></pre>
+##    vars n  mean   sd median trimmed  mad   min   max range  skew kurtosis
+## X1    1 5 -0.76 0.62  -0.68   -0.76 0.83 -1.46 -0.12  1.34 -0.08    -2.18
+##      se
+## X1 0.28</code></pre>
 <div class="divTable">
 <div class="divTableBody">
 <div class="divTableRow">
@@ -602,9 +759,11 @@ anova(model)</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: y
-##           Df Sum Sq Mean Sq F value Pr(&gt;F)
-## x          2 1.3966 0.69831  0.9317 0.4206
-## Residuals 12 8.9943 0.74953</code></pre>
+##           Df  Sum Sq Mean Sq F value Pr(&gt;F)  
+## x          2  7.8982  3.9491  3.1011 0.0821 .
+## Residuals 12 15.2815  1.2735                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
 <div class="divTableCell" style="width: 50%">
 <CENTER>
@@ -615,34 +774,36 @@ anova(model)</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: y
-##           Df Sum Sq Mean Sq F value Pr(&gt;F)
-## x          2 1.3966 0.69831  0.9317 0.4206
-## Residuals 12 8.9943 0.74953</code></pre>
+##           Df  Sum Sq Mean Sq F value Pr(&gt;F)  
+## x          2  7.8982  3.9491  3.1011 0.0821 .
+## Residuals 12 15.2815  1.2735                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>summary(model)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = y ~ x)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -1.27543 -0.41761 -0.04346  0.65768  1.41099 
+##     Min      1Q  Median      3Q     Max 
+## -2.7709 -0.5370  0.3907  0.5620  1.4165 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept)   1.1300     0.3872   2.919   0.0129 *
-## xgroup2      -0.7092     0.5475  -1.295   0.2196  
-## xgroup3      -0.5589     0.5475  -1.021   0.3275  
+## (Intercept)  -0.6111     0.5047  -1.211   0.2492  
+## xgroup2       1.4610     0.7137   2.047   0.0632 .
+## xgroup3      -0.1462     0.7137  -0.205   0.8411  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.8658 on 12 degrees of freedom
-## Multiple R-squared:  0.1344, Adjusted R-squared:  -0.009858 
-## F-statistic: 0.9317 on 2 and 12 DF,  p-value: 0.4206</code></pre>
+## Residual standard error: 1.128 on 12 degrees of freedom
+## Multiple R-squared:  0.3407, Adjusted R-squared:  0.2309 
+## F-statistic: 3.101 on 2 and 12 DF,  p-value: 0.0821</code></pre>
 <pre class="r"><code>confint(model)</code></pre>
 <pre><code>##                  2.5 %    97.5 %
-## (Intercept)  0.2864489 1.9736181
-## xgroup2     -1.9022175 0.4838000
-## xgroup3     -1.7519500 0.6340675</code></pre>
+## (Intercept) -1.7107251 0.4884345
+## xgroup2     -0.0940609 3.0160204
+## xgroup3     -1.7012594 1.4088219</code></pre>
 </div>
 </div>
 </div>
@@ -657,72 +818,76 @@ x2 &lt;- c(&quot;group1&quot;,&quot;group2&quot;,&quot;group3&quot;,&quot;group1
 dataset &lt;- data.frame(y, x1, x2)
 dataset</code></pre>
 <pre><code>##              y     x1     x2
-## 1   1.69579060 group1 group1
-## 2   0.92277887 group1 group2
-## 3   0.01421436 group1 group3
-## 4  -0.54038176 group1 group1
-## 5   0.21022584 group1 group2
-## 6   0.04202701 group2 group3
-## 7   0.84557203 group2 group1
-## 8  -0.14192445 group2 group2
-## 9  -0.62906367 group2 group3
-## 10 -1.70144837 group2 group1
-## 11 -0.30791278 group3 group2
-## 12  0.77265891 group3 group3
-## 13  0.73899431 group3 group1
-## 14 -2.48712037 group3 group2
-## 15 -0.23427180 group3 group3</code></pre>
+## 1   0.01041424 group1 group1
+## 2  -1.44529092 group1 group2
+## 3  -0.76098700 group1 group3
+## 4   0.22852054 group1 group1
+## 5  -0.48068989 group1 group2
+## 6   1.92753929 group2 group3
+## 7  -1.67706138 group2 group1
+## 8  -0.98249130 group2 group2
+## 9  -1.18041377 group2 group3
+## 10 -0.33457375 group2 group1
+## 11 -0.89943161 group3 group2
+## 12 -1.35428013 group3 group3
+## 13 -0.84106251 group3 group1
+## 14  0.55108063 group3 group2
+## 15  1.57463625 group3 group3</code></pre>
 <pre class="r"><code>describeBy(dataset$y, group = list(dataset$x1, dataset$x2))</code></pre>
 <pre><code>## 
 ##  Descriptive statistics by group 
 ## : group1
 ## : group1
-##    vars n mean   sd median trimmed  mad   min max range skew kurtosis   se
-## X1    1 2 0.58 1.58   0.58    0.58 1.66 -0.54 1.7  2.24    0    -2.75 1.12
+##    vars n mean   sd median trimmed  mad  min  max range skew kurtosis   se
+## X1    1 2 0.12 0.15   0.12    0.12 0.16 0.01 0.23  0.22    0    -2.75 0.11
 ## -------------------------------------------------------- 
 ## : group2
 ## : group1
-##    vars n  mean  sd median trimmed  mad  min  max range skew kurtosis   se
-## X1    1 2 -0.43 1.8  -0.43   -0.43 1.89 -1.7 0.85  2.55    0    -2.75 1.27
+##    vars n  mean   sd median trimmed mad   min   max range skew kurtosis
+## X1    1 2 -1.01 0.95  -1.01   -1.01   1 -1.68 -0.33  1.34    0    -2.75
+##      se
+## X1 0.67
 ## -------------------------------------------------------- 
 ## : group3
 ## : group1
-##    vars n mean sd median trimmed mad  min  max range skew kurtosis se
-## X1    1 1 0.74 NA   0.74    0.74   0 0.74 0.74     0   NA       NA NA
+##    vars n  mean sd median trimmed mad   min   max range skew kurtosis se
+## X1    1 1 -0.84 NA  -0.84   -0.84   0 -0.84 -0.84     0   NA       NA NA
 ## -------------------------------------------------------- 
 ## : group1
 ## : group2
-##    vars n mean  sd median trimmed  mad  min  max range skew kurtosis   se
-## X1    1 2 0.57 0.5   0.57    0.57 0.53 0.21 0.92  0.71    0    -2.75 0.36
+##    vars n  mean   sd median trimmed  mad   min   max range skew kurtosis
+## X1    1 2 -0.96 0.68  -0.96   -0.96 0.72 -1.45 -0.48  0.96    0    -2.75
+##      se
+## X1 0.48
 ## -------------------------------------------------------- 
 ## : group2
 ## : group2
 ##    vars n  mean sd median trimmed mad   min   max range skew kurtosis se
-## X1    1 1 -0.14 NA  -0.14   -0.14   0 -0.14 -0.14     0   NA       NA NA
+## X1    1 1 -0.98 NA  -0.98   -0.98   0 -0.98 -0.98     0   NA       NA NA
 ## -------------------------------------------------------- 
 ## : group3
 ## : group2
-##    vars n mean   sd median trimmed  mad   min   max range skew kurtosis
-## X1    1 2 -1.4 1.54   -1.4    -1.4 1.62 -2.49 -0.31  2.18    0    -2.75
+##    vars n  mean   sd median trimmed  mad  min  max range skew kurtosis
+## X1    1 2 -0.17 1.03  -0.17   -0.17 1.08 -0.9 0.55  1.45    0    -2.75
 ##      se
-## X1 1.09
+## X1 0.73
 ## -------------------------------------------------------- 
 ## : group1
 ## : group3
-##    vars n mean sd median trimmed mad  min  max range skew kurtosis se
-## X1    1 1 0.01 NA   0.01    0.01   0 0.01 0.01     0   NA       NA NA
+##    vars n  mean sd median trimmed mad   min   max range skew kurtosis se
+## X1    1 1 -0.76 NA  -0.76   -0.76   0 -0.76 -0.76     0   NA       NA NA
 ## -------------------------------------------------------- 
 ## : group2
 ## : group3
-##    vars n  mean   sd median trimmed mad   min  max range skew kurtosis
-## X1    1 2 -0.29 0.47  -0.29   -0.29 0.5 -0.63 0.04  0.67    0    -2.75
-##      se
-## X1 0.34
+##    vars n mean  sd median trimmed mad   min  max range skew kurtosis   se
+## X1    1 2 0.37 2.2   0.37    0.37 2.3 -1.18 1.93  3.11    0    -2.75 1.55
 ## -------------------------------------------------------- 
 ## : group3
 ## : group3
-##    vars n mean   sd median trimmed  mad   min  max range skew kurtosis  se
-## X1    1 2 0.27 0.71   0.27    0.27 0.75 -0.23 0.77  1.01    0    -2.75 0.5</code></pre>
+##    vars n mean   sd median trimmed  mad   min  max range skew kurtosis
+## X1    1 2 0.11 2.07   0.11    0.11 2.17 -1.35 1.57  2.93    0    -2.75
+##      se
+## X1 1.46</code></pre>
 <div class="divTable">
 <div class="divTableBody">
 <div class="divTableRow">
@@ -735,11 +900,11 @@ anova(model)</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: y
-##           Df Sum Sq Mean Sq F value Pr(&gt;F)
-## x1         2 1.9808 0.99038  0.6527 0.5540
-## x2         2 1.0235 0.51177  0.3373 0.7264
-## x1:x2      4 3.4184 0.85461  0.5632 0.6990
-## Residuals  6 9.1044 1.51739</code></pre>
+##           Df  Sum Sq Mean Sq F value Pr(&gt;F)
+## x1         2  0.2574 0.12870  0.0668 0.9361
+## x2         2  1.3124 0.65619  0.3405 0.7243
+## x1:x2      4  2.8138 0.70346  0.3651 0.8257
+## Residuals  6 11.5611 1.92685</code></pre>
 </div>
 <div class="divTableCell" style="width: 50%">
 <CENTER>
@@ -750,11 +915,11 @@ anova(model)</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: y
-##           Df Sum Sq Mean Sq F value Pr(&gt;F)
-## x1         2 1.9808 0.99038  0.6527 0.5540
-## x2         2 1.0235 0.51177  0.3373 0.7264
-## x1:x2      4 3.4184 0.85461  0.5632 0.6990
-## Residuals  6 9.1044 1.51739</code></pre>
+##           Df  Sum Sq Mean Sq F value Pr(&gt;F)
+## x1         2  0.2574 0.12870  0.0668 0.9361
+## x2         2  1.3124 0.65619  0.3405 0.7243
+## x1:x2      4  2.8138 0.70346  0.3651 0.8257
+## Residuals  6 11.5611 1.92685</code></pre>
 <pre class="r"><code>summary(model)</code></pre>
 <pre><code>## 
 ## Call:
@@ -762,34 +927,34 @@ anova(model)</code></pre>
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -1.2735 -0.4299  0.0000  0.4299  1.2735 
+## -1.5540 -0.5768  0.0000  0.5768  1.5540 
 ## 
 ## Coefficients:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)        0.57770    0.87103   0.663    0.532
-## x1group2          -1.00564    1.23183  -0.816    0.445
-## x1group3           0.16129    1.50867   0.107    0.918
-## x2group2          -0.01120    1.23183  -0.009    0.993
-## x2group3          -0.56349    1.50867  -0.374    0.722
-## x1group2:x2group2  0.29722    1.94769   0.153    0.884
-## x1group3:x2group2 -2.12531    1.94769  -1.091    0.317
-## x1group2:x2group3  0.69791    1.94769   0.358    0.732
-## x1group3:x2group3  0.09369    2.13358   0.044    0.966
+## (Intercept)         0.1195     0.9815   0.122    0.907
+## x1group2           -1.1253     1.3881  -0.811    0.449
+## x1group3           -0.9605     1.7001  -0.565    0.593
+## x2group2           -1.0825     1.3881  -0.780    0.465
+## x2group3           -0.8805     1.7001  -0.518    0.623
+## x1group2:x2group2   1.1058     2.1948   0.504    0.632
+## x1group3:x2group2   1.7493     2.1948   0.797    0.456
+## x1group2:x2group3   2.2598     2.1948   1.030    0.343
+## x1group3:x2group3   1.8317     2.4043   0.762    0.475
 ## 
-## Residual standard error: 1.232 on 6 degrees of freedom
-## Multiple R-squared:  0.4136, Adjusted R-squared:  -0.3682 
-## F-statistic: 0.5291 on 8 and 6 DF,  p-value: 0.8014</code></pre>
+## Residual standard error: 1.388 on 6 degrees of freedom
+## Multiple R-squared:  0.2749, Adjusted R-squared:  -0.6918 
+## F-statistic: 0.2844 on 8 and 6 DF,  p-value: 0.9477</code></pre>
 <pre class="r"><code>confint(model)</code></pre>
 <pre><code>##                       2.5 %   97.5 %
-## (Intercept)       -1.553635 2.709043
-## x1group2          -4.019811 2.008526
-## x1group3          -3.530297 3.852877
-## x2group2          -3.025371 3.002966
-## x2group3          -4.255077 3.128097
-## x1group2:x2group2 -4.468603 5.063035
-## x1group3:x2group2 -6.891128 2.640510
-## x1group2:x2group3 -4.067909 5.463729
-## x1group3:x2group3 -5.127004 5.314382</code></pre>
+## (Intercept)       -2.282280 2.521215
+## x1group2          -4.521869 2.271299
+## x1group3          -5.120479 3.199419
+## x2group2          -4.479042 2.314126
+## x2group3          -5.040403 3.279494
+## x1group2:x2group2 -4.264687 6.476255
+## x1group3:x2group2 -3.621126 7.119816
+## x1group2:x2group3 -3.110636 7.630305
+## x1group3:x2group3 -4.051361 7.714751</code></pre>
 </div>
 </div>
 </div>
@@ -802,24 +967,24 @@ anova(model)</code></pre>
 x &lt;- rnorm(1:10)
 dataset &lt;- data.frame(y,x)
 dataset</code></pre>
-<pre><code>##             y           x
-## 1   0.2048459  0.31236430
-## 2   0.5137347 -0.98034428
-## 3  -0.2358977 -0.08553552
-## 4  -1.0120892 -1.23566766
-## 5   0.3187993  1.47410875
-## 6   1.7392606 -0.19316305
-## 7   0.5529691 -0.79672713
-## 8   0.8450938  0.60668342
-## 9  -0.1773156 -0.91206642
-## 10  0.3456908  0.73211817</code></pre>
+<pre><code>##               y            x
+## 1  -0.149844821 -0.197325371
+## 2   0.176099830 -0.979028237
+## 3   1.105325626 -0.767253560
+## 4  -1.094318999 -1.419323808
+## 5  -1.184360063  0.832613723
+## 6  -0.822729330  2.130996588
+## 7   0.010108512  0.868508269
+## 8  -0.863943756  0.763008511
+## 9  -0.004959571  0.295341429
+## 10 -0.522150974 -0.001374946</code></pre>
 <pre class="r"><code>describe(dataset)</code></pre>
 <pre><code>##   vars  n  mean   sd median trimmed  mad   min  max range skew kurtosis
-## y    1 10  0.31 0.72   0.33    0.30 0.54 -1.01 1.74  2.75 0.13    -0.29
-## x    2 10 -0.11 0.89  -0.14   -0.16 1.13 -1.24 1.47  2.71 0.29    -1.39
+## y    1 10 -0.34 0.70  -0.34   -0.41 0.74 -1.18 1.11  2.29 0.54    -0.79
+## x    2 10  0.15 1.06   0.15    0.10 1.04 -1.42 2.13  3.55 0.21    -1.03
 ##     se
-## y 0.23
-## x 0.28</code></pre>
+## y 0.22
+## x 0.33</code></pre>
 <div class="divTable">
 <div class="divTableBody">
 <div class="divTableRow">
@@ -832,13 +997,13 @@ dataset</code></pre>
 ##  Pearson&#39;s product-moment correlation
 ## 
 ## data:  x and y
-## t = 0.91971, df = 8, p-value = 0.3846
+## t = -1.0462, df = 8, p-value = 0.3261
 ## alternative hypothesis: true correlation is not equal to 0
 ## 95 percent confidence interval:
-##  -0.3978605  0.7858509
+##  -0.8014757  0.3617244
 ## sample estimates:
-##       cor 
-## 0.3092286</code></pre>
+##        cor 
+## -0.3469114</code></pre>
 </div>
 <div class="divTableCell" style="width: 50%">
 <CENTER>
@@ -850,33 +1015,36 @@ anova(model)</code></pre>
 ## 
 ## Response: scale(y)
 ##           Df Sum Sq Mean Sq F value Pr(&gt;F)
-## scale(x)   1 0.8606  0.8606  0.8459 0.3846
-## Residuals  8 8.1394  1.0174</code></pre>
+## scale(x)   1 1.0831 1.08313  1.0945 0.3261
+## Residuals  8 7.9169 0.98961</code></pre>
 <pre class="r"><code>summary(model)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = scale(y) ~ scale(x))
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -1.4301 -0.5024 -0.2673  0.5548  2.0029 
+##      Min       1Q   Median       3Q      Max 
+## -1.59657 -0.49287  0.05255  0.47612  1.74639 
 ## 
 ## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept) 2.079e-18  3.190e-01    0.00    1.000
-## scale(x)    3.092e-01  3.362e-01    0.92    0.385
+##               Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)  5.875e-17  3.146e-01   0.000    1.000
+## scale(x)    -3.469e-01  3.316e-01  -1.046    0.326
 ## 
-## Residual standard error: 1.009 on 8 degrees of freedom
-## Multiple R-squared:  0.09562,    Adjusted R-squared:  -0.01742 
-## F-statistic: 0.8459 on 1 and 8 DF,  p-value: 0.3846</code></pre>
+## Residual standard error: 0.9948 on 8 degrees of freedom
+## Multiple R-squared:  0.1203, Adjusted R-squared:  0.01039 
+## F-statistic: 1.095 on 1 and 8 DF,  p-value: 0.3261</code></pre>
 <pre class="r"><code>confint(model)</code></pre>
-<pre><code>##                  2.5 %    97.5 %
-## (Intercept) -0.7355484 0.7355484
-## scale(x)    -0.4661075 1.0845647</code></pre>
+<pre><code>##                 2.5 %    97.5 %
+## (Intercept) -0.725424 0.7254240
+## scale(x)    -1.111575 0.4177526</code></pre>
 </div>
 </div>
 </div>
 </div>
+<p>Some may have learned these analyses under different names. For example, some may have learned the dependent samples <em>t</em>-test was called paired or matched samples <em>t</em>-test. Regardless of the specific nomenclature, these are generally the analyses I have seen covered from being a graduate teaching assistant for statistics courses in psychology as well as from being a tutor of statistics courses.</p>
+<p>Note that the test statistic and its respective <em>p</em>-value are identical using either method (i.e., the typical univariate introductory statistics for psychology vs. GLM). Also, note that the GLM provides the same information as the ANOVA with the addition of 1 degree of freedom (<em>df</em>) tests. Thus, to take advantage of the 1 <em>df</em> test with categorical predictors (e.g., in the ANOVA), meaningful <em>a priori</em> contrasts are preferred over pre-programmed contrasts, especially in research.</p>
+<p>In either case, APA format of these results would be something like the following: <em>M</em> = 0.17, 95% CI [-0.21, -0.38] <em>t</em>(98) = 0.19, <em>p</em> = 0.39</p>
 </div>
 
 </div> <!-- articleBandContent -->
