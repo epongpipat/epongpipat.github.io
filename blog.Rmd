@@ -1,6 +1,6 @@
 ---
 title: "Blog"
-subtitle: "Mostly a reference for myself (and hopefully others)"
+subtitle: "Mostly a reference"
 output: 
   html_document:
     highlight: textmate
@@ -30,6 +30,34 @@ output:
 <!-- </div></div> -->
 
 <div class="divTableRow"><div class="divTableCell">
+2018-06-17
+</div><div class="divTableCell">
+<div class="divBlogTitle">
+<a href="https://epongpipat.shinyapps.io/lmvoice/" target="_blank">Simple Linear Regression via Voice Command: A Shiny App</a>
+</div>
+Change variables of a simple linear regression via voice commands. *(Note: Link may or not work depending on if my free hours have been used up for the month, but feel free to download the code and run locally from my <a href="https://github.com/epongpipat/epongpipat.github.io/tree/master/shinyApps/lmVoice" target="_blank">github</a>.)*
+<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
+<span class="badge badge-pill badge-primary">R</span>
+<span class="badge badge-pill badge-primary">Shiny Apps</span>
+</div></div>
+
+<BR>
+
+<div class="divTableRow"><div class="divTableCell">
+2018-06-07
+</div><div class="divTableCell">
+<div class="divBlogTitle">
+<a href="https://mattkmiecik.com/post-Bootstrapping-and-Permutation-Testing-Shiny-App.html" target="_blank">Bootstrapping and Permutation Testing: A Shiny App</a>
+</div>
+A collaboration post with [Matt Kmiecik](https://mattkmiecik.com) about the differences between bootstrapping and permutation testing with input variables that change on the fly.
+<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
+<span class="badge badge-pill badge-primary">R</span>
+<span class="badge badge-pill badge-primary">Shiny Apps</span>
+</div></div>
+
+<BR>
+
+<div class="divTableRow"><div class="divTableCell">
 2018-03-20
 </div><div class="divTableCell">
 <div class="divBlogTitle">
@@ -42,7 +70,7 @@ A quick guide to calculating motion regressors (with visuals).
 
 <BR>
 
-<div class="divTableRow"><div class="divTableCell">
+<div class="divTableRow"><div class="divTableCell" style="width: 100px;">
 2018-02-11
 </div><div class="divTableCell">
 <div class="divBlogTitle">
