@@ -14,24 +14,29 @@ shinyUI(fluidPage(
     tags$script(src="//cdnjs.cloudflare.com/ajax/libs/annyang/1.4.0/annyang.min.js"),
     includeScript('init.js'))),
   h1("Simple Linear Regression via Voice Command"),
-  p("You can run a simple linear regression using just voice commands. Try it out."),
+  h2("Ekarin E. Pongpipat, M.A."),
+  hr(),
+  h4("Note: Currently, only works with Google Chrome browser."),
+  p("You can run a simple linear regression using just voice commands. Try it out!"),
   p("To change the DV, just say DV [insert variable here] or dependent variable [insert variable here]. 
-    For example, 'DV salary' or 'dependent variable salary'"),
+    For example, 'DV salary' or 'dependent variable salary'."),
   p("To change the IV, just say IV [insert variable here] or independent variable [insert variable here]. 
     For example, 'IV sex' or 'independent variable sex.' 
     If the IV is a categorical variable, you can change the contrast coding scheme to either dummy, deviant (effects), or helmert. 
     To change the contrast coding scheme, just say contrast [insert contrast here].
-    For example, 'contrast dummy' or 'contrast deviant'"),
+    For example, 'contrast dummy' or 'contrast deviant'."),
   hr(),
   p(strong("List of Variables (Salaries Dataset within carData Package):")),
   textOutput("variable_list"),
   hr(),
-  fluidRow(column(width = 6,
+  fluidRow(column(width = 7,
                   HTML("<CENTER><B>Output</B></CENTER>"),
                   verbatimTextOutput("summary") %>% withSpinner()),
-           column(width = 6,
+           column(width = 5,
                   HTML("<CENTER><B>Visualization</B></CENTER>"),
                   plotOutput("visualization") %>% withSpinner())),
+  hr(),
+  HTML("The code for this Shiny App can be found on my <A href='https://github.com/epongpipat/epongpipat.github.io/tree/master/shinyApps/lmVoice' target='_blank'>github</A> page."),
   hr(),
   HTML("References: 
         <OL>
