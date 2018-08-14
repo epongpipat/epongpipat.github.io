@@ -1,9 +1,7 @@
 ---
 title: "Curriculum Vitae"
-output:
+output: 
   html_document:
-    highlight: textmate
-    theme: lumen
     toc: yes
     toc_depth: 3
     toc_float:
@@ -16,7 +14,7 @@ knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 ```
 
-*Updated on March 10, 2018*
+*Updated on June 24, 2018*
 <BR><BR><BR>
 
 ## Education
@@ -30,7 +28,7 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 <div class="divTableCellInfo"> 
 <B>Ph.D. Student, Cognition and Neuroscience</B> (2017 - Present)
 <BR> The University of Texas at Dallas
-<BR> Advisors: Dr. Karen Rodrigue & Kristen Kennedy
+<BR> Advisors: Drs. Karen M. Rodrigue & Kristen M. Kennedy
 </div>
 </div>
 
@@ -119,7 +117,7 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 <div class="divTableCellInfo"> 
 <B>Graduate Teaching Assistant</B> (2017 - Present)
 <BR>The University of Texas at Dallas
-<BR>Statistics for Psychology, PSY2317 (Fall 2014, Spring 2015)
+<BR>Statistics for Psychology, PSY2317 (Fall 2017, Spring 2018)
 <BR><div class="divIndent">Working with Dr. Nancy Juhn</div>
 </div>
 </div>
@@ -152,11 +150,13 @@ McIntosh, E. C., Jacobson, A., Kemmotsu, N., **Pongpipat, E. E.**, Green, E., Ha
 
 ## Poster Presentations
 <div class="divReferences">
+**Pongpipat, E. E.**, Boylan, M. A., Foster, C. M., Kennedy, K. K.  (2018, November, to be presented). *Fronto-parietal functional connectivity to task difficulty decreases across the adult lifespan and predicts working memory performance.* Poster session presentation to be presented at the 48th Annual Meeting of the Society for Neuroscience, San Diego, CA. 
+
 **Pongpipat, E. E.**, Jacobson, A. & Murphy, C. (2016, November). *Metabolic Syndrome is Associated with Altered Functional Connectivity of Primary and Secondary Taste Cortices and Eating Disinhibition.* Poster session presentation at the 46th Annual Meeting of the Society for Neuroscience, San Diego, CA. 
 
 Vertrees, R. B., **Pongpipat, E. E.**, McIntosh, E. C., & Murphy, C. (2016, November). *Cortical correlates of metabolic syndrome risk factors and hunger in middle aged and older adults.*  Poster session presentation at the 46th Annual Meeting of the Society for Neurosciences, San Diego, CA. 
 
-**Pongpipat, E. E.**, Jacobson, A. & Murphy, C. (2016, April). *Metabolic Syndrome is Associated with Decreased Medial Temporal Lobe Cortical Thickness and Impaired Memory Ability.* Poster session presented at the 96th Annual Convention of the Western Psychological Association, Long Beach, CA. (Awarded 2016 Western Psychological Association Student Scholarship Award for Outstanding Quality of Research Presented at the Annual Convention).
+**Pongpipat, E. E.**, Jacobson, A. & Murphy, C. (2016, April). *Metabolic Syndrome is associated with decreased medial temporal lobe cortical thickness and impaired memory ability.* Poster session presented at the 96th Annual Convention of the Western Psychological Association, Long Beach, CA. (Awarded 2016 Western Psychological Association Student Scholarship Award for Outstanding Quality of Research Presented at the Annual Convention).
 
 **Pongpipat, E. E.**, Jacobson, A. & Murphy, C. (2015, November). *Functional Connectivity of Taste Sensory and Pleasantness Pathway in Metabolic Syndrome.* Poster session presented at the Annual Convention of the Obesity Society and ObesityWeek, Los Angeles, CA.
 

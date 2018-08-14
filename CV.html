@@ -26,6 +26,9 @@
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116039246-1"></script>
 <script>
@@ -103,6 +106,9 @@ img {
 }
 .tabbed-pane {
   padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
 }
 button.code-folding-btn:focus {
   outline: none;
@@ -273,62 +279,43 @@ div.tocify {
 
 
 
-<nav class="navbar navbar-default navbar-expand-lg navbar-dark bg-primary navbar-fixed-top">
-
+<nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
-      <a class="navbar-brand" href="index.html">Ekarin Eric Pongpipat, M.A.</a>
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
-        <span class="navbar-toggler-icon"></span>
+
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
       </button>
-
-    <div id="navbarColor01" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav navbar-right mr-auto">
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="blog.html">Home</a>
-        </li> -->
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="about.html">About</a>
-        </li> -->
-        <li class="nav-item">
-          <a class="nav-link" href="blog.html">Blog</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="CV.html">CV</a>
-        </li>
-      </ul>
-    </div><!--/.nav-collapse -->
-
-  </div><!--/.container -->
-
-</nav><!--/.navbar -->
-<nav class="navbar navbar-default navbar-expand-lg navbar-dark bg-primary navbar-fixed-top">
-
-  <div class="container">
+      <a class="navbar-brand" href="index.html"><span class="fas fa-terminal" aria-hidden="true"></span></a>
+      <a class="navbar-brand" href="index.html"><img src="images/icons8-artificial-intelligence-100.png" style="height: 20px"></a>
+      <a class="navbar-brand" href="index.html"><img src="images/icons8-scatter-plot-96.png" style="height: 20px"></a>
       <a class="navbar-brand" href="index.html">Ekarin Eric Pongpipat, M.A.</a>
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    </div> <!-- /.navbar-header -->
 
-    <div id="navbarColor01" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav navbar-right mr-auto">
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="blog.html">Home</a>
-        </li> -->
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="about.html">About</a>
-        </li> -->
-        <li class="nav-item">
-          <a class="nav-link" href="blog.html">Blog</a>
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="index.html"><span class="fas fa-quote-left" aria-hidden="true"></span> &ensp;Blog</a></li>
+        <li><a href="CV.html"><span class="far fa-id-badge" aria-hidden="true"></span> &ensp;CV</a></li>
+        <li><a href="https://github.com/epongpipat" target="_blank"><span class="fa fa-github" aria-hidden="true"></span> &ensp;GitHub</a></li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fas fa-link" aria-hidden="true"></span> &ensp;Connect<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="mailto:epongpipat@gmail.com" target="_blank"><span class="fa fa-envelope" aria-hidden="true"></span> &ensp;Email</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="https://www.researchgate.net/profile/Ekarin_Pongpipat" target="_blank"><span class="fab fa-researchgate" aria-hidden="true"></span> &ensp;ResearchGate</a></li>
+            <li><a href="https://www.linkedin.com/in/epongpipat/" target="_blank"><span class="fa fa-linkedin" aria-hidden="true"></span> &ensp;LinkedIn</a></li>
+          </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="CV.html">CV</a>
-        </li>
+
       </ul>
-    </div><!--/.nav-collapse -->
+    </div> <!-- /.navbar-collapse -->
 
-  </div><!--/.container -->
-
-</nav><!--/.navbar -->
+  </div> <!-- /.container -->
+</nav> <!--/.navbar -->
 
 <div class="fluid-row" id="header">
 
@@ -339,7 +326,7 @@ div.tocify {
 </div>
 
 
-<p><em>Updated on March 10, 2018</em> <BR><BR><BR></p>
+<p><em>Updated on June 24, 2018</em> <BR><BR><BR></p>
 <div id="education" class="section level2">
 <h2>Education</h2>
 <div class="divTable">
@@ -349,7 +336,7 @@ div.tocify {
 <p><img src="images/logo_utd.png" width="100"></p>
 </div>
 <div class="divTableCellInfo">
-<p><B>Ph.D. Student, Cognition and Neuroscience</B> (2017 - Present) <BR> The University of Texas at Dallas <BR> Advisors: Dr. Karen Rodrigue &amp; Kristen Kennedy</p>
+<p><B>Ph.D. Student, Cognition and Neuroscience</B> (2017 - Present) <BR> The University of Texas at Dallas <BR> Advisors: Drs. Karen M. Rodrigue &amp; Kristen M. Kennedy</p>
 </div>
 </div>
 <div class="divTableRow">
@@ -413,7 +400,7 @@ div.tocify {
 <p><img src="images/logo_utd.png" width="100"></p>
 </div>
 <div class="divTableCellInfo">
-<B>Graduate Teaching Assistant</B> (2017 - Present) <BR>The University of Texas at Dallas <BR>Statistics for Psychology, PSY2317 (Fall 2014, Spring 2015) <BR>
+<B>Graduate Teaching Assistant</B> (2017 - Present) <BR>The University of Texas at Dallas <BR>Statistics for Psychology, PSY2317 (Fall 2017, Spring 2018) <BR>
 <div class="divIndent">
 Working with Dr. Nancy Juhn
 </div>
@@ -448,9 +435,10 @@ Worked with Dr. Melody Sadler, Dr. Amy Spilkin, Dr. Dale Glaser
 <div id="poster-presentations" class="section level2">
 <h2>Poster Presentations</h2>
 <div class="divReferences">
+<p><strong>Pongpipat, E. E.</strong>, Boylan, M. A., Foster, C. M., Kennedy, K. K. (2018, November, to be presented). <em>Fronto-parietal functional connectivity to task difficulty decreases across the adult lifespan and predicts working memory performance.</em> Poster session presentation to be presented at the 48th Annual Meeting of the Society for Neuroscience, San Diego, CA.</p>
 <p><strong>Pongpipat, E. E.</strong>, Jacobson, A. &amp; Murphy, C. (2016, November). <em>Metabolic Syndrome is Associated with Altered Functional Connectivity of Primary and Secondary Taste Cortices and Eating Disinhibition.</em> Poster session presentation at the 46th Annual Meeting of the Society for Neuroscience, San Diego, CA.</p>
 <p>Vertrees, R. B., <strong>Pongpipat, E. E.</strong>, McIntosh, E. C., &amp; Murphy, C. (2016, November). <em>Cortical correlates of metabolic syndrome risk factors and hunger in middle aged and older adults.</em> Poster session presentation at the 46th Annual Meeting of the Society for Neurosciences, San Diego, CA.</p>
-<p><strong>Pongpipat, E. E.</strong>, Jacobson, A. &amp; Murphy, C. (2016, April). <em>Metabolic Syndrome is Associated with Decreased Medial Temporal Lobe Cortical Thickness and Impaired Memory Ability.</em> Poster session presented at the 96th Annual Convention of the Western Psychological Association, Long Beach, CA. (Awarded 2016 Western Psychological Association Student Scholarship Award for Outstanding Quality of Research Presented at the Annual Convention).</p>
+<p><strong>Pongpipat, E. E.</strong>, Jacobson, A. &amp; Murphy, C. (2016, April). <em>Metabolic Syndrome is associated with decreased medial temporal lobe cortical thickness and impaired memory ability.</em> Poster session presented at the 96th Annual Convention of the Western Psychological Association, Long Beach, CA. (Awarded 2016 Western Psychological Association Student Scholarship Award for Outstanding Quality of Research Presented at the Annual Convention).</p>
 <p><strong>Pongpipat, E. E.</strong>, Jacobson, A. &amp; Murphy, C. (2015, November). <em>Functional Connectivity of Taste Sensory and Pleasantness Pathway in Metabolic Syndrome.</em> Poster session presented at the Annual Convention of the Obesity Society and ObesityWeek, Los Angeles, CA.</p>
 <p><strong>Pongpipat, E. E.</strong>, &amp; Murphy, C. (2015, April). <em>Effects of Cognitive Decline on Odor Threshold and Identification in Alzheimer’s disease.</em> Poster session presented at the 95th Annual Convention of the Western Psychological Association, Las Vegas, NV. (Awarded 2015 Western Psychological Association Student Scholarship Award for Outstanding Quality of Research Presented at the Annual Convention).</p>
 <p>Kelson, C.Y., <strong>Pongpipat, E. E.</strong>, &amp; Abara, J.P. (2014, April). <em>Functional Impact of Neurofeedback on Veterans with PTSD.</em> Poster session presented at the 35th Annual Meeting of the Society of Behavioral Medicine, Philadelphia, PA.</p>
@@ -677,34 +665,13 @@ Western Psychological Association
 <p><BR><BR></p>
 </div>
 
-</div> <!-- articleBandContent -->
-</div> <!-- pageContent -->
-</div> <!-- forPagesWithTOC -->
-<footer class="footer">
-  <div class="divTable">
-    <div class="divTableBody">
-      <div class="divTableRow">
-        <div class="container">
-          <div class="divTableCellFooter">
-            &copy; 2018 Ekarin Eric Pongpipat, M.A. All rights reserved.
-          </div>
-          <div class="divTableCellFooter" style="width: 50px">
-            <a href="mailto:epongpipat@gmail.com"><img src="images/logo_email.png" border="0" style="height: 20px;" alt="Email" class="imgLink"></a>
-          </div>
-          <div class="divTableCellFooter" style="width: 50px">
-            <a href="https://www.linkedin.com/in/epongpipat/"><img src="images/logo_linkedin.png" border="0" style="height: 20px;" alt="LinkedIn" class="imgLink"></a>
-          </div>
-          <div class="divTableCellFooter" style="width: 50px">
-            <a href="https://github.com/epongpipat"><img src="images/logo_github.png" border="0" style="height: 20px;" alt="GitHub" class="imgLink"></a>
-          </div>
-          <div class="divTableCellFooter" style="width: 50px">
-            <a href="https://www.researchgate.net/profile/Ekarin_Pongpipat"><img src="images/logo_researchgate.png" border="0" style="height: 20px;" alt="ResearchGate" class="imgLink"></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
+</div>
+</div>
+</div>
+<div class="footer">
+  <hr style="border-top: solid 1px #F8F8F8;">
+  &copy; 2018 Ekarin Eric Pongpipat. <a href="https://raw.githubusercontent.com/epongpipat/epongpipat.github.io/master/LICENSE" target="_blank">All rights reserved.</a>
+</div>
 
 
 </div>

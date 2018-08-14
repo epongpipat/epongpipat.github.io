@@ -1,22 +1,24 @@
+/* #218CBA = blue, #F8F8F8 = light of gray of navbar */
+
 html {
   position: relative;
   min-height: 100%;
 }
+
 body {
-	margin-bottom: 50px; /* Margin bottom by footer height */
+  padding-bottom: 70px; /* padding for navigation */
+	margin-bottom: 70px; /* margin/padding before footer */
 }
 .footer {
 	display: inline-block;
   position: absolute;
   width: 100%;
-	bottom: 0px;
-  height: 50px; /* Set the fixed height of the footer here */
-	padding: 0px;
-	margin: 0px;
-	color: white;
+  height: 80px;
+	bottom: 0;
+	padding: 0;
+	margin: 0;
   text-align: center;
-	line-height: 50px;
-	background-color: #218CBA; /* #218CBA = blue, #F8F8F8 = light of gray of navbar */
+  vertical-align: bottom;
 }
 .divTable{
 	display: table;
@@ -57,7 +59,9 @@ body {
 	display: table-header-group;
 }
 .divTableFoot {
-	display: table-footer-group;
+  border: 1px solid black;
+	display: table-row-group;
+	text-align: center;
 }
 .divTableBody {
 	display: table-row-group;
@@ -71,10 +75,12 @@ body {
 		text-indent: 1.5em;
 }
 .divTableCellFooter {
-	border: 0px solid #999999;
+	border: 0px solid black;
 	display: table-cell;
   vertical-align: middle;
   text-align: center;
+  padding: 0;
+  height: 50px;
 	color: white;
 }
 .imgLink:hover {
