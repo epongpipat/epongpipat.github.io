@@ -11,7 +11,12 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(dplyr)
+library(glue)
+library(psych)
 ```
 
 *Updated on June 24, 2018*
@@ -23,7 +28,7 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 
 <div class="divTableRow">
 <div class="divTableCellLogo">
-<img src="images/logo_utd.png" width="100">
+<img src="images/logo_utd.svg" width="100">
 </div>
 <div class="divTableCellInfo"> 
 <B>Ph.D. Student, Cognition and Neuroscience</B> (2017 - Present)
@@ -34,7 +39,7 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 
 <div class="divTableRow">
 <div class="divTableCellLogo">
-<img src="images/logo_sdsu.gif" width="100">
+<img src="images/logo_sdsu.svg" width="100">
 </div>
 <div class="divTableCellInfo"> 
 <B>M.A., Psychology</B> (2016)
@@ -46,7 +51,7 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 
 <div class="divTableRow">
 <div class="divTableCellLogo">
-<img src="images/logo_csun.png" width="100">
+<img src="images/logo_csun.svg" width="100">
 </div>
 <div class="divTableCellInfo"> 
 <B>B.A., Psychology</B> (2012)
@@ -66,7 +71,7 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 
 <div class="divTableRow">
 <div class="divTableCellLogo">
-<img src="images/logo_utd.png" width="100">
+<img src="images/logo_utd.svg" width="100">
 </div>
 <div class="divTableCellInfo"> 
 <B>Graduate Research Assistant</B> (2017 - Present)
@@ -79,7 +84,7 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 
 <div class="divTableRow">
 <div class="divTableCellLogo">
-<img src="images/logo_sdsu.gif" width="100">
+<img src="images/logo_sdsu.svg" width="100">
 </div>
 <div class="divTableCellInfo"> 
 <B>Graduate Research Assistant</B> (2014 - 2016)
@@ -91,7 +96,7 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 
 <div class="divTableRow">
 <div class="divTableCellLogo">
-<img src="images/logo_csun.png" width="100">
+<img src="images/logo_csun.svg" width="100">
 </div>
 <div class="divTableCellInfo"> 
 <B>Undergraduate Research Assistant</B> (2011 - 2013)
@@ -112,7 +117,7 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 
 <div class="divTableRow">
 <div class="divTableCellLogo">
-<img src="images/logo_utd.png" width="100">
+<img src="images/logo_utd.svg" width="100">
 </div>
 <div class="divTableCellInfo"> 
 <B>Graduate Teaching Assistant</B> (2017 - Present)
@@ -124,7 +129,7 @@ library(tidyverse); library(knitr); library(kableExtra); library(dplyr)
 
 <div class="divTableRow">
 <div class="divTableCellLogo">
-<img src="images/logo_sdsu.gif" width="100">
+<img src="images/logo_sdsu.svg" width="100">
 </div>
 <div class="divTableCellInfo"> 
 <B>Graduate Teaching Assistant</B> (2014 - 2016)
@@ -149,31 +154,44 @@ McIntosh, E. C., Jacobson, A., Kemmotsu, N., **Pongpipat, E. E.**, Green, E., Ha
 <BR><BR>
 
 ## Poster Presentations
+
+
 <div class="divReferences">
-**Pongpipat, E. E.**, Boylan, M. A., Foster, C. M., Kennedy, K. K.  (2018, November, to be presented). *Fronto-parietal functional connectivity to task difficulty decreases across the adult lifespan and predicts working memory performance.* Poster session presentation to be presented at the 48th Annual Meeting of the Society for Neuroscience, San Diego, CA. 
+```{r posters, warning = F, message = F, fig.width = 3, fig.height = 2, fig.asp = T, dev='svg'}
+posters <- read_csv("posters.csv")
 
-**Pongpipat, E. E.**, Jacobson, A. & Murphy, C. (2016, November). *Metabolic Syndrome is Associated with Altered Functional Connectivity of Primary and Secondary Taste Cortices and Eating Disinhibition.* Poster session presentation at the 46th Annual Meeting of the Society for Neuroscience, San Diego, CA. 
+posters$Authors <- gsub("Pongpipat, E. E.", "<b>Pongpipat, E. E.</b>", posters$Authors)
 
-Vertrees, R. B., **Pongpipat, E. E.**, McIntosh, E. C., & Murphy, C. (2016, November). *Cortical correlates of metabolic syndrome risk factors and hunger in middle aged and older adults.*  Poster session presentation at the 46th Annual Meeting of the Society for Neurosciences, San Diego, CA. 
+posters <- posters %>%
+  rowwise() %>%
+  mutate(Date = ifelse(Status != "Complete", paste(Year, Month, tolower(Status), sep = ", "), paste(Year, Month, sep = ", ")))
 
-**Pongpipat, E. E.**, Jacobson, A. & Murphy, C. (2016, April). *Metabolic Syndrome is associated with decreased medial temporal lobe cortical thickness and impaired memory ability.* Poster session presented at the 96th Annual Convention of the Western Psychological Association, Long Beach, CA. (Awarded 2016 Western Psychological Association Student Scholarship Award for Outstanding Quality of Research Presented at the Annual Convention).
+posters <- posters %>%
+  mutate(html = paste0(Authors, " (", Date, "). <i>", Title, "</i>. Poster session presented at the ", Conference, ", ", Location, ifelse(is.na(Note), "", paste0(". (", Note, ")."))))
 
-**Pongpipat, E. E.**, Jacobson, A. & Murphy, C. (2015, November). *Functional Connectivity of Taste Sensory and Pleasantness Pathway in Metabolic Syndrome.* Poster session presented at the Annual Convention of the Obesity Society and ObesityWeek, Los Angeles, CA.
+posters_html <- paste(posters$html, collapse = "\n\n")
 
-**Pongpipat, E. E.**, & Murphy, C. (2015, April). *Effects of Cognitive Decline on Odor Threshold and Identification in Alzheimer's disease.* Poster session presented at the 95th Annual Convention of the Western Psychological Association, Las Vegas, NV. (Awarded 2015 Western Psychological Association Student Scholarship Award for Outstanding Quality of Research Presented at the Annual Convention).
+poster_summary <- posters %>%
+  select(Year) %>%
+  group_by(Year) %>%
+  summarize(Frequency = n())
 
-Kelson, C.Y., **Pongpipat, E. E.**, & Abara, J.P. (2014, April). *Functional Impact of Neurofeedback on Veterans with PTSD.* Poster session presented at the 35th Annual Meeting of the Society of Behavioral Medicine, Philadelphia, PA.
+poster_summary <- rbind(poster_summary, c(2017, 0))
 
-**Pongpipat, E. E.**, Magaña, V.M., Sarkissians, S., Camacho, V. & Abara, J.P. (2014, April). *An ERP Study of Expectation and Motor Preparation Following Neurofeedback Procedure.* Poster session presented at the 94th Annual Convention of the Western Psychological Association, Portland, OR. (Awarded 2014 Western Psychological Association Student Scholarship Award for Outstanding Quality of Research Presented at the Annual Convention).
+poster_summary <- poster_summary %>%
+  arrange(Year)
 
-Neswald, J., **Pongpipat, E. E.**, Magaña, V.M., Sarkissians, S., Lenik, C., Barb, D., & Abara, J.P. (2013, November). *The Amplitude of the Contingent Negative Variation Following Neurofeedback Procedure.* Poster session presented at the 43rd Annual Meeting of the Society for Neuroscience, San Diego, CA.
+poster_mean_per_year <- round(describe(poster_summary$Frequency)[["mean"]], 2)
+poster_se_per_year <- round(describe(poster_summary$Frequency)[["se"]], 2)
 
-**Pongpipat, E. E.**, Magaña, V.M., Camacho, V., Neswald, J., Barb, D., Lenik, C., Castillo, G., Arab, A., & Abara, J.P. (2012, April). *Cell Phone Use Delays Inhibitory Response.* Poster session presented at the 93rd Annual Convention of the Western Psychological Association, Reno, NV.
+ggplot(poster_summary, aes(x = Year, y = Frequency)) +
+  geom_line(color = "#106a8c") +
+  geom_point(color = "#106a8c") +
+  theme_classic() +
+  labs(subtitle = paste("Average Per Year:",poster_mean_per_year,"±",poster_se_per_year))
+```
 
-Magaña, V.M., **Pongpipat, E. E.**, Rodriguez, T., Camacho, V., Valadez, E.A., & Abara, J.P. (2012, October). *The Effects of Cell Phone Use on the P3 of the Event-Related Potential and on Response Time.* Poster session presented at the 42nd Annual Meeting of the Society for Neuroscience, New Orleans, LA.
-
-Scott, N.A., Magaña, V.M., **Pongpipat, E. E.**, Salehi, N.L., Barb, D., & Abara, J.P. (2012, October). *An ERP Study of Inhibitory Response During Cell Phone Use.* Poster session presented at the 42nd Annual Meeting of the Society for Neuroscience, New Orleans, LA.
-
+`r posters_html`
 
 </div>
 
@@ -182,12 +200,12 @@ Scott, N.A., Magaña, V.M., **Pongpipat, E. E.**, Salehi, N.L., Barb, D., & Abar
 ## Honors and Awards
 ```{r honors_awards}
 
-honors_awards <- tibble("2017 (Fall)","CSU Northridge","Dean's List")
+honors_awards <- tibble("2017 (Fall)", "CSU Northridge", "Dean's List")
 
-#test <- cbind(2016, "WPA Robert L. Solso Award")
-colnames(honors_awards) <- c("Year","Institution","Award")
+# test <- cbind(2016, "WPA Robert L. Solso Award")
+colnames(honors_awards) <- c("Year", "Institution", "Award")
 
-honors_awards <- honors_awards %>% 
+honors_awards <- honors_awards %>%
   add_row(., Year = "2010 (September)", Institution = "Cope Health Solutions", Award = "Clinical Care Extender Intern of the Rotation Award", .before = 1) %>%
   add_row(., Year = "2010 (Spring)", Institution = "CSU Northridge", Award = "Dean's List", .before = 1) %>%
   add_row(., Year = "2011 (Fall)", Institution = "CSU Northridge", Award = "Dean's List", .before = 1) %>%
@@ -200,13 +218,12 @@ honors_awards <- honors_awards %>%
   add_row(., Year = "2015", Institution = "San Diego State University", Award = "Dr. Edward Geldreich Scholarship", .before = 1) %>%
   add_row(., Year = "2016", Institution = "Western Psychological Association", Award = "Robert L. Solso Award", .before = 1) %>%
   add_row(., Year = "2016", Institution = "San Diego State University", Award = "Honorable Mention for Outstanding Service as a Teaching Assistant", .before = 1)
-  # add_row(., Year = "", Institution = "", Award = "", .before = 1) %>%
+# add_row(., Year = "", Institution = "", Award = "", .before = 1) %>%
 
 
 # Prints table
- kable(honors_awards, "html") %>%
-   kable_styling(bootstrap_options = c('striped', 'hover', 'responsive'))
-
+kable(honors_awards, "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "responsive"))
 ```
 
 <BR><BR>
@@ -214,22 +231,22 @@ honors_awards <- honors_awards %>%
 ## Professional Society Membership
 ```{r professional_society_membership}
 
-professional_society_membership <- tibble("2012 - 2016","Western Psychological Association")
+professional_society_membership <- tibble("2012 - 2016", "Western Psychological Association")
 
-#test <- cbind(2016, "WPA Robert L. Solso Award")
-colnames(professional_society_membership) <- c("Year","Institution")
+# test <- cbind(2016, "WPA Robert L. Solso Award")
+colnames(professional_society_membership) <- c("Year", "Institution")
 
-professional_society_membership <- professional_society_membership %>% 
+professional_society_membership <- professional_society_membership %>%
   add_row(., Year = "2015 - 2016", Institution = "The Obesity Society", .before = 1) %>%
   add_row(., Year = "2012 - Present", Institution = "Society for Neuroscience", .before = 1) %>%
   add_row(., Year = "2016 - Present", Institution = "Phi Kappa Phi Honor Society", .before = 1)
-  #add_row(., Year = "", Institution = "", .before = 1) %>%
+# add_row(., Year = "", Institution = "", .before = 1) %>%
 
 
 # Prints table
 kable(professional_society_membership, "html") %>%
-  kable_styling(bootstrap_options = c('striped', 'hover', 'responsive'))
-
+  kable_styling(bootstrap_options = c("striped", "hover", "responsive"))
 ```
 
 <BR><BR>
+
