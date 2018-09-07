@@ -55,7 +55,7 @@ motion_demeaned$duration <- c(1:780)
 
 # plot translation x
 motion_translation_x <- ggplot(motion_demeaned, mapping = aes(x = duration, y = translation_x)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -67,7 +67,7 @@ motion_translation_x <- ggplot(motion_demeaned, mapping = aes(x = duration, y = 
 
 # plot translation y
 motion_translation_y <- ggplot(motion_demeaned, mapping = aes(x = duration, y = translation_y)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -79,7 +79,7 @@ motion_translation_y <- ggplot(motion_demeaned, mapping = aes(x = duration, y = 
 
 # plot translation z
 motion_translation_z <- ggplot(motion_demeaned, mapping = aes(x = duration, y = translation_z)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -91,7 +91,7 @@ motion_translation_z <- ggplot(motion_demeaned, mapping = aes(x = duration, y = 
 
 # plot rotation x
 motion_rotation_x <- ggplot(motion_demeaned, mapping = aes(x = duration, y = rotation_x)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -103,7 +103,7 @@ motion_rotation_x <- ggplot(motion_demeaned, mapping = aes(x = duration, y = rot
 
 # plot rotation y
 motion_rotation_y <- ggplot(motion_demeaned, mapping = aes(x = duration, y = rotation_y)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -115,7 +115,7 @@ motion_rotation_y <- ggplot(motion_demeaned, mapping = aes(x = duration, y = rot
 
 # plot yaw
 motion_rotation_z <- ggplot(motion_demeaned, mapping = aes(x = duration, y = rotation_z)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -158,7 +158,7 @@ motion_demeaned.td1$duration <- c(1:780)
 
 # plot translation x td1
 motion_translation_x_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = translation_x_td1)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -170,7 +170,7 @@ motion_translation_x_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = durati
 
 # plot translation y td1
 motion_translation_y_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = translation_y_td1)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -182,7 +182,7 @@ motion_translation_y_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = durati
 
 # plot translation z td1
 motion_translation_z_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = translation_z_td1)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -194,7 +194,7 @@ motion_translation_z_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = durati
 
 # plot rotation x td1
 motion_rotation_x_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = rotation_x_td1)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -206,7 +206,7 @@ motion_rotation_x_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration,
 
 # plot rotation y td1
 motion_rotation_y_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = rotation_y_td1)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -218,7 +218,7 @@ motion_rotation_y_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration,
 
 # plot rotation z td1
 motion_rotation_z_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = rotation_z_td1)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -261,7 +261,7 @@ motion_demeaned.sq$duration <- c(1:780)
 
 # plot translation x squared
 motion_translation_x_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = translation_x_squared)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -273,7 +273,7 @@ motion_translation_x_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = dur
 
 # plot translation y squared
 motion_translation_y_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = translation_y_squared)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -285,7 +285,7 @@ motion_translation_y_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = dur
 
 # plot translation z squared
 motion_translation_z_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = translation_z_squared)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -297,7 +297,7 @@ motion_translation_z_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = dur
 
 # plot rotation x squared
 motion_rotation_x_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = rotation_x_squared)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -309,7 +309,7 @@ motion_rotation_x_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = durati
 
 # plot rotation y squared
 motion_rotation_y_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = rotation_y_squared)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -321,7 +321,7 @@ motion_rotation_y_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = durati
 
 # plot rotation z squared
 motion_rotation_z_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = rotation_z_squared)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -364,7 +364,7 @@ motion_demeaned.td1.sq$duration <- c(1:780)
 
 # plot translation x td1 squared
 motion_translation_x_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = translation_x_td1_squared)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -376,7 +376,7 @@ motion_translation_x_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes
 
 # plot translation y td1 squared
 motion_translation_y_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = translation_y_td1_squared)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -388,7 +388,7 @@ motion_translation_y_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes
 
 # plot translation z td1 squared
 motion_translation_z_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = translation_z_td1_squared)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -400,7 +400,7 @@ motion_translation_z_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes
 
 # plot rotation x td1 squared
 motion_rotation_x_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = rotation_x_td1_squared)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -412,7 +412,7 @@ motion_rotation_x_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x 
 
 # plot rotation y td1 squared
 motion_rotation_y_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = rotation_y_td1_squared)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
@@ -424,7 +424,7 @@ motion_rotation_y_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x 
 
 # plot rotation z td1 squared
 motion_rotation_z_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = rotation_z_td1_squared)) +
-  geom_line() +
+  geom_line(color = "#106a8c") +
   theme_classic() +
   theme(
     plot.title = element_text(hjust = .5),
