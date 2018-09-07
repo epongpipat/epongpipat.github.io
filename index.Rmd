@@ -1,85 +1,54 @@
 ---
-title: "Blog"
-subtitle: "Mostly a reference"
 output: html_document
 ---
 
-<BR><BR>
+<center>
 
-<div class="divTable">
-<div class="divTableBody">
+<img src="images/profile-picture-circle.png" width="150px">
 
-<div class="divTableRow"><div class="divTableCell">
-**Date**
-</div><div class="divTableCell">
-**Post**
-</div></div>
+## Ekarin Eric Pongpipat, M.A.
 
-<div class="divTableRow"><div class="divTableCell">
-2018-08-15
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-<a href="https://epongpipat.shinyapps.io/lm_voice_dashboard/" target="_blank">Simple Linear Regression via Voice Command: A Shiny Dashboard App (Updated)</a>
-</div>
-Upate to the previous post using `shinydashboard`. *(Note: Link may or not work depending on if my free hours have been used up for the month, but feel free to download the code and run locally from my <a href="https://github.com/epongpipat/shiny_apps/tree/master/lm_voice_dashboard" target="_blank">GitHub <span class="fa fa-github"></span></a>.)*
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-<span class="badge badge-pill badge-primary">Shiny Apps</span>
-</div></div>
+<br>
 
-<BR>
+### <i class="fas fa-info-circle"></i> &nbsp; About Me
+<br>I'm a second-year Ph.D. student studying cognitive neuroscience at the University of Texas at Dallas. I am primarly interested in understanding the relationship between brain networks and cognition and how this relationship can change as we age and for different groups of individuals (e.g., disease-disorder states and genetic predispositions). I'm also interested in statistics, research methods, intuitive data visualization, open source, and open science.
 
-<div class="divTableRow"><div class="divTableCell">
-2018-06-17
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-<a href="https://epongpipat.shinyapps.io/lmvoice" target="_blank">Simple Linear Regression via Voice Command: A Shiny App</a>
-</div>
-Change variables of a simple linear regression via voice commands. *(Note: Link may or not work depending on if my free hours have been used up for the month, but feel free to download the code and run locally from my <a href="https://github.com/epongpipat/epongpipat.github.io/tree/master/shinyApps/lmVoice" target="_blank">GitHub <span class="fa fa-github"></span></a>.)*
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-<span class="badge badge-pill badge-primary">Shiny Apps</span>
-</div></div>
+<br>
 
-<BR>
+### <i class="fas fa-sync-alt"></i> &nbsp; Updates
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(tidyverse)
+library(kableExtra)
 
-<div class="divTableRow"><div class="divTableCell">
-2018-06-07
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-<a href="https://mattkmiecik.com/post-Bootstrapping-and-Permutation-Testing-Shiny-App.html" target="_blank">Bootstrapping and Permutation Testing: A Shiny App</a>
-</div>
-A collaboration post with [Matt Kmiecik](https://mattkmiecik.com) about the differences between bootstrapping and permutation testing with input variables that change on the fly.
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-<span class="badge badge-pill badge-primary">Shiny Apps</span>
-</div></div>
+link <- text_spec("Google", link = "https://google.com")
 
-<BR>
+updates_table <- as.data.frame(rbind(
+  cbind(
+    "Date" = "2018-09-01",
+    "Category" = "Blog Post",
+    "Item" = "Bootstrapping and Permutation Testing: A Shiny App (A Dashboard Update)",
+    "Link" = "<a href='https://mattkmiecik.shinyapps.io/boot-perm-dash/' target='_blank'><i class='fas fa-link'></i></a>"
+  ),
+  cbind(
+    "Date" = "2018-08-05",
+    "Category" = "Blog Post",
+    "Item" = "Simple Linear Regression via Voice Command: A Shiny App (A Dashboard Update)",
+    "Link" = "<a href='https://epongpipat.shinyapps.io/lm_voice_dashboard/' target='_blank'><i class='fas fa-link'></i></a>"
+  ),
+  cbind(
+    "Date" = "2018-06-17",
+    "Category" = "Blog Post",
+    "Item" = "Simple Linear Regression via Voice Command: A Shiny App",
+    "Link" = "<a href='https://epongpipat.shinyapps.io/lmvoice' target='_blank'><i class='fas fa-link'></i></a>"
+  )
+))
 
-<div class="divTableRow"><div class="divTableCell">
-2018-03-20
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-[Calculate Motion Regressors](blog_Calculate_Motion_Regressors.html)
-</div>
-A quick guide to calculating motion regressors (with visuals).
-<BR>*Tags:* <span class="badge badge-pill badge-dark">fMRI</span>
-<span class="badge badge-pill badge-primary">R</span>
-</div></div>
+updates_table <- updates_table %>%
+  kable(., format = "html", escape = FALSE) %>%
+  kable_styling(., bootstrap_options = c("striped", "hover", "responsive"), full_width = FALSE)
 
-<BR>
+gsub("<thead>.*</thead>", "", updates_table)
+```
 
-<div class="divTableRow"><div class="divTableCell" style="width: 100px;">
-2018-02-11
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-<a href="https://mattkmiecik.com/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data.html" target="_blank">Multilevel Modeling in R with NHL Power Play Data</a>
-</div>
-A collaboration post with [Matt Kmiecik](https://mattkmiecik.com) about multilevel modeling in R using professional hockey data from the NHL.
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-</div></div>
+</center>
 
-</div>
-</div>

@@ -1,13 +1,17 @@
 ---
 title: "Blog"
 subtitle: "Mostly a reference"
-output: 
-  html_document:
-    highlight: textmate
-    theme: lumen
+output: html_document
 ---
 
 <BR><BR>
+
+```{r blog_figure, echo = F, warning = F, message = F, fig.width = 3, fig.height = 2, fig.asp = T, dev='svg'}
+library(readr)
+library(glue)
+library(tidyverse)
+library(psych)
+```
 
 <div class="divTable">
 <div class="divTableBody">
@@ -18,24 +22,41 @@ output:
 **Post**
 </div></div>
 
-<!-- <div class="divTableRow"><div class="divTableCell"> -->
-<!-- 2018-03-13 -->
-<!-- </div><div class="divTableCell"> -->
-<!-- <div class="divBlogTitle"> -->
-<!-- [Introductory Univariate Statistics in Psychology Performed as General Linear Models (GLM) in R](blog_Introductory_Univariate_Statistics_in_Psychology_Performed_as_General_Linear_Models_in_R.html) -->
-<!-- </div> -->
-<!-- A terse comparison of typical introductory univariate statistics in psychology performed as GLMs in R. -->
-<!-- <BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span> -->
-<!-- <span class="badge badge-pill badge-primary">R</span> -->
-<!-- </div></div> -->
+<div class="divTableRow"><div class="divTableCell">
+2018-09-01
+</div><div class="divTableCell">
+<div class="divBlogTitle">
+<a href="https://mattkmiecik.shinyapps.io/boot-perm-dash/" target="_blank">Bootstrapping and Permutation Testing: A Shiny App (A Dashboard Update)</a>
+</div>
+Upate to the previous "Bootstrapping and Permutation Testing: A Shiny App" post using `shinydashboard`.
+<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
+<span class="badge badge-pill badge-primary">R</span>
+<span class="badge badge-pill badge-primary">Shiny Apps</span>
+</div></div>
+
+<BR>
+
+<div class="divTableRow"><div class="divTableCell">
+2018-08-15
+</div><div class="divTableCell">
+<div class="divBlogTitle">
+<a href="https://epongpipat.shinyapps.io/lm_voice_dashboard/" target="_blank">Simple Linear Regression via Voice Command: A Shiny App (A Dashboard Update)</a>
+</div>
+Upate to the previous "Simple Linear Regression via Voice Command: A Shiny App" post using `shinydashboard`. *(Note: Link may or not work depending on if my free hours have been used up for the month, but feel free to download the code and run locally from my <a href="https://github.com/epongpipat/shiny_apps/tree/master/lm_voice_dashboard" target="_blank">GitHub <span class="fa fa-github"></span></a>.)*
+<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
+<span class="badge badge-pill badge-primary">R</span>
+<span class="badge badge-pill badge-primary">Shiny Apps</span>
+</div></div>
+
+<BR>
 
 <div class="divTableRow"><div class="divTableCell">
 2018-06-17
 </div><div class="divTableCell">
 <div class="divBlogTitle">
-<a href="https://epongpipat.shinyapps.io/lmvoice/" target="_blank">Simple Linear Regression via Voice Command: A Shiny App</a>
+<a href="https://epongpipat.shinyapps.io/lmvoice" target="_blank">Simple Linear Regression via Voice Command: A Shiny App</a>
 </div>
-Change variables of a simple linear regression via voice commands. *(Note: Link may or not work depending on if my free hours have been used up for the month, but feel free to download the code and run locally from my <a href="https://github.com/epongpipat/epongpipat.github.io/tree/master/shinyApps/lmVoice" target="_blank">github</a>.)*
+Change variables of a simple linear regression via voice commands. *(Note: Link may or not work depending on if my free hours have been used up for the month, but feel free to download the code and run locally from my <a href="https://github.com/epongpipat/epongpipat.github.io/tree/master/shinyApps/lmVoice" target="_blank">GitHub <span class="fa fa-github"></span></a>.)*
 <BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
 <span class="badge badge-pill badge-primary">R</span>
 <span class="badge badge-pill badge-primary">Shiny Apps</span>
@@ -61,9 +82,9 @@ A collaboration post with [Matt Kmiecik](https://mattkmiecik.com) about the diff
 2018-03-20
 </div><div class="divTableCell">
 <div class="divBlogTitle">
-[Calculate Motion Regressors](blog_Calculate_Motion_Regressors.html)
+[Calculate 24-Motion Variables](blog_Calculate_Motion_Regressors.html)
 </div>
-A quick guide to calculating motion regressors (with visuals).
+A quick guide to calculating 24-motion regressors (with visuals).
 <BR>*Tags:* <span class="badge badge-pill badge-dark">fMRI</span>
 <span class="badge badge-pill badge-primary">R</span>
 </div></div>

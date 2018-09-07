@@ -6,9 +6,10 @@ html {
 }
 
 body {
-  padding-bottom: 70px; /* padding for navigation */
-	margin-bottom: 70px; /* margin/padding before footer */
+  margin-top: 50px; /* margin/padding for navigation */
+	margin-bottom: 70px; /* margin/padding for footer */
 }
+
 .footer {
 	display: inline-block;
   position: absolute;
@@ -19,7 +20,9 @@ body {
 	margin: 0;
   text-align: center;
   vertical-align: bottom;
+  background-color: white;
 }
+
 .divTable{
 	display: table;
 	width: 100%;

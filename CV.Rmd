@@ -19,7 +19,7 @@ library(glue)
 library(psych)
 ```
 
-*Updated on June 24, 2018*
+*Updated on September 7, 2018*
 <BR><BR><BR>
 
 ## Education
@@ -122,7 +122,7 @@ library(psych)
 <div class="divTableCellInfo"> 
 <B>Graduate Teaching Assistant</B> (2017 - Present)
 <BR>The University of Texas at Dallas
-<BR>Statistics for Psychology, PSY2317 (Fall 2017, Spring 2018)
+<BR>Statistics for Psychology, PSY2317 (Fall 2017, Spring 2018, Fall 2018)
 <BR><div class="divIndent">Working with Dr. Nancy Juhn</div>
 </div>
 </div>
