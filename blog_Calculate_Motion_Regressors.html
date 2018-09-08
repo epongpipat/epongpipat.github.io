@@ -339,7 +339,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Calculate 24-Motion Variables</h1>
-<h3 class="subtitle"><em>A quick guide to calculating 24-motion variables (with visuals)</em></h3>
+<h3 class="subtitle"><em>A quick guide to calculating 24-motion variables</em></h3>
 <h4 class="date"><em>Original Post: 2018-03-20</em></h4>
 
 </div>
@@ -454,7 +454,7 @@ grid.arrange(motion_translation_x, motion_translation_y, motion_translation_z, m
 <div id="motion-regressors" class="section level2">
 <h2>12-Motion Regressors</h2>
 <p>The next six motion parameters are the first temporal derivates of the original six rigid body motion parameters. Specifically, it is the motion minus the motion from the previous time point.</p>
-<ol start="13" style="list-style-type: decimal">
+<ol start="7" style="list-style-type: decimal">
 <li><span class="math inline">\(translation_{X_{T-1}}\)</span>, first temporal derivative of the translation in the x-direction</li>
 <li><span class="math inline">\(translation_{Y_{T-1}}\)</span>, first temporal derivative of the translation in the y-direction</li>
 <li><span class="math inline">\(translation_{Z_{T-1}}\)</span>, first temporal derivative of the translation in the z-direction</li>
@@ -554,7 +554,7 @@ grid.arrange(motion_translation_x_td1, motion_translation_y_td1, motion_translat
 <div id="motion-regressors-1" class="section level2">
 <h2>18-Motion Regressors</h2>
 <p>The next six motion parameters are the original six rigid body motion parameters squared:</p>
-<ol start="7" style="list-style-type: decimal">
+<ol start="13" style="list-style-type: decimal">
 <li><span class="math inline">\(translation_X^2\)</span>, translation in the x-direction squared</li>
 <li><span class="math inline">\(translation_Y^2\)</span>, translation in the y-direction squared</li>
 <li><span class="math inline">\(translation_Z^2\)</span>, translation in the z-direction squared</li>
@@ -751,45 +751,56 @@ grid.arrange(motion_translation_x_td1_squared, motion_translation_y_td1_squared,
 <p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m24-1.svg" width="672" /></p>
 <p><BR><BR></p>
 </div>
-<div id="r-code" class="section level2">
-<h2>R Code</h2>
-<pre class="r"><code># 6-rigid body motion parameters ===============================================
+<div id="r-code-example" class="section level2">
+<h2>R Code Example</h2>
+<pre class="r"><code># function to create 24 motion variables =======================================
+create_24_motion_variables &lt;- function(dataset) {
+  # mean-center (demean) ----
+  # subtract each score from its respective column mean
+  dataset_motion_demeaned &lt;- scale(x = dataset, center = T, scale = F)
 
-# load 6-rigid body motion parameters file and assign to dataset_motion
+  # first temporal derivatives ----
+  # subtract motion from prior motion time point
+  dataset_motion_td1 &lt;- sapply(dataset_motion_demeaned, FUN = function(x) c(NA, diff(x)))
+
+  # combine the variables into one dataset
+  dataset_motion &lt;- data.frame(dataset_motion_demeaned, dataset_motion_td1)
+
+  # squares ----
+  # square 6-rigid body motion parameters and its temporal derivatives
+  dataset_motion_squared &lt;- dataset_motion^2
+
+  # combine the variables into one dataset
+  dataset_motion &lt;- data.frame(dataset_motion, dataset_motion_squared)
+
+  return(dataset_motion)
+}
+
+# load 6-rigid body motion parameters file =====================================
+# assign to dataset_motion
 dataset_motion &lt;- read.csv(file.choose())
 
-# motion varaibles
+# create 24 motion variables using function ====================================
+# assign output to dataset_motion_24
+dataset_motion_24 &lt;- create_24_motion_variables(dataset = dataset_motion)
+
+# rename columns ===============================================================
+# assign original motion variables
 motion_variables &lt;- c(
   &quot;translation_x&quot;, &quot;translation_y&quot;, &quot;translation_z&quot;,
   &quot;rotation_x&quot;, &quot;rotation_y&quot;, &quot;rotation_z&quot;
 )
 
-# first temporal derivatives ===================================================
-
-# subtract motion from prior motion time point
-dataset_motion_td1 &lt;- sapply(dataset_motion, FUN = function(x) c(NA, diff(x)))
-
-# combine the variables into one dataset
-dataset_motion &lt;- data.frame(dataset_motion, dataset_motion_td1)
-
-# squares ======================================================================
-
-# square 6-rigid body motion parameters and its temporal derivatives
-dataset_motion_squared &lt;- dataset_motion^2
-
-# combine the variables into one dataset
-dataset_motion &lt;- data.frame(dataset_motion, dataset_motion_squared)
-
-# rename columns ===============================================================
-colnames(dataset_motion) &lt;- c(
+# rename columns
+colnames(dataset_motion_24) &lt;- c(
   motion_variables,
   paste0(motion_variables, &quot;_td1&quot;),
   paste0(motion_variables, &quot;_squared&quot;),
   paste0(motion_variables, &quot;_td1_squared&quot;)
 )
 
-# export 24-motion variables as a csv file =====================================
-write.csv(dataset_motion, &quot;dataset-motion-24.csv&quot;)</code></pre>
+# export 24-motion variables ===================================================
+write.csv(x = dataset_motion_24, file = &quot;dataset-motion-24.csv&quot;)</code></pre>
 <p><BR><BR></p>
 </div>
 <div id="references" class="section level2">

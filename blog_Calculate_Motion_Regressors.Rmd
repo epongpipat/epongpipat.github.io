@@ -1,6 +1,6 @@
 ---
 title: "Calculate 24-Motion Variables"
-subtitle: "A quick guide to calculating 24-motion variables (with visuals)"
+subtitle: "A quick guide to calculating 24-motion variables"
 date: "Original Post: 2018-03-20"
 output: 
   html_document:
@@ -135,12 +135,12 @@ grid.arrange(motion_translation_x, motion_translation_y, motion_translation_z, m
 
 The next six motion parameters are the first temporal derivates of the original six rigid body motion parameters. Specifically, it is the motion minus the motion from the previous time point.
 
-13. $translation_{X_{T-1}}$, first temporal derivative of the translation in the x-direction
-14. $translation_{Y_{T-1}}$, first temporal derivative of the translation in the y-direction
-15. $translation_{Z_{T-1}}$, first temporal derivative of the translation in the z-direction
-16. $rotation_{X_{T-1}}$ first temporal derivative of the rotation around the x-axis
-17. $rotation_{Y_{T-1}}$, first temporal derivative of the rotation around the y-axis
-18. $rotation_{Z_{T-1}}$, first temporal derivative of the rotation around the z-axis
+7. $translation_{X_{T-1}}$, first temporal derivative of the translation in the x-direction
+8. $translation_{Y_{T-1}}$, first temporal derivative of the translation in the y-direction
+9. $translation_{Z_{T-1}}$, first temporal derivative of the translation in the z-direction
+10. $rotation_{X_{T-1}}$ first temporal derivative of the rotation around the x-axis
+11. $rotation_{Y_{T-1}}$, first temporal derivative of the rotation around the y-axis
+12. $rotation_{Z_{T-1}}$, first temporal derivative of the rotation around the z-axis
 
 ```{r m12, collapsed = TRUE, warning=FALSE, dev = "svg"}
 
@@ -238,12 +238,12 @@ grid.arrange(motion_translation_x_td1, motion_translation_y_td1, motion_translat
 
 The next six motion parameters are the original six rigid body motion parameters squared:
 
-7. $translation_X^2$, translation in the x-direction squared
-8. $translation_Y^2$, translation in the y-direction squared
-9. $translation_Z^2$, translation in the z-direction squared
-10. $rotation_X^2$, rotation around the x-axis squared
-11. $rotation_Y^2$, rotation around the y-axis squared
-12. $rotation_Z^2$, rotation around the z-axis squared
+13. $translation_X^2$, translation in the x-direction squared
+14. $translation_Y^2$, translation in the y-direction squared
+15. $translation_Z^2$, translation in the z-direction squared
+16. $rotation_X^2$, rotation around the x-axis squared
+17. $rotation_Y^2$, rotation around the y-axis squared
+18. $rotation_Z^2$, rotation around the z-axis squared
 
 ```{r m18, collapsed = TRUE, dev = "svg"}
 
@@ -440,45 +440,57 @@ grid.arrange(motion_translation_x_td1_squared, motion_translation_y_td1_squared,
 
 <BR><BR>
 
-## R Code
+## R Code Example
 ```{r script, eval=FALSE, collapse=FALSE, include=TRUE, echo=TRUE}
-# 6-rigid body motion parameters ===============================================
 
-# load 6-rigid body motion parameters file and assign to dataset_motion
+# function to create 24 motion variables =======================================
+create_24_motion_variables <- function(dataset) {
+  # mean-center (demean) ----
+  # subtract each score from its respective column mean
+  dataset_motion_demeaned <- scale(x = dataset, center = T, scale = F)
+
+  # first temporal derivatives ----
+  # subtract motion from prior motion time point
+  dataset_motion_td1 <- sapply(dataset_motion_demeaned, FUN = function(x) c(NA, diff(x)))
+
+  # combine the variables into one dataset
+  dataset_motion <- data.frame(dataset_motion_demeaned, dataset_motion_td1)
+
+  # squares ----
+  # square 6-rigid body motion parameters and its temporal derivatives
+  dataset_motion_squared <- dataset_motion^2
+
+  # combine the variables into one dataset
+  dataset_motion <- data.frame(dataset_motion, dataset_motion_squared)
+
+  return(dataset_motion)
+}
+
+# load 6-rigid body motion parameters file =====================================
+# assign to dataset_motion
 dataset_motion <- read.csv(file.choose())
 
-# motion varaibles
+# create 24 motion variables using function ====================================
+# assign output to dataset_motion_24
+dataset_motion_24 <- create_24_motion_variables(dataset = dataset_motion)
+
+# rename columns ===============================================================
+# assign original motion variables
 motion_variables <- c(
   "translation_x", "translation_y", "translation_z",
   "rotation_x", "rotation_y", "rotation_z"
 )
 
-# first temporal derivatives ===================================================
-
-# subtract motion from prior motion time point
-dataset_motion_td1 <- sapply(dataset_motion, FUN = function(x) c(NA, diff(x)))
-
-# combine the variables into one dataset
-dataset_motion <- data.frame(dataset_motion, dataset_motion_td1)
-
-# squares ======================================================================
-
-# square 6-rigid body motion parameters and its temporal derivatives
-dataset_motion_squared <- dataset_motion^2
-
-# combine the variables into one dataset
-dataset_motion <- data.frame(dataset_motion, dataset_motion_squared)
-
-# rename columns ===============================================================
-colnames(dataset_motion) <- c(
+# rename columns
+colnames(dataset_motion_24) <- c(
   motion_variables,
   paste0(motion_variables, "_td1"),
   paste0(motion_variables, "_squared"),
   paste0(motion_variables, "_td1_squared")
 )
 
-# export 24-motion variables as a csv file =====================================
-write.csv(dataset_motion, "dataset-motion-24.csv")
+# export 24-motion variables ===================================================
+write.csv(x = dataset_motion_24, file = "dataset-motion-24.csv")
 ```
 
 <BR><BR>
@@ -490,4 +502,5 @@ Friston, K. J., Williams, S., Howard, R., Frackowiak, R. S. J., & Turner, R. (19
 
 Yan, C.-G., Cheung, B., Kelly, C., Colcombe, S., Craddock, R. C., Di Martino, A., … Milham, M. P. (2013). A comprehensive assessment of regional variation in the impact of head micromovements on functional connectomics. *NeuroImage, 76*, 183–201. http://doi.org/10.1016/j.neuroimage.2013.03.004
 </div>
+
 
