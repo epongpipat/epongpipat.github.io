@@ -1,265 +1,318 @@
 <!DOCTYPE html>
-<html >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>A Practical Extension of Introductory Statistics in Psychology using R</title>
-  <meta name="description" content="This book aims to provide a practical extension of introductory statistics typically taught in psychology into the general linear model (GLM) using R. Additionally, this book will extend more advanced univariate statistics in psychology into the GLM framework.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
-
-  <meta property="og:title" content="A Practical Extension of Introductory Statistics in Psychology using R" />
-  <meta property="og:type" content="book" />
-  
-  
-  <meta property="og:description" content="This book aims to provide a practical extension of introductory statistics typically taught in psychology into the general linear model (GLM) using R. Additionally, this book will extend more advanced univariate statistics in psychology into the GLM framework." />
-  
-
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="A Practical Extension of Introductory Statistics in Psychology using R" />
-  
-  <meta name="twitter:description" content="This book aims to provide a practical extension of introductory statistics typically taught in psychology into the general linear model (GLM) using R. Additionally, this book will extend more advanced univariate statistics in psychology into the GLM framework." />
-  
-
-<meta name="author" content="Ekarin Eric Pongpipat, M.A.">
-
-
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  
-  
-
-<link rel="next" href="prerequisites.html">
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
-<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
 
 
 
 
+<title></title>
 
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116039246-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'UA-116039246-1');
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
 
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
+h1 {
+  font-size: 34px;
 }
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+h1.title {
+  font-size: 38px;
 }
-pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  { background-color: #f8f8f8; }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
+h2 {
+  font-size: 30px;
 }
-code span.al { color: #ef2929; } /* Alert */
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #c4a000; } /* Attribute */
-code span.bn { color: #0000cf; } /* BaseN */
-code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #000000; } /* Constant */
-code span.co { color: #8f5902; font-style: italic; } /* Comment */
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code span.dt { color: #204a87; } /* DataType */
-code span.dv { color: #0000cf; } /* DecVal */
-code span.er { color: #a40000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #000000; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code span.ot { color: #8f5902; } /* Other */
-code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #000000; } /* SpecialChar */
-code span.ss { color: #4e9a06; } /* SpecialString */
-code span.st { color: #4e9a06; } /* String */
-code span.va { color: #000000; } /* Variable */
-code span.vs { color: #4e9a06; } /* VerbatimString */
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
+
 </head>
 
 <body>
 
-
-
-  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
-
-    <div class="book-summary">
-      <nav role="navigation">
-
-<ul class="summary">
-<li><a href="./">Table of Contents</a></li>
-
-<li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#what-exactly-is-the-glm"><i class="fa fa-check"></i><b>1.1</b> What exactly is the GLM?</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#how-will-this-book-be-covered"><i class="fa fa-check"></i><b>1.2</b> How will this book be covered?</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#what-wont-this-book-cover"><i class="fa fa-check"></i><b>1.3</b> What won’t this book cover?</a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>2</b> Prerequisites</a><ul>
-<li class="chapter" data-level="2.1" data-path="prerequisites.html"><a href="prerequisites.html#knowledge"><i class="fa fa-check"></i><b>2.1</b> Knowledge</a></li>
-<li class="chapter" data-level="2.2" data-path="prerequisites.html"><a href="prerequisites.html#software"><i class="fa fa-check"></i><b>2.2</b> Software</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="r-packages.html"><a href="r-packages.html"><i class="fa fa-check"></i><b>3</b> R Packages</a><ul>
-<li class="chapter" data-level="3.1" data-path="r-packages.html"><a href="r-packages.html#install-r-packages"><i class="fa fa-check"></i><b>3.1</b> Install R Packages</a></li>
-<li class="chapter" data-level="3.2" data-path="r-packages.html"><a href="r-packages.html#load-r-packages"><i class="fa fa-check"></i><b>3.2</b> Load R Packages</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="datasets.html"><a href="datasets.html"><i class="fa fa-check"></i><b>4</b> Datasets</a><ul>
-<li class="chapter" data-level="4.1" data-path="datasets.html"><a href="datasets.html#salaries-dataset"><i class="fa fa-check"></i><b>4.1</b> Salaries Dataset</a><ul>
-<li class="chapter" data-level="4.1.1" data-path="datasets.html"><a href="datasets.html#data-wrangling"><i class="fa fa-check"></i><b>4.1.1</b> Data Wrangling</a></li>
-<li class="chapter" data-level="4.1.2" data-path="datasets.html"><a href="datasets.html#descriptive-statistics"><i class="fa fa-check"></i><b>4.1.2</b> Descriptive Statistics</a></li>
-</ul></li>
-<li class="chapter" data-level="4.2" data-path="datasets.html"><a href="datasets.html#anorexia-dataset"><i class="fa fa-check"></i><b>4.2</b> Anorexia Dataset</a><ul>
-<li class="chapter" data-level="4.2.1" data-path="datasets.html"><a href="datasets.html#data-wrangling-1"><i class="fa fa-check"></i><b>4.2.1</b> Data Wrangling</a></li>
-<li class="chapter" data-level="4.2.2" data-path="datasets.html"><a href="datasets.html#descriptive-statistics-1"><i class="fa fa-check"></i><b>4.2.2</b> Descriptive Statistics</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-<li class="chapter" data-level="" data-path="acknowledgements.html"><a href="acknowledgements.html"><i class="fa fa-check"></i>Acknowledgements</a></li>
-</ul>
-
-      </nav>
-    </div>
-
-    <div class="book-body">
-      <div class="body-inner">
-        <div class="book-header" role="navigation">
-          <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Practical Extension of Introductory Statistics in Psychology using R</a>
-          </h1>
-        </div>
-
-        <div class="page-wrapper" tabindex="-1" role="main">
-          <div class="page-inner">
-
-            <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">A Practical Extension of Introductory Statistics in Psychology using R</h1>
-<h3 class="subtitle"><em>This book aims to provide a practical extension of introductory statistics typically taught in psychology into the general linear model (GLM) using R. Additionally, this book will extend more advanced univariate statistics in psychology into the GLM framework.</em></h3>
-<h4 class="author"><em>Ekarin Eric Pongpipat, M.A.</em></h4>
-</div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
-<p>Typically, introductory univariate statistics courses in psychology cover the following inferential analyses (plus or minus a few more analyses):</p>
-<ul>
-<li>One Sample <em>t</em>-test</li>
-<li>Dependent Samples <em>t</em>-test</li>
-<li>Independent Samples <em>t</em>-test</li>
-<li>One-Way Analysis of Variance (ANOVA)</li>
-<li>Factorial ANOVA</li>
-<li>Correlation</li>
-<li>Simple Linear Regression</li>
-</ul>
-<p>These conventions may be useful for quickly talking about a particular statistical analysis with others; however, thinking of these analyses as derivatives (or special cases) of the GLM (i.e., ordinary least squares [OLS] regression) lends itself to understanding more advanced statistical techniques. Given that, the book will provide some evidence along with R code for others to see how the aforementioned analyses can be analyzed within the GLM framework with identical answers. The GLM is not a new idea, but an idea that needs emphasizing.</p>
-<div id="what-exactly-is-the-glm" class="section level2">
-<h2><span class="header-section-number">1.1</span> What exactly is the GLM?</h2>
-<p>The general linear model is a unified statistical framework that allows us to think about all of the above analyses (and much more) with a single concise formula:</p>
-<p><span class="math inline">\(Y = \beta X + \varepsilon\)</span></p>
-<p>where <span class="math inline">\(Y\)</span> represents a dependent variable (DV) or a set of DVs, <span class="math inline">\(\beta\)</span> represents a set of regression coefficients in addition to the constant, <span class="math inline">\(X\)</span> represents an independent variable (IV) or a set of IVs, and <span class="math inline">\(\varepsilon\)</span> represents the error around the model.</p>
-<p>This should look familiar as the formula is similar to the simple linear regression formula or the slope-intercept form learned in algebra.</p>
-</div>
-<div id="how-will-this-book-be-covered" class="section level2">
-<h2><span class="header-section-number">1.2</span> How will this book be covered?</h2>
-<p>We will go over each of the typical introductory statistics taught in psychology in five steps:</p>
-<ol style="list-style-type: decimal">
-<li>State the null and research hypotheses</li>
-<li>Perform the statistical analysis in R</li>
-<li>Statistical decision <em>(using an alpha (<span class="math inline">\(\alpha\)</span>) = 0.05, two-tailed, which is the artribrary and ubiquituous convention in psychology)</em></li>
-<li>APA statement <em>(bare minumum)</em></li>
-<li>Visualization</li>
-</ol>
-<p>For each analysis, the traditional approach will be performed first followed by the GLM approach for steps 1 and 2. The goal is to show the similarities and differences between stating the null and research hypotheses in step 1 as well as how the analyses are identical using both approaches in step 2.</p>
-</div>
-<div id="what-wont-this-book-cover" class="section level2">
-<h2><span class="header-section-number">1.3</span> What won’t this book cover?</h2>
-<p>This book won’t go into assumptions of the inferential tests or exhaustively its respective formulas.
-This book will also not exhaustively review data manipulation, transformations, and visualization in R as there are other books that already do this well (e.g., <a href="http://r4ds.had.co.nz/">R for Data Science by Wickham &amp; Grolemund</a>)</p>
-
-</div>
-</div>
-            </section>
-
-          </div>
-        </div>
-      </div>
-
-<a href="prerequisites.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
-    </div>
-  </div>
-<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
-<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script>
-gitbook.require(["gitbook"], function(gitbook) {
-gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"google": false,
-"linkedin": false,
-"weibo": false,
-"instapper": false,
-"vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"download": null,
-"toc": {
-"collapse": "subsection"
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
 }
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
 });
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
 });
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <a class="navbar-brand" href="index.html"><span class="fas fa-terminal" aria-hidden="true"></span></a>
+      <a class="navbar-brand" href="index.html"><img src="images/icons8-artificial-intelligence-100.png" style="height: 20px"></a>
+      <a class="navbar-brand" href="index.html"><img src="images/icons8-scatter-plot-96.png" style="height: 20px"></a>
+      <a class="navbar-brand" href="index.html">Ekarin Eric Pongpipat, M.A.</a>
+    </div> <!-- /.navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="blog.html"><span class="fas fa-quote-left" aria-hidden="true"></span> &ensp;Blog</a></li>
+        <li><a href="CV.html"><span class="far fa-id-badge" aria-hidden="true"></span> &ensp;CV</a></li>
+        <li><a href="https://github.com/epongpipat" target="_blank"><span class="fa fa-github" aria-hidden="true"></span> &ensp;GitHub</a></li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fas fa-handshake" aria-hidden="true"></span> &ensp;Connect<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="mailto:epongpipat@gmail.com" target="_blank"><span class="fa fa-envelope" aria-hidden="true"></span> &ensp;Email</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="https://www.researchgate.net/profile/Ekarin_Pongpipat" target="_blank"><span class="fab fa-researchgate" aria-hidden="true"></span> &ensp;ResearchGate</a></li>
+            <li><a href="https://www.linkedin.com/in/epongpipat/" target="_blank"><span class="fa fa-linkedin" aria-hidden="true"></span> &ensp;LinkedIn</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div> <!-- /.navbar-collapse -->
+
+  </div> <!-- /.container -->
+</nav> <!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<center>
+<p><img src="images/profile-picture-circle.png" width="150px"></p>
+<div id="ekarin-eric-pongpipat-m.a." class="section level2">
+<h2>Ekarin Eric Pongpipat, M.A.</h2>
+<p><br></p>
+<div id="about-me" class="section level3">
+<h3><i class="fas fa-info-circle"></i>   About Me</h3>
+<p><br>I’m a second-year Ph.D. student studying cognitive neuroscience at the University of Texas at Dallas. I am primarly interested in understanding the relationship between brain networks and cognition and how this relationship can change as we age and for different groups of individuals (e.g., disease-disorder states and genetic predispositions). I’m also interested in statistics, research methods, intuitive data visualization, open source, and open science.</p>
+<p><br></p>
+</div>
+<div id="updates" class="section level3">
+<h3><i class="fas fa-sync-alt"></i>   Updates</h3>
+<table class="table table-striped table-hover table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<tbody>
+<tr>
+<td style="text-align:left;">
+2018-09-01
+</td>
+<td style="text-align:left;">
+Blog Post
+</td>
+<td style="text-align:left;">
+Bootstrapping and Permutation Testing: A Shiny App (A Dashboard Update)
+</td>
+<td style="text-align:left;">
+<a href="https://mattkmiecik.shinyapps.io/boot-perm-dash/" target="_blank"><i class="fas fa-link"></i></a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018-08-05
+</td>
+<td style="text-align:left;">
+Blog Post
+</td>
+<td style="text-align:left;">
+Simple Linear Regression via Voice Command: A Shiny App (A Dashboard Update)
+</td>
+<td style="text-align:left;">
+<a href="https://epongpipat.shinyapps.io/lm_voice_dashboard/" target="_blank"><i class="fas fa-link"></i></a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018-06-17
+</td>
+<td style="text-align:left;">
+Blog Post
+</td>
+<td style="text-align:left;">
+Simple Linear Regression via Voice Command: A Shiny App
+</td>
+<td style="text-align:left;">
+<a href="https://epongpipat.shinyapps.io/lmvoice" target="_blank"><i class="fas fa-link"></i></a>
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+<div class="footer">
+  <hr style="solid 1px">
+  &copy; 2018 Ekarin Eric Pongpipat. <a href="https://raw.githubusercontent.com/epongpipat/epongpipat.github.io/master/LICENSE" target="_blank">All rights reserved.</a>
+</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
@@ -267,14 +320,10 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
-    script.src = src;
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
-</body>
 
+</body>
 </html>
