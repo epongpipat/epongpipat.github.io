@@ -17,6 +17,7 @@ library(kableExtra)
 library(dplyr)
 library(glue)
 library(psych)
+library(scales)
 ```
 
 *Updated on September 7, 2018*
@@ -183,12 +184,15 @@ poster_summary <- poster_summary %>%
 
 poster_mean_per_year <- round(describe(poster_summary$Frequency)[["mean"]], 2)
 poster_se_per_year <- round(describe(poster_summary$Frequency)[["se"]], 2)
+poster_total <- sum(poster_summary$Frequency)
 
-ggplot(poster_summary, aes(x = Year, y = Frequency)) +
+ggplot(poster_summary, aes(x = as.Date(paste0(poster_summary$Year,"-01-01"), "%Y-%m-%d"), y = Frequency)) +
   geom_line(color = "#106a8c") +
   geom_point(color = "#106a8c") +
   theme_classic() +
-  labs(subtitle = paste("Average Per Year:",poster_mean_per_year,"±",poster_se_per_year))
+  scale_x_date(labels = date_format("%Y"), date_breaks= "1 year") +
+  labs(subtitle = paste0("Total: ", poster_total, ", Mean Per Year: ",poster_mean_per_year," ± ",poster_se_per_year),
+       x = "Year") 
 ```
 
 `r posters_html`
