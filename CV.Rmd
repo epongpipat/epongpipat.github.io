@@ -158,7 +158,7 @@ McIntosh, E. C., Jacobson, A., Kemmotsu, N., **Pongpipat, E. E.**, Green, E., Ha
 
 
 <div class="divReferences">
-```{r posters, warning = F, message = F, fig.width = 3, fig.height = 2, fig.asp = T, dev='svg'}
+```{r posters, warning = F, message = F, fig.width = 5, fig.height = 2, fig.asp = T, dev='svg'}
 posters <- read_csv("posters.csv")
 
 posters$Authors <- gsub("Pongpipat, E. E.", "<b>Pongpipat, E. E.</b>", posters$Authors)
@@ -192,7 +192,10 @@ ggplot(poster_summary, aes(x = as.Date(paste0(poster_summary$Year,"-01-01"), "%Y
   theme_classic() +
   scale_x_date(labels = date_format("%Y"), date_breaks= "1 year") +
   labs(subtitle = paste0("Total: ", poster_total, ", Mean Per Year: ",poster_mean_per_year," ± ",poster_se_per_year),
-       x = "Year") 
+       x = "Year") +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
 ```
 
 `r posters_html`
