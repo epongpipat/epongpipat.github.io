@@ -1,0 +1,217 @@
+---
+title: "Solving Ordinary Least Squares (OLS) Regression Using Matrix Algebra"
+date: "2019-01-30"
+output:
+  html_document:
+    highlight: textmate
+    theme: lumen
+    toc: yes
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+---
+
+<br>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
+<span class="badge badge-pill badge-primary">R</span>
+
+<br>
+
+In psychology, we typically learn how calculate OLS regression by calculating each coefficient seperately. However, I recently learned how to calculate this using matrix algebra. Here is a brief tutorial on how to perform this using R.
+
+<br>
+
+## R Packages
+```{r}
+packages <- c("tidyverse", "broom")
+xfun::pkg_attach(packages, message = F)
+```
+
+<br>
+
+## Dataset
+```{r}
+dataset <- carData::Salaries %>%
+  select(salary, yrs.since.phd) %>%
+  mutate(yrs.since.phd = scale(yrs.since.phd, center = T, scale = F))
+```
+
+```{r}
+summary(dataset)
+```
+
+The `Salaries` dataset is from the `carData` package, which shows the salary of professors in the US during the academic year of 2008 and 2009. Let's say we are interested in determining if professors who have had their Ph.D. degree for longer are more likely to also have higher salaries.
+
+<br>
+
+## Solve Using Matrix Algebra
+
+### Design Matrix
+
+The design matrix is just a dataset of the all the predictors, which includes the `intercept` set at 1 and `yrs.since.phd`.
+
+```{r}
+x <- tibble(
+  intercept = 1,
+  yrs.since.phd = as.numeric(dataset$yrs.since.phd)
+) %>%
+  as.matrix()
+head(x)
+```
+
+<br>
+
+### Dependent Variable
+```{r}
+y <- dataset$salary %>% as.matrix()
+head(y)
+```
+
+<br>
+
+### $X'X$
+
+First, we need to solve for $X'X$, which is the transposed design matrix ($X'$) multiplied by the design matrix ($X$). 
+
+Let's take a look at what $X'$ looks like.
+
+```{r}
+x_transposed <- t(x)
+x_transposed[, 1:6]
+```
+
+<br>
+
+After multiplication, the matrix provides the total number of participants ($n$ = 397; really, the sum of the intercept), sum of $X$ ($\Sigma X$ = 0), and sum of $X^2$ ($\Sigma X^2$ = 65765.64). Respectively, $\Sigma X$ and $\Sigma X^2$ are sum of error ($\Sigma(X-M_X)$) and sum of squared error ($\Sigma(X-M_X)^2$) because we first centered the `yrs.since.phd` variable.
+
+```{r}
+x_prime_x <- (x_transposed %*% x)
+x_prime_x %>% round(., 2)
+```
+
+<br>
+
+Let's verify this.
+```{r}
+colSums(x) %>% round(., 2)
+colSums(x^2) %>% round(., 2)
+```
+
+<br>
+
+### $(X'X)^{-1}$
+
+$(X'X)^{-1}$ is the inverse matrix of $X'X$.
+```{r}
+x_prime_x_inverse <- solve(x_prime_x)
+x_prime_x_inverse
+```
+
+<br>
+
+### $X'Y$
+
+$X'Y$ contains the sum of Y ($\Sigma Y$ = 45141464) and sum of $XY$ ($\Sigma XY$ = 64801658).
+```{r}
+x_prime_y <- x_transposed %*% y
+x_prime_y
+```
+
+<br>
+
+Let's verify this.
+```{r}
+sum(y)
+
+sum(x[, 2] * y)
+```
+
+<br>
+
+### Coefficients
+
+To obtain the coefficients, we can multiply these last two matrices ($(X'X)^{-1}X'Y$).
+```{r}
+coef <- x_prime_x_inverse %*% x_prime_y
+coef
+```
+
+<br>
+
+### Standard Error
+
+To calculate the standard error, we multiply the inverse matrix of $X'X$ by the mean squared error (MSE) of the model ($(X'X)^{-1}X'Y * MSE$).
+
+<br>
+
+First, we need to calculate the MSE of the model. 
+```{r}
+y_predicted <- x %*% coef
+e <- y - y_predicted
+se <- sum(e^2)
+n <- nrow(x)
+p <- ncol(x)
+df <- n - p
+mse <- se / df
+mse
+```
+
+<br>
+
+Then, we multiply $(X'X)^{-1}$ by MSE.
+
+```{r}
+mse_coef <- x_prime_x_inverse * mse
+mse_coef %>% round(., 2)
+```
+
+<br>
+
+Then, we take the square root of the diagonal matrix to obtain the standard error of the coefficients.
+
+```{r}
+rmse_coef <- sqrt(diag(mse_coef))
+rmse_coef %>% round(., 2)
+```
+
+<br>
+
+### *t*-Statistic
+
+The *t*-statistic is just the coefficient divided by the standard error of the coefficient.
+
+```{r}
+t_statistic <- as.numeric(coef) / as.numeric(rmse_coef)
+t_statistic
+```
+
+<br>
+
+### *p*-Value
+
+We want the probability of obtaining that score or more extreme and not the other way around. Thus, we need to set lower to FALSE. Also, we need to multiply it by 2 to obtain a two-tailed test.
+
+```{r}
+p_value <- 2 * pt(t_statistic, df, lower = FALSE)
+p_value
+```
+
+<br>
+
+### Summary
+```{r}
+tibble(
+  term = colnames(x),
+  estimate = as.numeric(coef),
+  std.error = as.numeric(rmse_coef),
+  statistic = as.numeric(t_statistic),
+  p.value = as.numeric(p_value)
+)
+```
+
+<br>
+
+## Solve Using `lm` Function
+```{r}
+lm(salary ~ yrs.since.phd, dataset) %>% summary() %>% tidy()
+```
+

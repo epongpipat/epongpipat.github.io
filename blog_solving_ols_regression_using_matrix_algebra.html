@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<meta name="date" content="2019-01-30" />
+
+<title>Solving Ordinary Least Squares (OLS) Regression Using Matrix Algebra</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116039246-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116039246-1');
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <a class="navbar-brand" href="index.html"><span class="fas fa-terminal" aria-hidden="true"></span></a>
+      <a class="navbar-brand" href="index.html"><img src="images/icons8-artificial-intelligence-100.png" style="height: 20px"></a>
+      <a class="navbar-brand" href="index.html"><img src="images/icons8-scatter-plot-96.png" style="height: 20px"></a>
+      <a class="navbar-brand" href="index.html">Ekarin Eric Pongpipat, M.A.</a>
+    </div> <!-- /.navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="blog.html"><span class="fas fa-quote-left" aria-hidden="true"></span> &ensp;Blog</a></li>
+        <li><a href="CV.html"><span class="far fa-id-badge" aria-hidden="true"></span> &ensp;CV</a></li>
+        <li><a href="https://github.com/epongpipat" target="_blank"><span class="fa fa-github" aria-hidden="true"></span> &ensp;GitHub</a></li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fas fa-handshake" aria-hidden="true"></span> &ensp;Connect<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="mailto:epongpipat@gmail.com" target="_blank"><span class="fa fa-envelope" aria-hidden="true"></span> &ensp;Email</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="https://www.researchgate.net/profile/Ekarin_Pongpipat" target="_blank"><span class="fab fa-researchgate" aria-hidden="true"></span> &ensp;ResearchGate</a></li>
+            <li><a href="https://www.linkedin.com/in/epongpipat/" target="_blank"><span class="fa fa-linkedin" aria-hidden="true"></span> &ensp;LinkedIn</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div> <!-- /.navbar-collapse -->
+
+  </div> <!-- /.container -->
+</nav> <!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Solving Ordinary Least Squares (OLS) Regression Using Matrix Algebra</h1>
+<h4 class="date"><em>2019-01-30</em></h4>
+
+</div>
+
+
+<p><br><em>Tags:</em> <span class="badge badge-pill badge-light">Statistics</span> <span class="badge badge-pill badge-primary">R</span></p>
+<p><br></p>
+<p>In psychology, we typically learn how calculate OLS regression by calculating each coefficient seperately. However, I recently learned how to calculate this using matrix algebra. Here is a brief tutorial on how to perform this using R.</p>
+<p><br></p>
+<div id="r-packages" class="section level2">
+<h2>R Packages</h2>
+<pre class="r"><code>packages &lt;- c(&quot;tidyverse&quot;, &quot;broom&quot;)
+xfun::pkg_attach(packages, message = F)</code></pre>
+<p><br></p>
+</div>
+<div id="dataset" class="section level2">
+<h2>Dataset</h2>
+<pre class="r"><code>dataset &lt;- carData::Salaries %&gt;%
+  select(salary, yrs.since.phd) %&gt;%
+  mutate(yrs.since.phd = scale(yrs.since.phd, center = T, scale = F))</code></pre>
+<pre class="r"><code>summary(dataset)</code></pre>
+<pre><code>##      salary        yrs.since.phd.V1  
+##  Min.   : 57800   Min.   :-21.31486  
+##  1st Qu.: 91000   1st Qu.:-10.31486  
+##  Median :107300   Median : -1.31486  
+##  Mean   :113706   Mean   :  0.00000  
+##  3rd Qu.:134185   3rd Qu.:  9.68514  
+##  Max.   :231545   Max.   : 33.68514</code></pre>
+<p>The <code>Salaries</code> dataset is from the <code>carData</code> package, which shows the salary of professors in the US during the academic year of 2008 and 2009. Let’s say we are interested in determining if professors who have had their Ph.D. degree for longer are more likely to also have higher salaries.</p>
+<p><br></p>
+</div>
+<div id="solve-using-matrix-algebra" class="section level2">
+<h2>Solve Using Matrix Algebra</h2>
+<div id="design-matrix" class="section level3">
+<h3>Design Matrix</h3>
+<p>The design matrix is just a dataset of the all the predictors, which includes the <code>intercept</code> set at 1 and <code>yrs.since.phd</code>.</p>
+<pre class="r"><code>x &lt;- tibble(
+  intercept = 1,
+  yrs.since.phd = as.numeric(dataset$yrs.since.phd)
+) %&gt;%
+  as.matrix()
+head(x)</code></pre>
+<pre><code>##      intercept yrs.since.phd
+## [1,]         1     -3.314861
+## [2,]         1     -2.314861
+## [3,]         1    -18.314861
+## [4,]         1     22.685139
+## [5,]         1     17.685139
+## [6,]         1    -16.314861</code></pre>
+<p><br></p>
+</div>
+<div id="dependent-variable" class="section level3">
+<h3>Dependent Variable</h3>
+<pre class="r"><code>y &lt;- dataset$salary %&gt;% as.matrix()
+head(y)</code></pre>
+<pre><code>##        [,1]
+## [1,] 139750
+## [2,] 173200
+## [3,]  79750
+## [4,] 115000
+## [5,] 141500
+## [6,]  97000</code></pre>
+<p><br></p>
+</div>
+<div id="xx" class="section level3">
+<h3><span class="math inline">\(X&#39;X\)</span></h3>
+<p>First, we need to solve for <span class="math inline">\(X&#39;X\)</span>, which is the transposed design matrix (<span class="math inline">\(X&#39;\)</span>) multiplied by the design matrix (<span class="math inline">\(X\)</span>).</p>
+<p>Let’s take a look at what <span class="math inline">\(X&#39;\)</span> looks like.</p>
+<pre class="r"><code>x_transposed &lt;- t(x)
+x_transposed[, 1:6]</code></pre>
+<pre><code>##                    [,1]      [,2]      [,3]     [,4]     [,5]      [,6]
+## intercept      1.000000  1.000000   1.00000  1.00000  1.00000   1.00000
+## yrs.since.phd -3.314861 -2.314861 -18.31486 22.68514 17.68514 -16.31486</code></pre>
+<p><br></p>
+<p>After multiplication, the matrix provides the total number of participants (<span class="math inline">\(n\)</span> = 397; really, the sum of the intercept), sum of <span class="math inline">\(X\)</span> (<span class="math inline">\(\Sigma X\)</span> = 0), and sum of <span class="math inline">\(X^2\)</span> (<span class="math inline">\(\Sigma X^2\)</span> = 65765.64). Respectively, <span class="math inline">\(\Sigma X\)</span> and <span class="math inline">\(\Sigma X^2\)</span> are sum of error (<span class="math inline">\(\Sigma(X-M_X)\)</span>) and sum of squared error (<span class="math inline">\(\Sigma(X-M_X)^2\)</span>) because we first centered the <code>yrs.since.phd</code> variable.</p>
+<pre class="r"><code>x_prime_x &lt;- (x_transposed %*% x)
+x_prime_x %&gt;% round(., 2)</code></pre>
+<pre><code>##               intercept yrs.since.phd
+## intercept           397          0.00
+## yrs.since.phd         0      65765.64</code></pre>
+<p><br></p>
+<p>Let’s verify this.</p>
+<pre class="r"><code>colSums(x) %&gt;% round(., 2)</code></pre>
+<pre><code>##     intercept yrs.since.phd 
+##           397             0</code></pre>
+<pre class="r"><code>colSums(x^2) %&gt;% round(., 2)</code></pre>
+<pre><code>##     intercept yrs.since.phd 
+##        397.00      65765.64</code></pre>
+<p><br></p>
+</div>
+<div id="xx-1" class="section level3">
+<h3><span class="math inline">\((X&#39;X)^{-1}\)</span></h3>
+<p><span class="math inline">\((X&#39;X)^{-1}\)</span> is the inverse matrix of <span class="math inline">\(X&#39;X\)</span>.</p>
+<pre class="r"><code>x_prime_x_inverse &lt;- solve(x_prime_x)
+x_prime_x_inverse</code></pre>
+<pre><code>##                  intercept yrs.since.phd
+## intercept     2.518892e-03  9.280150e-20
+## yrs.since.phd 9.280150e-20  1.520551e-05</code></pre>
+<p><br></p>
+</div>
+<div id="xy" class="section level3">
+<h3><span class="math inline">\(X&#39;Y\)</span></h3>
+<p><span class="math inline">\(X&#39;Y\)</span> contains the sum of Y (<span class="math inline">\(\Sigma Y\)</span> = 45141464) and sum of <span class="math inline">\(XY\)</span> (<span class="math inline">\(\Sigma XY\)</span> = 64801658).</p>
+<pre class="r"><code>x_prime_y &lt;- x_transposed %*% y
+x_prime_y</code></pre>
+<pre><code>##                   [,1]
+## intercept     45141464
+## yrs.since.phd 64801658</code></pre>
+<p><br></p>
+<p>Let’s verify this.</p>
+<pre class="r"><code>sum(y)</code></pre>
+<pre><code>## [1] 45141464</code></pre>
+<pre class="r"><code>sum(x[, 2] * y)</code></pre>
+<pre><code>## [1] 64801658</code></pre>
+<p><br></p>
+</div>
+<div id="coefficients" class="section level3">
+<h3>Coefficients</h3>
+<p>To obtain the coefficients, we can multiply these last two matrices (<span class="math inline">\((X&#39;X)^{-1}X&#39;Y\)</span>).</p>
+<pre class="r"><code>coef &lt;- x_prime_x_inverse %*% x_prime_y
+coef</code></pre>
+<pre><code>##                      [,1]
+## intercept     113706.4584
+## yrs.since.phd    985.3421</code></pre>
+<p><br></p>
+</div>
+<div id="standard-error" class="section level3">
+<h3>Standard Error</h3>
+<p>To calculate the standard error, we multiply the inverse matrix of <span class="math inline">\(X&#39;X\)</span> by the mean squared error (MSE) of the model (<span class="math inline">\((X&#39;X)^{-1}X&#39;Y * MSE\)</span>).</p>
+<p><br></p>
+<p>First, we need to calculate the MSE of the model.</p>
+<pre class="r"><code>y_predicted &lt;- x %*% coef
+e &lt;- y - y_predicted
+se &lt;- sum(e^2)
+n &lt;- nrow(x)
+p &lt;- ncol(x)
+df &lt;- n - p
+mse &lt;- se / df
+mse</code></pre>
+<pre><code>## [1] 758098328</code></pre>
+<p><br></p>
+<p>Then, we multiply <span class="math inline">\((X&#39;X)^{-1}\)</span> by MSE.</p>
+<pre class="r"><code>mse_coef &lt;- x_prime_x_inverse * mse
+mse_coef %&gt;% round(., 2)</code></pre>
+<pre><code>##               intercept yrs.since.phd
+## intercept       1909568          0.00
+## yrs.since.phd         0      11527.27</code></pre>
+<p><br></p>
+<p>Then, we take the square root of the diagonal matrix to obtain the standard error of the coefficients.</p>
+<pre class="r"><code>rmse_coef &lt;- sqrt(diag(mse_coef))
+rmse_coef %&gt;% round(., 2)</code></pre>
+<pre><code>##     intercept yrs.since.phd 
+##       1381.87        107.37</code></pre>
+<p><br></p>
+</div>
+<div id="t-statistic" class="section level3">
+<h3><em>t</em>-Statistic</h3>
+<p>The <em>t</em>-statistic is just the coefficient divided by the standard error of the coefficient.</p>
+<pre class="r"><code>t_statistic &lt;- as.numeric(coef) / as.numeric(rmse_coef)
+t_statistic</code></pre>
+<pre><code>## [1] 82.284421  9.177488</code></pre>
+<p><br></p>
+</div>
+<div id="p-value" class="section level3">
+<h3><em>p</em>-Value</h3>
+<p>We want the probability of obtaining that score or more extreme and not the other way around. Thus, we need to set lower to FALSE. Also, we need to multiply it by 2 to obtain a two-tailed test.</p>
+<pre class="r"><code>p_value &lt;- 2 * pt(t_statistic, df, lower = FALSE)
+p_value</code></pre>
+<pre><code>## [1] 1.070665e-250  2.495042e-18</code></pre>
+<p><br></p>
+</div>
+<div id="summary" class="section level3">
+<h3>Summary</h3>
+<pre class="r"><code>tibble(
+  term = colnames(x),
+  estimate = as.numeric(coef),
+  std.error = as.numeric(rmse_coef),
+  statistic = as.numeric(t_statistic),
+  p.value = as.numeric(p_value)
+)</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   term          estimate std.error statistic   p.value
+##   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 intercept      113706.     1382.     82.3  1.07e-250
+## 2 yrs.since.phd     985.      107.      9.18 2.50e- 18</code></pre>
+<p><br></p>
+</div>
+</div>
+<div id="solve-using-lm-function" class="section level2">
+<h2>Solve Using <code>lm</code> Function</h2>
+<pre class="r"><code>lm(salary ~ yrs.since.phd, dataset) %&gt;% summary() %&gt;% tidy()</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   term          estimate std.error statistic   p.value
+##   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    113706.     1382.     82.3  1.07e-250
+## 2 yrs.since.phd     985.      107.      9.18 2.50e- 18</code></pre>
+</div>
+
+</div>
+</div>
+</div>
+<div class="footer" style="red">
+  <hr style="solid 1px">
+  &copy; 2018 Ekarin Eric Pongpipat. <a href="https://raw.githubusercontent.com/epongpipat/epongpipat.github.io/master/LICENSE" target="_blank">All rights reserved.</a>
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
