@@ -24,6 +24,12 @@ link <- text_spec("Google", link = "https://google.com")
 
 updates_table <- as.data.frame(rbind(
   cbind(
+    "Date" = "2019-01-30",
+    "Category" = "Blog Post",
+    "Item" = "Solving Ordinary Least Squares (OLS) Regression Using Matrix Algebra",
+    "Link" = "<a href='blog_solving_ols_regression_using_matrix_algebra.html'><i class='fas fa-link'></i></a>"
+  ),
+  cbind(
     "Date" = "2018-09-01",
     "Category" = "Blog Post",
     "Item" = "Bootstrapping and Permutation Testing: A Shiny App (A Dashboard Update)",
@@ -34,12 +40,6 @@ updates_table <- as.data.frame(rbind(
     "Category" = "Blog Post",
     "Item" = "Simple Linear Regression via Voice Command: A Shiny App (A Dashboard Update)",
     "Link" = "<a href='https://epongpipat.shinyapps.io/lm_voice_dashboard/' target='_blank'><i class='fas fa-link'></i></a>"
-  ),
-  cbind(
-    "Date" = "2018-06-17",
-    "Category" = "Blog Post",
-    "Item" = "Simple Linear Regression via Voice Command: A Shiny App",
-    "Link" = "<a href='https://epongpipat.shinyapps.io/lmvoice' target='_blank'><i class='fas fa-link'></i></a>"
   )
 ))
 

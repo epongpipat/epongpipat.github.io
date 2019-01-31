@@ -4,13 +4,56 @@ subtitle: "Mostly a reference"
 output: html_document
 ---
 
-<BR><BR>
+<BR>
 
 ```{r blog_figure, echo = F, warning = F, message = F, fig.width = 3, fig.height = 2, fig.asp = T, dev='svg'}
 library(readr)
 library(glue)
 library(tidyverse)
 library(psych)
+library(zoo)
+```
+
+```{r, echo = F, message = F}
+blogs <- read_csv("blogs.csv") %>%
+  rowwise() %>%
+  mutate(date = paste0(year,"-",month,"-",day)) %>%
+  ungroup() %>%
+  mutate(date = as.Date(date))
+
+blogs_summary <- blogs %>%
+  group_by(year,month) %>%
+  summarize(frequency = n()) %>%
+  rowwise() %>%
+  mutate(date = paste0(year,"-",month,"-01")) %>%
+  ungroup() %>%
+  mutate(date = as.Date(date))
+
+# fill in missing dates
+blog_dates <- as.data.frame(seq(from = as.Date(as.yearmon(min(blogs_summary$date))), 
+                 to = as.Date(as.yearmon(max(blogs_summary$date))), 
+                 by="month"))
+colnames(blog_dates) = "date"
+
+blog_summary_complete <- full_join(blog_dates, blogs_summary, by = "date")
+blog_summary_complete <- blog_summary_complete %>%
+  rowwise() %>%
+  mutate(frequency = ifelse(is.na(frequency),0,frequency)) %>%
+  select(-c(year,month))
+
+blog_mean <- describe(blog_summary_complete$frequency)["mean"]
+blog_se <- describe(blog_summary_complete$frequency)["se"]
+
+# ggplot(blog_summary_complete, aes(x = date, y = frequency)) +
+#   geom_line(color = "#106a8c") +
+#   geom_point(color = "#106a8c") +
+#   theme_classic() +
+#   scale_y_continuous(limits = c(0,max(blog_summary_complete$frequency)), breaks = c(0,1,2)) +
+#   scale_x_date(date_labels = "%Y-%m", date_breaks = "1 month") +
+#   labs(subtitle = paste("Mean Per Month =",blog_mean,"±",blog_se),
+#        x = "",
+#        y = "Frequency") +
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 <div class="divTable">
@@ -21,6 +64,19 @@ library(psych)
 </div><div class="divTableCell">
 **Post**
 </div></div>
+
+<div class="divTableRow"><div class="divTableCell">
+2019-01-30
+</div><div class="divTableCell">
+<div class="divBlogTitle">
+[Solving Ordinary Least Squares (OLS) Regression Using Matrix Algebra](blog_solving_ols_regression_using_matrix_algebra.html)
+</div>
+A brief guide to solving ordianry least squares (OLS) regression using matrix algebra in R.
+<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
+<span class="badge badge-pill badge-primary">R</span>
+</div></div>
+
+<BR>
 
 <div class="divTableRow"><div class="divTableCell">
 2018-09-01
