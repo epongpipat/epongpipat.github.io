@@ -16,7 +16,7 @@ output:
 
 <br>
 
-In psychology, we typically learn how calculate OLS regression by calculating each coefficient seperately. However, I recently learned how to calculate this using matrix algebra. Here is a brief tutorial on how to perform this using R.
+In psychology, we typically learn how to calculate OLS regression by calculating each coefficient seperately. However, I recently learned how to calculate this using matrix algebra. Here is a brief tutorial on how to perform this using R.
 
 <br>
 
@@ -81,7 +81,7 @@ x_transposed[, 1:6]
 
 <br>
 
-After multiplication, the matrix provides the total number of participants ($n$ = 397; really, the sum of the intercept), sum of $X$ ($\Sigma X$ = 0), and sum of $X^2$ ($\Sigma X^2$ = 65765.64). Respectively, $\Sigma X$ and $\Sigma X^2$ are sum of error ($\Sigma(X-M_X)$) and sum of squared error ($\Sigma(X-M_X)^2$) because we first centered the `yrs.since.phd` variable.
+After multiplication, the matrix provides the total number of participants ($n$ = 397; really, the sum of the intercept), sum of `yrs.since.phd` ($\Sigma(yrs.since.phd)$ = 0), and sum of squared `yrs.since.phd` ($\Sigma (yrs.since.phd^2)$ = 65765.64). Respectively, $\Sigma (years.since.phd)$ and $\Sigma (yrs.since.phd^2)$ are sum of error ($\Sigma(yrs.since.phd-M_{yrs.since.phd})$) and sum of squared error ($\Sigma(yrs.since.phd-M_{yrs.since.phd})^2$) because we first centered the `yrs.since.phd` variable.
 
 ```{r}
 x_prime_x <- (x_transposed %*% x)
@@ -129,7 +129,7 @@ sum(x[, 2] * y)
 
 ### Coefficients
 
-To obtain the coefficients, we can multiply these last two matrices ($(X'X)^{-1}X'Y$).
+To obtain the coefficients, we can multiply these last two matrices ($b = (X'X)^{-1}X'Y$).
 ```{r}
 coef <- x_prime_x_inverse %*% x_prime_y
 coef
@@ -139,13 +139,24 @@ coef
 
 ### Standard Error
 
-To calculate the standard error, we multiply the inverse matrix of $X'X$ by the mean squared error (MSE) of the model ($(X'X)^{-1}X'Y * MSE$).
+To calculate the standard error, we multiply the inverse matrix of $X'X$ by the mean squared error (MSE) of the model and take the square root of its diagonal matrix ($\sqrt{diag((X'X)^{-1} * MSE)}$).
 
 <br>
 
-First, we need to calculate the MSE of the model. 
+First, we need to calculate the $MSE$ of the model. Calculating $MSE$ of the model is still the same, $MSE = \frac{\Sigma(Y-\hat{Y})^{2}}{n-p} = \frac{\Sigma(e^2)}{df}$ where $Y$ is the DV, $\hat{Y}$ is the predicted DV, $n$ is the total number of participants (or data points), and $p$ is the total number of variables in the design matrix (or predictors, which includes the intercept). 
+
+<br>
+
+To obtain the predicted values ($\hat{Y}$), we can also use matrix algebra by multiplying the design matrix with the coefficients ($\hat{Y} = Xb$).
 ```{r}
 y_predicted <- x %*% coef
+head(y_predicted)
+```
+
+<br>
+
+Now that we have $\hat{Y}$, we can then calculate the $MSE$.
+```{r}
 e <- y - y_predicted
 se <- sum(e^2)
 n <- nrow(x)

@@ -26,9 +26,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116039246-1"></script>
 <script>
@@ -113,6 +112,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -127,7 +129,6 @@ body {
   padding-top: 59px;
   margin-top: -59px;
 }
-
 .section h2 {
   padding-top: 59px;
   margin-top: -59px;
@@ -147,6 +148,43 @@ body {
 .section h6 {
   padding-top: 59px;
   margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -168,18 +206,77 @@ $(document).ready(function () {
 });
 </script>
 
-
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -330,7 +427,7 @@ div.tocify {
 
 <p><br><em>Tags:</em> <span class="badge badge-pill badge-light">Statistics</span> <span class="badge badge-pill badge-primary">R</span></p>
 <p><br></p>
-<p>In psychology, we typically learn how calculate OLS regression by calculating each coefficient seperately. However, I recently learned how to calculate this using matrix algebra. Here is a brief tutorial on how to perform this using R.</p>
+<p>In psychology, we typically learn how to calculate OLS regression by calculating each coefficient seperately. However, I recently learned how to calculate this using matrix algebra. Here is a brief tutorial on how to perform this using R.</p>
 <p><br></p>
 <div id="r-packages" class="section level2">
 <h2>R Packages</h2>
@@ -397,7 +494,7 @@ x_transposed[, 1:6]</code></pre>
 ## intercept      1.000000  1.000000   1.00000  1.00000  1.00000   1.00000
 ## yrs.since.phd -3.314861 -2.314861 -18.31486 22.68514 17.68514 -16.31486</code></pre>
 <p><br></p>
-<p>After multiplication, the matrix provides the total number of participants (<span class="math inline">\(n\)</span> = 397; really, the sum of the intercept), sum of <span class="math inline">\(X\)</span> (<span class="math inline">\(\Sigma X\)</span> = 0), and sum of <span class="math inline">\(X^2\)</span> (<span class="math inline">\(\Sigma X^2\)</span> = 65765.64). Respectively, <span class="math inline">\(\Sigma X\)</span> and <span class="math inline">\(\Sigma X^2\)</span> are sum of error (<span class="math inline">\(\Sigma(X-M_X)\)</span>) and sum of squared error (<span class="math inline">\(\Sigma(X-M_X)^2\)</span>) because we first centered the <code>yrs.since.phd</code> variable.</p>
+<p>After multiplication, the matrix provides the total number of participants (<span class="math inline">\(n\)</span> = 397; really, the sum of the intercept), sum of <code>yrs.since.phd</code> (<span class="math inline">\(\Sigma(yrs.since.phd)\)</span> = 0), and sum of squared <code>yrs.since.phd</code> (<span class="math inline">\(\Sigma (yrs.since.phd^2)\)</span> = 65765.64). Respectively, <span class="math inline">\(\Sigma (years.since.phd)\)</span> and <span class="math inline">\(\Sigma (yrs.since.phd^2)\)</span> are sum of error (<span class="math inline">\(\Sigma(yrs.since.phd-M_{yrs.since.phd})\)</span>) and sum of squared error (<span class="math inline">\(\Sigma(yrs.since.phd-M_{yrs.since.phd})^2\)</span>) because we first centered the <code>yrs.since.phd</code> variable.</p>
 <pre class="r"><code>x_prime_x &lt;- (x_transposed %*% x)
 x_prime_x %&gt;% round(., 2)</code></pre>
 <pre><code>##               intercept yrs.since.phd
@@ -441,7 +538,7 @@ x_prime_y</code></pre>
 </div>
 <div id="coefficients" class="section level3">
 <h3>Coefficients</h3>
-<p>To obtain the coefficients, we can multiply these last two matrices (<span class="math inline">\((X&#39;X)^{-1}X&#39;Y\)</span>).</p>
+<p>To obtain the coefficients, we can multiply these last two matrices (<span class="math inline">\(b = (X&#39;X)^{-1}X&#39;Y\)</span>).</p>
 <pre class="r"><code>coef &lt;- x_prime_x_inverse %*% x_prime_y
 coef</code></pre>
 <pre><code>##                      [,1]
@@ -451,11 +548,23 @@ coef</code></pre>
 </div>
 <div id="standard-error" class="section level3">
 <h3>Standard Error</h3>
-<p>To calculate the standard error, we multiply the inverse matrix of <span class="math inline">\(X&#39;X\)</span> by the mean squared error (MSE) of the model (<span class="math inline">\((X&#39;X)^{-1}X&#39;Y * MSE\)</span>).</p>
+<p>To calculate the standard error, we multiply the inverse matrix of <span class="math inline">\(X&#39;X\)</span> by the mean squared error (MSE) of the model and take the square root of its diagonal matrix (<span class="math inline">\(\sqrt{diag((X&#39;X)^{-1} * MSE)}\)</span>).</p>
 <p><br></p>
-<p>First, we need to calculate the MSE of the model.</p>
+<p>First, we need to calculate the <span class="math inline">\(MSE\)</span> of the model. Calculating <span class="math inline">\(MSE\)</span> of the model is still the same, <span class="math inline">\(MSE = \frac{\Sigma(Y-\hat{Y})^{2}}{n-p} = \frac{\Sigma(e^2)}{df}\)</span> where <span class="math inline">\(Y\)</span> is the DV, <span class="math inline">\(\hat{Y}\)</span> is the predicted DV, <span class="math inline">\(n\)</span> is the total number of participants (or data points), and <span class="math inline">\(p\)</span> is the total number of variables in the design matrix (or predictors, which includes the intercept).</p>
+<p><br></p>
+<p>To obtain the predicted values (<span class="math inline">\(\hat{Y}\)</span>), we can also use matrix algebra by multiplying the design matrix with the coefficients (<span class="math inline">\(\hat{Y} = Xb\)</span>).</p>
 <pre class="r"><code>y_predicted &lt;- x %*% coef
-e &lt;- y - y_predicted
+head(y_predicted)</code></pre>
+<pre><code>##           [,1]
+## [1,] 110440.19
+## [2,] 111425.53
+## [3,]  95660.05
+## [4,] 136059.08
+## [5,] 131132.37
+## [6,]  97630.74</code></pre>
+<p><br></p>
+<p>Now that we have <span class="math inline">\(\hat{Y}\)</span>, we can then calculate the <span class="math inline">\(MSE\)</span>.</p>
+<pre class="r"><code>e &lt;- y - y_predicted
 se &lt;- sum(e^2)
 n &lt;- nrow(x)
 p &lt;- ncol(x)
