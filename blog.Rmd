@@ -7,11 +7,8 @@ output: html_document
 <BR>
 
 ```{r blog_figure, echo = F, warning = F, message = F, fig.width = 3, fig.height = 2, fig.asp = T, dev='svg'}
-library(readr)
-library(glue)
-library(tidyverse)
-library(psych)
-library(zoo)
+packages <- c("readr", "glue", "tidyverse", "psych", "zoo")
+xfun::pkg_attach(packages, message = F)
 ```
 
 ```{r, echo = F, message = F}
@@ -64,6 +61,19 @@ blog_se <- describe(blog_summary_complete$frequency)["se"]
 </div><div class="divTableCell">
 **Post**
 </div></div>
+
+<div class="divTableRow"><div class="divTableCell">
+2019-03-07
+</div><div class="divTableCell">
+<div class="divBlogTitle">
+<a href="https://mattkmiecik.com/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis.html" target="_blank">Exploring 11 Years of Chicago Blackhawk’s Data using Principal Components Analysis</a>
+</div>
+A collaboration post with <a href="https://mattkmiecik.com" target="_blank">Matt Kmiecik</a> using principal components analysis to analyze Blackhawk's data.
+<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
+<span class="badge badge-pill badge-primary">R</span>
+</div></div>
+
+<BR>
 
 <div class="divTableRow"><div class="divTableCell">
 2019-01-30
