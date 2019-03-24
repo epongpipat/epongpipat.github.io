@@ -6,7 +6,8 @@ output:
   html_document:
     highlight: textmate
     theme: lumen
-    code_folding: hide
+    code_folding: show
+    code_download: true
     toc: yes
     toc_depth: 3
     toc_float:
@@ -14,18 +15,35 @@ output:
       smooth_scroll: yes
 ---
 
-```{r setup, include=FALSE, warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(tidyverse)
-library(gridExtra)
-```
 <h4><i>Modified Post: 2018-09-06</i></h4>
 <br>*Tags:* <span class="badge badge-pill badge-dark">fMRI</span>
 <span class="badge badge-pill badge-primary">R</span>
 
-<BR>
+These motion variables can be used as control variables (covariates of no interest; as seen in resting-state and task-based functional connectivity analyses). 
 
-These motion variables can be used as control variables (as seen in resting-state and task-based functional connectivity analyses). 
+## R Libarries
+```{r, message = F}
+library(tidyverse)
+```
+
+## Function
+```{r}
+# graph motion parameters, facet by motion type
+graph_motion <- function(dataset, title) {
+  data_long <- reshape2::melt(dataset, id.var = "Duration") %>%
+    mutate(variable = gsub("_", " ", variable))
+  figure <- ggplot(data_long, aes(x = Duration, y = value)) +
+    geom_line(color = "#106a8c") +
+    theme_minimal() +
+    facet_wrap(~ variable, scales = "free_y", ncol = 3) +
+    labs(title = title,
+         y = NULL) +
+    theme(plot.title = element_text(hjust = 0.5))
+  print(figure)
+}
+```
+
+<BR>
 
 <BR><BR>
 
@@ -40,93 +58,20 @@ The first six motion parameters are the standard motion parameters and include:
 5. $rotation_Y$, rotation around the y-axis
 6. $rotation_Z$, rotation around the z-axis
 
-```{r m6, collapsed = TRUE, dev = "svg"}
-
+```{r m6, collapsed = TRUE, dev = "svg", message = F}
 # load 6-rigidy body motion parameters
-motion_demeaned <- read.csv("blog_Calculate_Motion_Regressors_files/example_motion_demeand.csv", header = FALSE)
+# add duration
+motion_file <- "blog_Calculate_Motion_Regressors_files/example_motion_demeand.csv"
+motion_demeaned <- read_csv(motion_file, col_names = F) %>%
+  mutate(Duration = c(1:nrow(.)))
 
 # rename columns
-motion_variables <- c("translation_x", "translation_y", "translation_z", "rotation_x", "rotation_y", "rotation_z")
+motion_variables <- c(paste0("Translation_", c("X", "Y", "Z")),
+                      paste0("Rotation_", c("X", "Y", "Z")))
+colnames(motion_demeaned) <- c(motion_variables, "Duration")
 
-colnames(motion_demeaned) <- motion_variables
-
-# add duration for graphs
-motion_demeaned$duration <- c(1:780)
-
-# plot translation x
-motion_translation_x <- ggplot(motion_demeaned, mapping = aes(x = duration, y = translation_x)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Translation X") +
-  xlab("Duration") +
-  ylab("mm")
-
-# plot translation y
-motion_translation_y <- ggplot(motion_demeaned, mapping = aes(x = duration, y = translation_y)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Translation Y") +
-  xlab("Duration") +
-  ylab("mm")
-
-# plot translation z
-motion_translation_z <- ggplot(motion_demeaned, mapping = aes(x = duration, y = translation_z)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Translation Z") +
-  xlab("Duration") +
-  ylab("mm")
-
-# plot rotation x
-motion_rotation_x <- ggplot(motion_demeaned, mapping = aes(x = duration, y = rotation_x)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Rotation X") +
-  xlab("Duration") +
-  ylab("Degrees")
-
-# plot rotation y
-motion_rotation_y <- ggplot(motion_demeaned, mapping = aes(x = duration, y = rotation_y)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Rotation Y") +
-  xlab("Duration") +
-  ylab("Degrees")
-
-# plot yaw
-motion_rotation_z <- ggplot(motion_demeaned, mapping = aes(x = duration, y = rotation_z)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Rotation Z") +
-  xlab("Duration") +
-  ylab("Degrees")
-
-# plot 6-rigid body motion parameters into one figure
-grid.arrange(motion_translation_x, motion_translation_y, motion_translation_z, motion_rotation_x, motion_rotation_y, motion_rotation_z, nrow = 2, ncol = 3, top = "6-Rigid Body Motion Parameters")
+# graph motion parameters
+graph_motion(motion_demeaned, "6-Rigid Body Motion Parameters")
 ```
 
 <BR><BR>
@@ -142,94 +87,18 @@ The next six motion parameters are the first temporal derivates of the original 
 11. $rotation_{Y_{T-1}}$, first temporal derivative of the rotation around the y-axis
 12. $rotation_{Z_{T-1}}$, first temporal derivative of the rotation around the z-axis
 
-```{r m12, collapsed = TRUE, warning=FALSE, dev = "svg"}
-
+```{r m12, collapsed = TRUE, warning = FALSE, dev = "svg"}
 # calculate first temporal derivative
-motion_demeaned.td1 <- sapply(motion_demeaned, FUN = function(x) c(NA, diff(x)))
-
-# save as dataframe
-motion_demeaned.td1 <- as.data.frame(motion_demeaned.td1)
-
+motion_demeaned_td1 <- motion_demeaned %>%
+  sapply(., FUN = function(x) c(NA, diff(x))) %>%
+  as_tibble() %>%
+  mutate(Duration = c(1:nrow(.)))
+  
 # rename columns
-colnames(motion_demeaned.td1) <- paste0(motion_variables, "_td1")
+colnames(motion_demeaned_td1) <- c(paste0(motion_variables, "_TD1"), "Duration")
 
-# add duration for graphs
-motion_demeaned.td1$duration <- c(1:780)
-
-# plot translation x td1
-motion_translation_x_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = translation_x_td1)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Translation X") +
-  xlab("Duration") +
-  ylab("mm")
-
-# plot translation y td1
-motion_translation_y_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = translation_y_td1)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Translation Y") +
-  xlab("Duration") +
-  ylab("mm")
-
-# plot translation z td1
-motion_translation_z_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = translation_z_td1)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Translation Z") +
-  xlab("Duration") +
-  ylab("mm")
-
-# plot rotation x td1
-motion_rotation_x_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = rotation_x_td1)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Rotation X") +
-  xlab("Duration") +
-  ylab("Degrees")
-
-# plot rotation y td1
-motion_rotation_y_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = rotation_y_td1)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Rotation Y") +
-  xlab("Duration") +
-  ylab("Degrees")
-
-# plot rotation z td1
-motion_rotation_z_td1 <- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = rotation_z_td1)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Rotation Z") +
-  xlab("Duration") +
-  ylab("Degrees")
-
-# plot motion.td1 into one figure
-grid.arrange(motion_translation_x_td1, motion_translation_y_td1, motion_translation_z_td1, motion_rotation_x_td1, motion_rotation_y_td1, motion_rotation_z_td1, nrow = 2, ncol = 3, top = "First Temporal Derivatives of the 6-Rigid Body Motion Parameters")
+# graph motion parameters
+graph_motion(motion_demeaned_td1, "First Temporal Derivatives of the 6-Rigid Body Motion Parameters")
 ```
 
 <BR><BR>
@@ -246,93 +115,16 @@ The next six motion parameters are the original six rigid body motion parameters
 18. $rotation_Z^2$, rotation around the z-axis squared
 
 ```{r m18, collapsed = TRUE, dev = "svg"}
-
 # square 6-rigid body motion parameters
-motion_demeaned.sq <- motion_demeaned^2
-
-# save as data frame
-motion_demeaned.sq <- as.data.frame(motion_demeaned.sq)
-
+motion_demeaned_sq <- motion_demeaned^2 %>%
+  as_tibble() %>%
+  mutate(Duration = c(1:nrow(.)))
+  
 # rename columns
-colnames(motion_demeaned.sq) <- paste0(motion_variables, "_squared")
+colnames(motion_demeaned_sq) <- c(paste0(motion_variables, "_Squared"), "Duration")
 
-# add duration for graphs
-motion_demeaned.sq$duration <- c(1:780)
-
-# plot translation x squared
-motion_translation_x_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = translation_x_squared)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Translation X") +
-  xlab("Duration") +
-  ylab("mm")
-
-# plot translation y squared
-motion_translation_y_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = translation_y_squared)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Translation Y") +
-  xlab("Duration") +
-  ylab("mm")
-
-# plot translation z squared
-motion_translation_z_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = translation_z_squared)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Translation Z") +
-  xlab("Duration") +
-  ylab("mm")
-
-# plot rotation x squared
-motion_rotation_x_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = rotation_x_squared)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Rotation X") +
-  xlab("Duration") +
-  ylab("Degrees")
-
-# plot rotation y squared
-motion_rotation_y_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = rotation_y_squared)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Rotation Y") +
-  xlab("Duration") +
-  ylab("Degrees")
-
-# plot rotation z squared
-motion_rotation_z_squared <- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = rotation_z_squared)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Rotation Z") +
-  xlab("Duration") +
-  ylab("Degrees")
-
-# plot motion.sq into one figure
-grid.arrange(motion_translation_x_squared, motion_translation_y_squared, motion_translation_z_squared, motion_rotation_x_squared, motion_rotation_y_squared, motion_rotation_z_squared, nrow = 2, ncol = 3, top = "6-Rigid Body Motion Parameters Squared")
+# graph motion parameters
+graph_motion(motion_demeaned_sq, "6-Rigid Body Motion Parameters Squared")
 ```
 
 <BR><BR>
@@ -351,97 +143,21 @@ The next six motion parameters are the first temporal derivatives squared.
 ```{r m24, collapsed = TRUE, warning = FALSE, dev = "svg"}
 
 # square the first temporal derivative
-motion_demeaned.td1.sq <- motion_demeaned.td1^2 # first temporal derivative squared
-
-# save as dataframe
-motion_demeaned.td1.sq <- as.data.frame(motion_demeaned.td1.sq)
+motion_demeaned_td1_sq <- motion_demeaned_td1^2 %>%
+  as_tibble() %>%
+  mutate(Duration = 1:nrow(.)) 
 
 # rename columns
-colnames(motion_demeaned.td1.sq) <- paste0(motion_variables, "_td1_squared") # rename columns
-
-# add duration for graphs
-motion_demeaned.td1.sq$duration <- c(1:780)
-
-# plot translation x td1 squared
-motion_translation_x_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = translation_x_td1_squared)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Translation X") +
-  xlab("Duration") +
-  ylab("mm")
-
-# plot translation y td1 squared
-motion_translation_y_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = translation_y_td1_squared)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Translation Y") +
-  xlab("Duration") +
-  ylab("mm")
-
-# plot translation z td1 squared
-motion_translation_z_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = translation_z_td1_squared)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Translation Z") +
-  xlab("Duration") +
-  ylab("mm")
-
-# plot rotation x td1 squared
-motion_rotation_x_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = rotation_x_td1_squared)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Rotation X") +
-  xlab("Duration") +
-  ylab("Degrees")
-
-# plot rotation y td1 squared
-motion_rotation_y_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = rotation_y_td1_squared)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Rotation Y") +
-  xlab("Duration") +
-  ylab("Degrees")
-
-# plot rotation z td1 squared
-motion_rotation_z_td1_squared <- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = rotation_z_td1_squared)) +
-  geom_line(color = "#106a8c") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle("Rotation Z") +
-  xlab("Duration") +
-  ylab("Degrees")
+colnames(motion_demeaned_td1_sq) <- c(paste0(motion_variables, "_TD1_Squared"), "Duration")
 
 # plot motion.td1.sq into one figure
-grid.arrange(motion_translation_x_td1_squared, motion_translation_y_td1_squared, motion_translation_z_td1_squared, motion_rotation_x_td1_squared, motion_rotation_y_td1_squared, motion_rotation_z_td1_squared, nrow = 2, ncol = 3, top = "First Temporal Derivatives of the 6-Rigid Body Motion Parameters Squared")
+graph_motion(motion_demeaned_td1_sq, "First Temporal Derivatives of the 6-Rigid Body Motion Parameters Squared")
 ```
 
 <BR><BR>
 
 ## R Code Example
-```{r script, eval=FALSE, collapse=FALSE, include=TRUE, echo=TRUE}
+```{r script, eval = FALSE, collapse = FALSE, include = TRUE, echo = TRUE}
 
 # function to create 24 motion variables =======================================
 create_24_motion_variables <- function(dataset) {
@@ -490,7 +206,7 @@ colnames(dataset_motion_24) <- c(
 )
 
 # export 24-motion variables ===================================================
-write.csv(x = dataset_motion_24, file = "dataset-motion-24.csv")
+write_csv(x = dataset_motion_24, file = "dataset-motion-24.csv")
 ```
 
 <BR><BR>

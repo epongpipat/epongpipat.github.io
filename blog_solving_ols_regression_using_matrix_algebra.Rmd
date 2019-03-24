@@ -5,6 +5,7 @@ output:
   html_document:
     highlight: textmate
     theme: lumen
+    code_download: true
     toc: yes
     toc_float:
       collapsed: yes

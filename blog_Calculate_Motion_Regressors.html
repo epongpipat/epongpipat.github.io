@@ -24,6 +24,7 @@
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -80,6 +81,9 @@ h6 {
 }
 .table th:not([align]) {
   text-align: left;
+}
+#rmd-source-code {
+  display: none;
 }
 </style>
 
@@ -282,7 +286,8 @@ $(document).ready(function () {
 </style>
 <script>
 $(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
+  window.initializeSourceEmbed("blog_Calculate_Motion_Regressors.Rmd");
+  window.initializeCodeFolding("show" === "show");
 });
 </script>
 
@@ -430,6 +435,8 @@ div.tocify {
 <ul class="dropdown-menu" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
 </ul>
 </div>
 
@@ -446,9 +453,29 @@ div.tocify {
 <i>Modified Post: 2018-09-06</i>
 </h4>
 <p><br><em>Tags:</em> <span class="badge badge-pill badge-dark">fMRI</span> <span class="badge badge-pill badge-primary">R</span></p>
+<p>These motion variables can be used as control variables (covariates of no interest; as seen in resting-state and task-based functional connectivity analyses).</p>
+<div id="r-libarries" class="section level2">
+<h2>R Libarries</h2>
+<pre class="r"><code>library(tidyverse)</code></pre>
+</div>
+<div id="function" class="section level2">
+<h2>Function</h2>
+<pre class="r"><code># graph motion parameters, facet by motion type
+graph_motion &lt;- function(dataset, title) {
+  data_long &lt;- reshape2::melt(dataset, id.var = &quot;Duration&quot;) %&gt;%
+    mutate(variable = gsub(&quot;_&quot;, &quot; &quot;, variable))
+  figure &lt;- ggplot(data_long, aes(x = Duration, y = value)) +
+    geom_line(color = &quot;#106a8c&quot;) +
+    theme_minimal() +
+    facet_wrap(~ variable, scales = &quot;free_y&quot;, ncol = 3) +
+    labs(title = title,
+         y = NULL) +
+    theme(plot.title = element_text(hjust = 0.5))
+  print(figure)
+}</code></pre>
 <p><BR></p>
-<p>These motion variables can be used as control variables (as seen in resting-state and task-based functional connectivity analyses).</p>
 <p><BR><BR></p>
+</div>
 <div id="rigid-body-motion-regressors" class="section level2">
 <h2>6-Rigid Body Motion Regressors</h2>
 <p>The first six motion parameters are the standard motion parameters and include:</p>
@@ -461,90 +488,17 @@ div.tocify {
 <li><span class="math inline">\(rotation_Z\)</span>, rotation around the z-axis</li>
 </ol>
 <pre class="r"><code># load 6-rigidy body motion parameters
-motion_demeaned &lt;- read.csv(&quot;blog_Calculate_Motion_Regressors_files/example_motion_demeand.csv&quot;, header = FALSE)
+motion_file &lt;- &quot;blog_Calculate_Motion_Regressors_files/example_motion_demeand.csv&quot;
+motion_demeaned &lt;- read_csv(motion_file, col_names = F) %&gt;%
+  mutate(Duration = c(1:nrow(.)))
 
 # rename columns
-motion_variables &lt;- c(&quot;translation_x&quot;, &quot;translation_y&quot;, &quot;translation_z&quot;, &quot;rotation_x&quot;, &quot;rotation_y&quot;, &quot;rotation_z&quot;)
+motion_variables &lt;- c(paste0(&quot;Translation_&quot;, c(&quot;X&quot;, &quot;Y&quot;, &quot;Z&quot;)),
+                      paste0(&quot;Rotation_&quot;, c(&quot;X&quot;, &quot;Y&quot;, &quot;Z&quot;)))
+colnames(motion_demeaned) &lt;- c(motion_variables, &quot;Duration&quot;)
 
-colnames(motion_demeaned) &lt;- motion_variables
-
-# add duration for graphs
-motion_demeaned$duration &lt;- c(1:780)
-
-# plot translation x
-motion_translation_x &lt;- ggplot(motion_demeaned, mapping = aes(x = duration, y = translation_x)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Translation X&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;mm&quot;)
-
-# plot translation y
-motion_translation_y &lt;- ggplot(motion_demeaned, mapping = aes(x = duration, y = translation_y)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Translation Y&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;mm&quot;)
-
-# plot translation z
-motion_translation_z &lt;- ggplot(motion_demeaned, mapping = aes(x = duration, y = translation_z)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Translation Z&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;mm&quot;)
-
-# plot rotation x
-motion_rotation_x &lt;- ggplot(motion_demeaned, mapping = aes(x = duration, y = rotation_x)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Rotation X&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;Degrees&quot;)
-
-# plot rotation y
-motion_rotation_y &lt;- ggplot(motion_demeaned, mapping = aes(x = duration, y = rotation_y)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Rotation Y&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;Degrees&quot;)
-
-# plot yaw
-motion_rotation_z &lt;- ggplot(motion_demeaned, mapping = aes(x = duration, y = rotation_z)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Rotation Z&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;Degrees&quot;)
-
-# plot 6-rigid body motion parameters into one figure
-grid.arrange(motion_translation_x, motion_translation_y, motion_translation_z, motion_rotation_x, motion_rotation_y, motion_rotation_z, nrow = 2, ncol = 3, top = &quot;6-Rigid Body Motion Parameters&quot;)</code></pre>
+# graph motion parameters
+graph_motion(motion_demeaned, &quot;6-Rigid Body Motion Parameters&quot;)</code></pre>
 <p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m6-1.svg" width="672" /></p>
 <p><BR><BR></p>
 </div>
@@ -560,91 +514,16 @@ grid.arrange(motion_translation_x, motion_translation_y, motion_translation_z, m
 <li><span class="math inline">\(rotation_{Z_{T-1}}\)</span>, first temporal derivative of the rotation around the z-axis</li>
 </ol>
 <pre class="r"><code># calculate first temporal derivative
-motion_demeaned.td1 &lt;- sapply(motion_demeaned, FUN = function(x) c(NA, diff(x)))
-
-# save as dataframe
-motion_demeaned.td1 &lt;- as.data.frame(motion_demeaned.td1)
-
+motion_demeaned_td1 &lt;- motion_demeaned %&gt;%
+  sapply(., FUN = function(x) c(NA, diff(x))) %&gt;%
+  as_tibble() %&gt;%
+  mutate(Duration = c(1:nrow(.)))
+  
 # rename columns
-colnames(motion_demeaned.td1) &lt;- paste0(motion_variables, &quot;_td1&quot;)
+colnames(motion_demeaned_td1) &lt;- c(paste0(motion_variables, &quot;_TD1&quot;), &quot;Duration&quot;)
 
-# add duration for graphs
-motion_demeaned.td1$duration &lt;- c(1:780)
-
-# plot translation x td1
-motion_translation_x_td1 &lt;- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = translation_x_td1)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Translation X&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;mm&quot;)
-
-# plot translation y td1
-motion_translation_y_td1 &lt;- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = translation_y_td1)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Translation Y&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;mm&quot;)
-
-# plot translation z td1
-motion_translation_z_td1 &lt;- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = translation_z_td1)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Translation Z&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;mm&quot;)
-
-# plot rotation x td1
-motion_rotation_x_td1 &lt;- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = rotation_x_td1)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Rotation X&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;Degrees&quot;)
-
-# plot rotation y td1
-motion_rotation_y_td1 &lt;- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = rotation_y_td1)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Rotation Y&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;Degrees&quot;)
-
-# plot rotation z td1
-motion_rotation_z_td1 &lt;- ggplot(motion_demeaned.td1, mapping = aes(x = duration, y = rotation_z_td1)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Rotation Z&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;Degrees&quot;)
-
-# plot motion.td1 into one figure
-grid.arrange(motion_translation_x_td1, motion_translation_y_td1, motion_translation_z_td1, motion_rotation_x_td1, motion_rotation_y_td1, motion_rotation_z_td1, nrow = 2, ncol = 3, top = &quot;First Temporal Derivatives of the 6-Rigid Body Motion Parameters&quot;)</code></pre>
+# graph motion parameters
+graph_motion(motion_demeaned_td1, &quot;First Temporal Derivatives of the 6-Rigid Body Motion Parameters&quot;)</code></pre>
 <p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m12-1.svg" width="672" /></p>
 <p><BR><BR></p>
 </div>
@@ -660,91 +539,15 @@ grid.arrange(motion_translation_x_td1, motion_translation_y_td1, motion_translat
 <li><span class="math inline">\(rotation_Z^2\)</span>, rotation around the z-axis squared</li>
 </ol>
 <pre class="r"><code># square 6-rigid body motion parameters
-motion_demeaned.sq &lt;- motion_demeaned^2
-
-# save as data frame
-motion_demeaned.sq &lt;- as.data.frame(motion_demeaned.sq)
-
+motion_demeaned_sq &lt;- motion_demeaned^2 %&gt;%
+  as_tibble() %&gt;%
+  mutate(Duration = c(1:nrow(.)))
+  
 # rename columns
-colnames(motion_demeaned.sq) &lt;- paste0(motion_variables, &quot;_squared&quot;)
+colnames(motion_demeaned_sq) &lt;- c(paste0(motion_variables, &quot;_Squared&quot;), &quot;Duration&quot;)
 
-# add duration for graphs
-motion_demeaned.sq$duration &lt;- c(1:780)
-
-# plot translation x squared
-motion_translation_x_squared &lt;- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = translation_x_squared)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Translation X&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;mm&quot;)
-
-# plot translation y squared
-motion_translation_y_squared &lt;- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = translation_y_squared)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Translation Y&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;mm&quot;)
-
-# plot translation z squared
-motion_translation_z_squared &lt;- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = translation_z_squared)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Translation Z&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;mm&quot;)
-
-# plot rotation x squared
-motion_rotation_x_squared &lt;- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = rotation_x_squared)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Rotation X&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;Degrees&quot;)
-
-# plot rotation y squared
-motion_rotation_y_squared &lt;- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = rotation_y_squared)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Rotation Y&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;Degrees&quot;)
-
-# plot rotation z squared
-motion_rotation_z_squared &lt;- ggplot(motion_demeaned.sq, mapping = aes(x = duration, y = rotation_z_squared)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Rotation Z&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;Degrees&quot;)
-
-# plot motion.sq into one figure
-grid.arrange(motion_translation_x_squared, motion_translation_y_squared, motion_translation_z_squared, motion_rotation_x_squared, motion_rotation_y_squared, motion_rotation_z_squared, nrow = 2, ncol = 3, top = &quot;6-Rigid Body Motion Parameters Squared&quot;)</code></pre>
+# graph motion parameters
+graph_motion(motion_demeaned_sq, &quot;6-Rigid Body Motion Parameters Squared&quot;)</code></pre>
 <p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m18-1.svg" width="672" /></p>
 <p><BR><BR></p>
 </div>
@@ -760,91 +563,15 @@ grid.arrange(motion_translation_x_squared, motion_translation_y_squared, motion_
 <li><span class="math inline">\(rotation_{Z_{T-1}}^2\)</span>, first temporal derivative of the rotation around the z-axis squared</li>
 </ol>
 <pre class="r"><code># square the first temporal derivative
-motion_demeaned.td1.sq &lt;- motion_demeaned.td1^2 # first temporal derivative squared
-
-# save as dataframe
-motion_demeaned.td1.sq &lt;- as.data.frame(motion_demeaned.td1.sq)
+motion_demeaned_td1_sq &lt;- motion_demeaned_td1^2 %&gt;%
+  as_tibble() %&gt;%
+  mutate(Duration = 1:nrow(.)) 
 
 # rename columns
-colnames(motion_demeaned.td1.sq) &lt;- paste0(motion_variables, &quot;_td1_squared&quot;) # rename columns
-
-# add duration for graphs
-motion_demeaned.td1.sq$duration &lt;- c(1:780)
-
-# plot translation x td1 squared
-motion_translation_x_td1_squared &lt;- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = translation_x_td1_squared)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Translation X&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;mm&quot;)
-
-# plot translation y td1 squared
-motion_translation_y_td1_squared &lt;- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = translation_y_td1_squared)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Translation Y&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;mm&quot;)
-
-# plot translation z td1 squared
-motion_translation_z_td1_squared &lt;- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = translation_z_td1_squared)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Translation Z&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;mm&quot;)
-
-# plot rotation x td1 squared
-motion_rotation_x_td1_squared &lt;- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = rotation_x_td1_squared)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Rotation X&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;Degrees&quot;)
-
-# plot rotation y td1 squared
-motion_rotation_y_td1_squared &lt;- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = rotation_y_td1_squared)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Rotation Y&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;Degrees&quot;)
-
-# plot rotation z td1 squared
-motion_rotation_z_td1_squared &lt;- ggplot(motion_demeaned.td1.sq, mapping = aes(x = duration, y = rotation_z_td1_squared)) +
-  geom_line(color = &quot;#106a8c&quot;) +
-  theme_classic() +
-  theme(
-    plot.title = element_text(hjust = .5),
-    plot.subtitle = element_text(hjust = .5)
-  ) +
-  ggtitle(&quot;Rotation Z&quot;) +
-  xlab(&quot;Duration&quot;) +
-  ylab(&quot;Degrees&quot;)
+colnames(motion_demeaned_td1_sq) &lt;- c(paste0(motion_variables, &quot;_TD1_Squared&quot;), &quot;Duration&quot;)
 
 # plot motion.td1.sq into one figure
-grid.arrange(motion_translation_x_td1_squared, motion_translation_y_td1_squared, motion_translation_z_td1_squared, motion_rotation_x_td1_squared, motion_rotation_y_td1_squared, motion_rotation_z_td1_squared, nrow = 2, ncol = 3, top = &quot;First Temporal Derivatives of the 6-Rigid Body Motion Parameters Squared&quot;)</code></pre>
+graph_motion(motion_demeaned_td1_sq, &quot;First Temporal Derivatives of the 6-Rigid Body Motion Parameters Squared&quot;)</code></pre>
 <p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m24-1.svg" width="672" /></p>
 <p><BR><BR></p>
 </div>
@@ -897,7 +624,7 @@ colnames(dataset_motion_24) &lt;- c(
 )
 
 # export 24-motion variables ===================================================
-write.csv(x = dataset_motion_24, file = &quot;dataset-motion-24.csv&quot;)</code></pre>
+write_csv(x = dataset_motion_24, file = &quot;dataset-motion-24.csv&quot;)</code></pre>
 <p><BR><BR></p>
 </div>
 <div id="references" class="section level2">
@@ -908,6 +635,7 @@ write.csv(x = dataset_motion_24, file = &quot;dataset-motion-24.csv&quot;)</code
 </div>
 </div>
 
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2FsY3VsYXRlIDI0LU1vdGlvbiBWYXJpYWJsZXMiCnN1YnRpdGxlOiAiQSBxdWljayBndWlkZSB0byBjYWxjdWxhdGluZyAyNC1tb3Rpb24gdmFyaWFibGVzIgpkYXRlOiAiT3JpZ2luYWwgUG9zdDogMjAxOC0wMy0yMCIKb3V0cHV0OiAKICBodG1sX2RvY3VtZW50OgogICAgaGlnaGxpZ2h0OiB0ZXh0bWF0ZQogICAgdGhlbWU6IGx1bWVuCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIHRvYzogeWVzCiAgICB0b2NfZGVwdGg6IDMKICAgIHRvY19mbG9hdDoKICAgICAgY29sbGFwc2VkOiB5ZXMKICAgICAgc21vb3RoX3Njcm9sbDogeWVzCi0tLQoKPGg0PjxpPk1vZGlmaWVkIFBvc3Q6IDIwMTgtMDktMDY8L2k+PC9oND4KPGJyPipUYWdzOiogPHNwYW4gY2xhc3M9ImJhZGdlIGJhZGdlLXBpbGwgYmFkZ2UtZGFyayI+Zk1SSTwvc3Bhbj4KPHNwYW4gY2xhc3M9ImJhZGdlIGJhZGdlLXBpbGwgYmFkZ2UtcHJpbWFyeSI+Ujwvc3Bhbj4KClRoZXNlIG1vdGlvbiB2YXJpYWJsZXMgY2FuIGJlIHVzZWQgYXMgY29udHJvbCB2YXJpYWJsZXMgKGNvdmFyaWF0ZXMgb2Ygbm8gaW50ZXJlc3Q7IGFzIHNlZW4gaW4gcmVzdGluZy1zdGF0ZSBhbmQgdGFzay1iYXNlZCBmdW5jdGlvbmFsIGNvbm5lY3Rpdml0eSBhbmFseXNlcykuIAoKIyMgUiBMaWJhcnJpZXMKYGBge3IsIG1lc3NhZ2UgPSBGfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgojIyBGdW5jdGlvbgpgYGB7cn0KIyBncmFwaCBtb3Rpb24gcGFyYW1ldGVycywgZmFjZXQgYnkgbW90aW9uIHR5cGUKZ3JhcGhfbW90aW9uIDwtIGZ1bmN0aW9uKGRhdGFzZXQsIHRpdGxlKSB7CiAgZGF0YV9sb25nIDwtIHJlc2hhcGUyOjptZWx0KGRhdGFzZXQsIGlkLnZhciA9ICJEdXJhdGlvbiIpICU+JQogICAgbXV0YXRlKHZhcmlhYmxlID0gZ3N1YigiXyIsICIgIiwgdmFyaWFibGUpKQogIGZpZ3VyZSA8LSBnZ3Bsb3QoZGF0YV9sb25nLCBhZXMoeCA9IER1cmF0aW9uLCB5ID0gdmFsdWUpKSArCiAgICBnZW9tX2xpbmUoY29sb3IgPSAiIzEwNmE4YyIpICsKICAgIHRoZW1lX21pbmltYWwoKSArCiAgICBmYWNldF93cmFwKH4gdmFyaWFibGUsIHNjYWxlcyA9ICJmcmVlX3kiLCBuY29sID0gMykgKwogICAgbGFicyh0aXRsZSA9IHRpdGxlLAogICAgICAgICB5ID0gTlVMTCkgKwogICAgdGhlbWUocGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChoanVzdCA9IDAuNSkpCiAgcHJpbnQoZmlndXJlKQp9CmBgYAoKPEJSPgoKPEJSPjxCUj4KCiMjIDYtUmlnaWQgQm9keSBNb3Rpb24gUmVncmVzc29ycwoKVGhlIGZpcnN0IHNpeCBtb3Rpb24gcGFyYW1ldGVycyBhcmUgdGhlIHN0YW5kYXJkIG1vdGlvbiBwYXJhbWV0ZXJzIGFuZCBpbmNsdWRlOgoKMS4gJHRyYW5zbGF0aW9uX1gkLCB0cmFuc2xhdGlvbiBpbiB0aGUgeC1kaXJlY3Rpb24KMi4gJHRyYW5zbGF0aW9uX1kkLCB0cmFuc2xhdGlvbiBpbiB0aGUgeS1kaXJlY3Rpb24KMy4gJHRyYW5zbGF0aW9uX1okLCB0cmFuc2xhdGlvbiBpbiB0aGUgei1kaXJlY3Rpb24KNC4gJHJvdGF0aW9uX1gkLCByb3RhdGlvbiBhcm91bmQgdGhlIHgtYXhpcwo1LiAkcm90YXRpb25fWSQsIHJvdGF0aW9uIGFyb3VuZCB0aGUgeS1heGlzCjYuICRyb3RhdGlvbl9aJCwgcm90YXRpb24gYXJvdW5kIHRoZSB6LWF4aXMKCmBgYHtyIG02LCBjb2xsYXBzZWQgPSBUUlVFLCBkZXYgPSAic3ZnIiwgbWVzc2FnZSA9IEZ9CiMgbG9hZCA2LXJpZ2lkeSBib2R5IG1vdGlvbiBwYXJhbWV0ZXJzCm1vdGlvbl9maWxlIDwtICJibG9nX0NhbGN1bGF0ZV9Nb3Rpb25fUmVncmVzc29yc19maWxlcy9leGFtcGxlX21vdGlvbl9kZW1lYW5kLmNzdiIKbW90aW9uX2RlbWVhbmVkIDwtIHJlYWRfY3N2KG1vdGlvbl9maWxlLCBjb2xfbmFtZXMgPSBGKSAlPiUKICBtdXRhdGUoRHVyYXRpb24gPSBjKDE6bnJvdyguKSkpCgojIHJlbmFtZSBjb2x1bW5zCm1vdGlvbl92YXJpYWJsZXMgPC0gYyhwYXN0ZTAoIlRyYW5zbGF0aW9uXyIsIGMoIlgiLCAiWSIsICJaIikpLAogICAgICAgICAgICAgICAgICAgICAgcGFzdGUwKCJSb3RhdGlvbl8iLCBjKCJYIiwgIlkiLCAiWiIpKSkKY29sbmFtZXMobW90aW9uX2RlbWVhbmVkKSA8LSBjKG1vdGlvbl92YXJpYWJsZXMsICJEdXJhdGlvbiIpCgojIGdyYXBoIG1vdGlvbiBwYXJhbWV0ZXJzCmdyYXBoX21vdGlvbihtb3Rpb25fZGVtZWFuZWQsICI2LVJpZ2lkIEJvZHkgTW90aW9uIFBhcmFtZXRlcnMiKQpgYGAKCjxCUj48QlI+CgojIyAxMi1Nb3Rpb24gUmVncmVzc29ycwoKVGhlIG5leHQgc2l4IG1vdGlvbiBwYXJhbWV0ZXJzIGFyZSB0aGUgZmlyc3QgdGVtcG9yYWwgZGVyaXZhdGVzIG9mIHRoZSBvcmlnaW5hbCBzaXggcmlnaWQgYm9keSBtb3Rpb24gcGFyYW1ldGVycy4gU3BlY2lmaWNhbGx5LCBpdCBpcyB0aGUgbW90aW9uIG1pbnVzIHRoZSBtb3Rpb24gZnJvbSB0aGUgcHJldmlvdXMgdGltZSBwb2ludC4KCjcuICR0cmFuc2xhdGlvbl97WF97VC0xfX0kLCBmaXJzdCB0ZW1wb3JhbCBkZXJpdmF0aXZlIG9mIHRoZSB0cmFuc2xhdGlvbiBpbiB0aGUgeC1kaXJlY3Rpb24KOC4gJHRyYW5zbGF0aW9uX3tZX3tULTF9fSQsIGZpcnN0IHRlbXBvcmFsIGRlcml2YXRpdmUgb2YgdGhlIHRyYW5zbGF0aW9uIGluIHRoZSB5LWRpcmVjdGlvbgo5LiAkdHJhbnNsYXRpb25fe1pfe1QtMX19JCwgZmlyc3QgdGVtcG9yYWwgZGVyaXZhdGl2ZSBvZiB0aGUgdHJhbnNsYXRpb24gaW4gdGhlIHotZGlyZWN0aW9uCjEwLiAkcm90YXRpb25fe1hfe1QtMX19JCBmaXJzdCB0ZW1wb3JhbCBkZXJpdmF0aXZlIG9mIHRoZSByb3RhdGlvbiBhcm91bmQgdGhlIHgtYXhpcwoxMS4gJHJvdGF0aW9uX3tZX3tULTF9fSQsIGZpcnN0IHRlbXBvcmFsIGRlcml2YXRpdmUgb2YgdGhlIHJvdGF0aW9uIGFyb3VuZCB0aGUgeS1heGlzCjEyLiAkcm90YXRpb25fe1pfe1QtMX19JCwgZmlyc3QgdGVtcG9yYWwgZGVyaXZhdGl2ZSBvZiB0aGUgcm90YXRpb24gYXJvdW5kIHRoZSB6LWF4aXMKCmBgYHtyIG0xMiwgY29sbGFwc2VkID0gVFJVRSwgd2FybmluZyA9IEZBTFNFLCBkZXYgPSAic3ZnIn0KIyBjYWxjdWxhdGUgZmlyc3QgdGVtcG9yYWwgZGVyaXZhdGl2ZQptb3Rpb25fZGVtZWFuZWRfdGQxIDwtIG1vdGlvbl9kZW1lYW5lZCAlPiUKICBzYXBwbHkoLiwgRlVOID0gZnVuY3Rpb24oeCkgYyhOQSwgZGlmZih4KSkpICU+JQogIGFzX3RpYmJsZSgpICU+JQogIG11dGF0ZShEdXJhdGlvbiA9IGMoMTpucm93KC4pKSkKICAKIyByZW5hbWUgY29sdW1ucwpjb2xuYW1lcyhtb3Rpb25fZGVtZWFuZWRfdGQxKSA8LSBjKHBhc3RlMChtb3Rpb25fdmFyaWFibGVzLCAiX1REMSIpLCAiRHVyYXRpb24iKQoKIyBncmFwaCBtb3Rpb24gcGFyYW1ldGVycwpncmFwaF9tb3Rpb24obW90aW9uX2RlbWVhbmVkX3RkMSwgIkZpcnN0IFRlbXBvcmFsIERlcml2YXRpdmVzIG9mIHRoZSA2LVJpZ2lkIEJvZHkgTW90aW9uIFBhcmFtZXRlcnMiKQpgYGAKCjxCUj48QlI+CgojIyAxOC1Nb3Rpb24gUmVncmVzc29ycwoKVGhlIG5leHQgc2l4IG1vdGlvbiBwYXJhbWV0ZXJzIGFyZSB0aGUgb3JpZ2luYWwgc2l4IHJpZ2lkIGJvZHkgbW90aW9uIHBhcmFtZXRlcnMgc3F1YXJlZDoKCjEzLiAkdHJhbnNsYXRpb25fWF4yJCwgdHJhbnNsYXRpb24gaW4gdGhlIHgtZGlyZWN0aW9uIHNxdWFyZWQKMTQuICR0cmFuc2xhdGlvbl9ZXjIkLCB0cmFuc2xhdGlvbiBpbiB0aGUgeS1kaXJlY3Rpb24gc3F1YXJlZAoxNS4gJHRyYW5zbGF0aW9uX1peMiQsIHRyYW5zbGF0aW9uIGluIHRoZSB6LWRpcmVjdGlvbiBzcXVhcmVkCjE2LiAkcm90YXRpb25fWF4yJCwgcm90YXRpb24gYXJvdW5kIHRoZSB4LWF4aXMgc3F1YXJlZAoxNy4gJHJvdGF0aW9uX1leMiQsIHJvdGF0aW9uIGFyb3VuZCB0aGUgeS1heGlzIHNxdWFyZWQKMTguICRyb3RhdGlvbl9aXjIkLCByb3RhdGlvbiBhcm91bmQgdGhlIHotYXhpcyBzcXVhcmVkCgpgYGB7ciBtMTgsIGNvbGxhcHNlZCA9IFRSVUUsIGRldiA9ICJzdmcifQojIHNxdWFyZSA2LXJpZ2lkIGJvZHkgbW90aW9uIHBhcmFtZXRlcnMKbW90aW9uX2RlbWVhbmVkX3NxIDwtIG1vdGlvbl9kZW1lYW5lZF4yICU+JQogIGFzX3RpYmJsZSgpICU+JQogIG11dGF0ZShEdXJhdGlvbiA9IGMoMTpucm93KC4pKSkKICAKIyByZW5hbWUgY29sdW1ucwpjb2xuYW1lcyhtb3Rpb25fZGVtZWFuZWRfc3EpIDwtIGMocGFzdGUwKG1vdGlvbl92YXJpYWJsZXMsICJfU3F1YXJlZCIpLCAiRHVyYXRpb24iKQoKIyBncmFwaCBtb3Rpb24gcGFyYW1ldGVycwpncmFwaF9tb3Rpb24obW90aW9uX2RlbWVhbmVkX3NxLCAiNi1SaWdpZCBCb2R5IE1vdGlvbiBQYXJhbWV0ZXJzIFNxdWFyZWQiKQpgYGAKCjxCUj48QlI+CgojIyAyNC1Nb3Rpb24gUmVncmVzc29ycwoKVGhlIG5leHQgc2l4IG1vdGlvbiBwYXJhbWV0ZXJzIGFyZSB0aGUgZmlyc3QgdGVtcG9yYWwgZGVyaXZhdGl2ZXMgc3F1YXJlZC4KCjE5LiAkdHJhbnNsYXRpb25fe1hfe1QtMX19XjIkLCBmaXJzdCB0ZW1wb3JhbCBkZXJpdmF0aXZlIG9mIHRoZSB0cmFuc2xhdGlvbiBpbiB0aGUgeC1kaXJlY3Rpb24gc3F1YXJlZAoyMC4gJHRyYW5zbGF0aW9uX3tZX3tULTF9fV4yJCwgZmlyc3QgdGVtcG9yYWwgZGVyaXZhdGl2ZSBvZiB0aGUgdHJhbnNsYXRpb24gaW4gdGhlIHktZGlyZWN0aW9uIHNxdWFyZWQKMjEuICR0cmFuc2xhdGlvbl97Wl97VC0xfX1eMiQsIGZpcnN0IHRlbXBvcmFsIGRlcml2YXRpdmUgb2YgdGhlIHRyYW5zbGF0aW9uIGluIHRoZSB6LWRpcmVjdGlvbiBzcXVhcmVkCjIyLiAkcm90YXRpb25fe1hfe1QtMX19XjIkLCBmaXJzdCB0ZW1wb3JhbCBkZXJpdmF0aXZlIG9mIHRoZSByb3RhdGlvbiBhcm91bmQgdGhlIHgtYXhpcyBzcXVhcmVkCjIzLiAkcm90YXRpb25fe1lfe1QtMX19XjIkIGZpcnN0IHRlbXBvcmFsIGRlcml2YXRpdmUgb2YgdGhlIHJvdGF0aW9uIGFyb3VuZCB0aGUgeS1heGlzIHNxdWFyZWQKMjQuICRyb3RhdGlvbl97Wl97VC0xfX1eMiQsIGZpcnN0IHRlbXBvcmFsIGRlcml2YXRpdmUgb2YgdGhlIHJvdGF0aW9uIGFyb3VuZCB0aGUgei1heGlzIHNxdWFyZWQKCmBgYHtyIG0yNCwgY29sbGFwc2VkID0gVFJVRSwgd2FybmluZyA9IEZBTFNFLCBkZXYgPSAic3ZnIn0KCiMgc3F1YXJlIHRoZSBmaXJzdCB0ZW1wb3JhbCBkZXJpdmF0aXZlCm1vdGlvbl9kZW1lYW5lZF90ZDFfc3EgPC0gbW90aW9uX2RlbWVhbmVkX3RkMV4yICU+JQogIGFzX3RpYmJsZSgpICU+JQogIG11dGF0ZShEdXJhdGlvbiA9IDE6bnJvdyguKSkgCgojIHJlbmFtZSBjb2x1bW5zCmNvbG5hbWVzKG1vdGlvbl9kZW1lYW5lZF90ZDFfc3EpIDwtIGMocGFzdGUwKG1vdGlvbl92YXJpYWJsZXMsICJfVEQxX1NxdWFyZWQiKSwgIkR1cmF0aW9uIikKCiMgcGxvdCBtb3Rpb24udGQxLnNxIGludG8gb25lIGZpZ3VyZQpncmFwaF9tb3Rpb24obW90aW9uX2RlbWVhbmVkX3RkMV9zcSwgIkZpcnN0IFRlbXBvcmFsIERlcml2YXRpdmVzIG9mIHRoZSA2LVJpZ2lkIEJvZHkgTW90aW9uIFBhcmFtZXRlcnMgU3F1YXJlZCIpCmBgYAoKPEJSPjxCUj4KCiMjIFIgQ29kZSBFeGFtcGxlCmBgYHtyIHNjcmlwdCwgZXZhbCA9IEZBTFNFLCBjb2xsYXBzZSA9IEZBTFNFLCBpbmNsdWRlID0gVFJVRSwgZWNobyA9IFRSVUV9CgojIGZ1bmN0aW9uIHRvIGNyZWF0ZSAyNCBtb3Rpb24gdmFyaWFibGVzID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQpjcmVhdGVfMjRfbW90aW9uX3ZhcmlhYmxlcyA8LSBmdW5jdGlvbihkYXRhc2V0KSB7CiAgIyBtZWFuLWNlbnRlciAoZGVtZWFuKSAtLS0tCiAgIyBzdWJ0cmFjdCBlYWNoIHNjb3JlIGZyb20gaXRzIHJlc3BlY3RpdmUgY29sdW1uIG1lYW4KICBkYXRhc2V0X21vdGlvbl9kZW1lYW5lZCA8LSBzY2FsZSh4ID0gZGF0YXNldCwgY2VudGVyID0gVCwgc2NhbGUgPSBGKQoKICAjIGZpcnN0IHRlbXBvcmFsIGRlcml2YXRpdmVzIC0tLS0KICAjIHN1YnRyYWN0IG1vdGlvbiBmcm9tIHByaW9yIG1vdGlvbiB0aW1lIHBvaW50CiAgZGF0YXNldF9tb3Rpb25fdGQxIDwtIHNhcHBseShkYXRhc2V0X21vdGlvbl9kZW1lYW5lZCwgRlVOID0gZnVuY3Rpb24oeCkgYyhOQSwgZGlmZih4KSkpCgogICMgY29tYmluZSB0aGUgdmFyaWFibGVzIGludG8gb25lIGRhdGFzZXQKICBkYXRhc2V0X21vdGlvbiA8LSBkYXRhLmZyYW1lKGRhdGFzZXRfbW90aW9uX2RlbWVhbmVkLCBkYXRhc2V0X21vdGlvbl90ZDEpCgogICMgc3F1YXJlcyAtLS0tCiAgIyBzcXVhcmUgNi1yaWdpZCBib2R5IG1vdGlvbiBwYXJhbWV0ZXJzIGFuZCBpdHMgdGVtcG9yYWwgZGVyaXZhdGl2ZXMKICBkYXRhc2V0X21vdGlvbl9zcXVhcmVkIDwtIGRhdGFzZXRfbW90aW9uXjIKCiAgIyBjb21iaW5lIHRoZSB2YXJpYWJsZXMgaW50byBvbmUgZGF0YXNldAogIGRhdGFzZXRfbW90aW9uIDwtIGRhdGEuZnJhbWUoZGF0YXNldF9tb3Rpb24sIGRhdGFzZXRfbW90aW9uX3NxdWFyZWQpCgogIHJldHVybihkYXRhc2V0X21vdGlvbikKfQoKIyBsb2FkIDYtcmlnaWQgYm9keSBtb3Rpb24gcGFyYW1ldGVycyBmaWxlID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KIyBhc3NpZ24gdG8gZGF0YXNldF9tb3Rpb24KZGF0YXNldF9tb3Rpb24gPC0gcmVhZC5jc3YoZmlsZS5jaG9vc2UoKSkKCiMgY3JlYXRlIDI0IG1vdGlvbiB2YXJpYWJsZXMgdXNpbmcgZnVuY3Rpb24gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiMgYXNzaWduIG91dHB1dCB0byBkYXRhc2V0X21vdGlvbl8yNApkYXRhc2V0X21vdGlvbl8yNCA8LSBjcmVhdGVfMjRfbW90aW9uX3ZhcmlhYmxlcyhkYXRhc2V0ID0gZGF0YXNldF9tb3Rpb24pCgojIHJlbmFtZSBjb2x1bW5zID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQojIGFzc2lnbiBvcmlnaW5hbCBtb3Rpb24gdmFyaWFibGVzCm1vdGlvbl92YXJpYWJsZXMgPC0gYygKICAidHJhbnNsYXRpb25feCIsICJ0cmFuc2xhdGlvbl95IiwgInRyYW5zbGF0aW9uX3oiLAogICJyb3RhdGlvbl94IiwgInJvdGF0aW9uX3kiLCAicm90YXRpb25feiIKKQoKIyByZW5hbWUgY29sdW1ucwpjb2xuYW1lcyhkYXRhc2V0X21vdGlvbl8yNCkgPC0gYygKICBtb3Rpb25fdmFyaWFibGVzLAogIHBhc3RlMChtb3Rpb25fdmFyaWFibGVzLCAiX3RkMSIpLAogIHBhc3RlMChtb3Rpb25fdmFyaWFibGVzLCAiX3NxdWFyZWQiKSwKICBwYXN0ZTAobW90aW9uX3ZhcmlhYmxlcywgIl90ZDFfc3F1YXJlZCIpCikKCiMgZXhwb3J0IDI0LW1vdGlvbiB2YXJpYWJsZXMgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CndyaXRlX2Nzdih4ID0gZGF0YXNldF9tb3Rpb25fMjQsIGZpbGUgPSAiZGF0YXNldC1tb3Rpb24tMjQuY3N2IikKYGBgCgo8QlI+PEJSPgoKIyMgUmVmZXJlbmNlcwoKPGRpdiBjbGFzcz0iZGl2UmVmZXJlbmNlcyI+CkZyaXN0b24sIEsuIEouLCBXaWxsaWFtcywgUy4sIEhvd2FyZCwgUi4sIEZyYWNrb3dpYWssIFIuIFMuIEouLCAmIFR1cm5lciwgUi4gKDE5OTYpLiBNb3ZlbWVudC1yZWxhdGVkIGVmZmVjdHMgaW4gZk1SSSB0aW1lLXNlcmllcy4gKk1hZ25ldGljIFJlc29uYW5jZSBpbiBNZWRpY2luZSwgMzUqKDMpLCAzNDbigJMzNTUuIGh0dHA6Ly9kb2kub3JnLzEwLjEwMDIvbXJtLjE5MTAzNTAzMTIKCllhbiwgQy4tRy4sIENoZXVuZywgQi4sIEtlbGx5LCBDLiwgQ29sY29tYmUsIFMuLCBDcmFkZG9jaywgUi4gQy4sIERpIE1hcnRpbm8sIEEuLCDigKYgTWlsaGFtLCBNLiBQLiAoMjAxMykuIEEgY29tcHJlaGVuc2l2ZSBhc3Nlc3NtZW50IG9mIHJlZ2lvbmFsIHZhcmlhdGlvbiBpbiB0aGUgaW1wYWN0IG9mIGhlYWQgbWljcm9tb3ZlbWVudHMgb24gZnVuY3Rpb25hbCBjb25uZWN0b21pY3MuICpOZXVyb0ltYWdlLCA3NiosIDE4M+KAkzIwMS4gaHR0cDovL2RvaS5vcmcvMTAuMTAxNi9qLm5ldXJvaW1hZ2UuMjAxMy4wMy4wMDQKPC9kaXY+CgoK</div>
 </div>
 </div>
 </div>
