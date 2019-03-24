@@ -17,7 +17,7 @@ output:
 
 <br>
 
-In psychology, we typically learn how to calculate OLS regression by calculating each coefficient seperately. However, I recently learned how to calculate this using matrix algebra. Here is a brief tutorial on how to perform this using R.
+In psychology, we typically learn how to calculate OLS regression by calculating each coefficient separately. However, I recently learned how to calculate this using matrix algebra. Here is a brief tutorial on how to perform this using R.
 
 <br>
 

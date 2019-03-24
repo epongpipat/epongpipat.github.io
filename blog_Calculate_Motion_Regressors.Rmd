@@ -16,12 +16,13 @@ output:
 ---
 
 <h4><i>Modified Post: 2018-09-06</i></h4>
+<h4><i>Modified Post: 2019-03-24</i></h4>
 <br>*Tags:* <span class="badge badge-pill badge-dark">fMRI</span>
 <span class="badge badge-pill badge-primary">R</span>
 
 These motion variables can be used as control variables (covariates of no interest; as seen in resting-state and task-based functional connectivity analyses). 
 
-## R Libarries
+## R Libraries
 ```{r, message = F}
 library(tidyverse)
 ```
@@ -42,8 +43,6 @@ graph_motion <- function(dataset, title) {
   print(figure)
 }
 ```
-
-<BR>
 
 <BR><BR>
 
@@ -78,7 +77,7 @@ graph_motion(motion_demeaned, "6-Rigid Body Motion Parameters")
 
 ## 12-Motion Regressors
 
-The next six motion parameters are the first temporal derivates of the original six rigid body motion parameters. Specifically, it is the motion minus the motion from the previous time point.
+The next six motion parameters are the first temporal derivatives of the original six rigid body motion parameters. Specifically, it is the motion minus the motion from the previous time point.
 
 7. $translation_{X_{T-1}}$, first temporal derivative of the translation in the x-direction
 8. $translation_{Y_{T-1}}$, first temporal derivative of the translation in the y-direction
