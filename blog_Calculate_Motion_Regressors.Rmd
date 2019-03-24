@@ -22,14 +22,19 @@ output:
 
 These motion variables can be used as control variables (covariates of no interest; as seen in resting-state and task-based functional connectivity analyses). 
 
+<BR><BR>
+
 ## R Libraries
 ```{r, message = F}
+# data loading, manipulation, and writing
 library(tidyverse)
 ```
 
+<BR><BR>
+
 ## Function
 ```{r}
-# graph motion parameters, facet by motion type
+# graph motion parameters and facet by motion type
 graph_motion <- function(dataset, title) {
   data_long <- reshape2::melt(dataset, id.var = "Duration") %>%
     mutate(variable = gsub("_", " ", variable))
@@ -183,7 +188,7 @@ create_24_motion_variables <- function(dataset) {
 
 # load 6-rigid body motion parameters file =====================================
 # assign to dataset_motion
-dataset_motion <- read.csv(file.choose())
+dataset_motion <- read_csv(file.choose())
 
 # create 24 motion variables using function ====================================
 # assign output to dataset_motion_24
