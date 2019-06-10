@@ -1,0 +1,437 @@
+---
+title: "Solving Ordinary Least Squares (OLS) Regression using Gradient Descent"
+author: "Ekarin Eric Pongpipat, M.A."
+date: "6/9/2019"
+output: 
+  html_document:
+    highlight: textmate
+    theme: lumen
+    code_download: TRUE
+    code_folding: show
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+---
+
+<br>
+
+A brief tutorial on solving OLS using gradient descent using R. 
+
+Remember that the equation for OLS is:
+
+$$
+\tag{1}
+Y = X\beta + \epsilon
+$$
+
+where $Y$ is a column-wise vector of DVs, $X$ is a matrix of IVs, $\beta$ is a column-wise vector of regression coefficients, and $\epsilon$ is a column-wise vector of error.
+
+$$
+\begin{bmatrix}
+\tag{2}
+y_1 \\
+y_2 \\
+. \\
+. \\
+. \\
+y_n \\
+\end{bmatrix} = 
+\begin{bmatrix}
+1 & x_{1, 1} & x_{1, 2} & . & . & . & x_{1, n} \\
+1 & x_{2, 1} & x_{2, 2} & . & . & . & x_{2, n}\\
+. & . & . & . & . & . & .\\
+. & . & . & . & . & . & .\\
+. & . & . & . & . & . & .\\
+1 & x_{n, 1} & x_{n, 2} & . & . & . & x_{n, n}\\
+\end{bmatrix}
+\begin{bmatrix}
+b_0 \\
+b_1 \\
+. \\
+. \\
+. \\
+b_n \\
+\end{bmatrix} +
+\begin{bmatrix}
+e_1 \\
+e_2 \\
+. \\
+. \\
+. \\
+e_n \\
+\end{bmatrix}
+$$
+
+For a review of matrix multiplication, check out my [previous blog post](blog_solving_ols_regression_using_matrix_algebra.html).
+
+<br>
+
+OLS tries to minimize error using the mean squared error (MSE) formula:
+
+$$
+\tag{3}
+MSE = \frac{\Sigma (Y-\hat{Y})^2}{N} = \frac{\Sigma e_i^2}{N} = mean(e_i^2)
+$$
+
+<center>where $\hat{Y} = X\beta$</center>
+
+<br>
+
+Note: MSE is a single cost function (or formula) from many that we could choose from. For example, another cost function is mean absolute error (MAE): 
+
+$$
+\tag{4}
+MAE = \frac{\Sigma |Y-\hat{Y}|}{N} = \frac{\Sigma|e_i|}{N} = mean(abs(e_i))
+$$
+
+
+```{r}
+obtain_cost <- function(y, x, b) {
+  y_pred <- x %*% b
+  e <- y - y_pred
+  se <- e^2
+  mse <- mean(se)
+  return(mse)
+}
+```
+
+<br>
+
+> Let's say that we are interested in understanding if the number of years a professor has had their Ph.D. is associated with a higher 9-month academic salary. 
+
+<br>
+
+## R Libraries
+
+First, let's load some packages. 
+
+```{r}
+packages <- c("tidyverse",   # data manipulation and visualization
+              "carData",     # data set to obtain professor's 9-month salary
+              "broom",       # nice table format of cofficients from lm()
+              "ggrepel",     # ggplot extension to repel text and extra features
+              "glue",        # concatentate strings and alias
+              "plot3D",      # plot 3D figures
+              "RColorBrewer" # load color palettes
+              )
+xfun::pkg_attach(packages, message = F)
+```
+
+<br>
+
+## Data
+
+Then, let's define our IV (`yrs.since.phd`) as `x` and our DV (`salary`) as `y` using the `Salaries` dataset in the `carData` package.
+```{r}
+x <- model.matrix(~ scale(yrs.since.phd, scale = F), Salaries)
+colnames(x) <- c("(Intercept)", "yrs.since.phd")
+dim(x)
+head(x)
+y <- Salaries$salary %>% as.matrix()
+colnames(y) <- c("salary")
+dim(y)
+head(y)
+```
+
+<br>
+
+## Gradient Descent
+
+What is gradient descent?
+
+Starting at any position (i.e., intercept and slope combination), gradient descent takes the partial derivative of each coefficient ($\beta$) from the cost function (MSE) and moves (or descends) in the direction that will continue to minimize the cost (or gradient) function.
+
+```{r}
+# random sample of possible intercepts and slopes
+# then calculate cost function (mse) for each intercept and slope combination
+n_sample <- 200000
+df_gd <- tibble(
+  int = sample(seq(0, 200000), n_sample, T),
+  slope = sample(seq(-10000, 10000), n_sample, T)
+) %>%
+  rowwise() %>%
+  mutate(cost = obtain_cost(y, x, b = c(int, slope)))
+```
+
+```{r}
+scatter3D(x = df_gd$int,
+          y = df_gd$slope,
+          z = df_gd$cost,
+          xlab = "intercept",
+          ylab = "slope",
+          zlab = "cost (mse)",
+          col = ramp.col(col = sort(RColorBrewer::brewer.pal(9, "Blues"), decreasing = F),
+                         n = length(unique(df_gd$cost))),
+          colkey = F,
+          phi = 10,
+          theta = 45,
+          main = "Gradient Descent (3D View)"
+          )
+```
+
+```{r}
+# plot intercept and slope, and color by cost (mse)
+# highlight and label min(cost)
+ggplot(df_gd, aes(slope, int, color = cost)) +
+  geom_point() +
+  geom_point(data = subset(df_gd, cost == min(cost)), color = "black", shape = 21, alpha = .5) +
+  geom_text_repel(
+    data = subset(df_gd, cost == min(cost)),
+    mapping = aes(label = paste0("min(cost) = ", cost, "\nintercept = ", int, "\nslope = ", slope)),
+    nudge_y = 30000,
+    nudge_x = 1000,
+    box.padding = 1.5,
+    point.padding = 0.5,
+    segment.size = 0.2,
+    segment.color = "black",
+    color = "black"
+  ) +
+  labs(
+    title = "Gradient Descent (2D View)",
+    y = "intercept",
+    color = "cost (mse)"
+  ) +
+  scale_color_distiller(palette = "Blues") +
+  theme_minimal()
+
+```
+
+We can see from these random samples of intercepts and slopes that the lowest cost is `r round(min(df_gd$cost), 2)` with an intercept of `r subset(df_gd, cost == min(cost))$int` and slope of `r subset(df_gd, cost == min(cost))$slope`. So no matter where we start (any intercept and slope combination), we should descend and ultimately end up with the lowest cost value of `r round(min(df_gd$cost), 2)`.
+
+<br>
+
+## Partial Derivatives
+
+How do we calculate the partial derivatives?
+
+First, we expand MSE.
+
+$$ 
+\tag{5}
+\begin{align}
+MSE & = \frac{(Y-X\beta)^2}{N} \\
+& = \frac{(Y-X\beta)(Y-X\beta)}{N} \\
+& = \frac{(Y^2-2YX\beta+X^2\beta^2)}{N} \\
+& = \frac{Y^2}{N} - \frac{2YX\beta}{N}+\frac{X^2\beta^2}{N} \\
+\end{align}
+$$
+
+To calculate the partial derivative, we repeat the following for each term:
+
+1. Set the term without $\beta$ to 0 
+2. Multiply the term by the exponent of $\beta$
+3. Subtract 1 from the exponent of $\beta$
+
+and simplify.
+
+$$
+\tag{6}
+\begin{align}
+\frac{\partial MSE}{\partial \hat{\beta}} & = 0 - \frac{1*2YX\beta^0}{N} + \frac{2X^2\beta^1}{N} \\
+& = \frac{-2YX+2X^2\beta}{N} \\
+& = \frac{-2X(Y-X\beta)}{N} \\
+& = \frac{-2X\epsilon}{N}
+\end{align}
+$$
+Note: We set the term without $\beta$ to 0 in step 1 because that term can be thought of as having $\beta^0$, which equals 1. When we then multiply the term by the exponent of 0, we end up with a term of 0.
+
+<br>
+
+## Update Coefficients
+
+How do we update the coefficients?
+
+We can update the coefficients $\beta$ by subtracting the partial derivatives multiplied by the learning rate.
+
+$$
+\tag{7}
+\hat{\beta} = \hat{\beta} - \frac{\partial MSE}{\partial \hat{\beta}}*learning\ rate
+$$
+
+This essentially moves the coefficients into the direction of a lower cost function. How fast the coefficients update is determined by the learning rate. A higher learning rate descends quickly but may be susceptible to skipping or moving passed the global minima. A lower learning rate is more precise but is slower as it takes more time to compute.
+
+```{r}
+update_b <- function(y, x, b, lr) {
+  y_pred <- x %*% b
+  e <- y - y_pred
+  derivatives <- (-2 * t(x) %*% e ) / nrow(x)
+  b <- b - derivatives * lr
+  return(b)
+}
+```
+
+<br>
+
+## Train
+
+Now, let's train the data arbitrarily starting the coefficients at 0.
+
+```{r}
+# set number of iterations
+iter <- 50000
+
+# set learning rate
+lr <- 0.0001
+
+# set initial values of coefficients
+b <- NULL
+for (i in 1:ncol(x)) {
+  b[i] <- 0
+}
+b <- as.matrix(b)
+
+cat(paste("iteration", "intercept", "slope", "cost\n", 
+          "0", b[1], b[2], obtain_cost(y, x, b)))
+
+# set initial training dataset
+df_train <- tibble(
+  iter = NA,
+  int = NA,
+  slope = NA,
+  cost = NA,
+  .rows = iter
+)
+
+# train and save training history using for loop
+for (i in 1:iter) {
+  b <- update_b(y, x, b, lr)
+  df_train$iter[i] <- i
+  df_train$int[i] <- b[1]
+  df_train$slope[i] <- b[2]
+  df_train$cost[i] <- obtain_cost(y, x, b)
+  if (i %in% round(seq(1, iter, length.out = 10), 0)) {
+    cat(paste("\n", i, b[1], b[2], obtain_cost(y, x, b)))
+  }
+}
+```
+
+<br>
+
+### Plot Training
+
+```{r}
+ggplot(df_train, aes(iter, cost)) +
+  geom_line() +
+  theme_minimal() +
+  labs(
+    x = "iterations",
+    y = "cost (mse)"
+  )
+```
+
+We can see that cost (MSE) flattens out around 15,000 iterations. 
+
+<br>
+
+### Plot Gradient Descent Path
+
+Let's visualize the path that the gradient descent took starting from our initial intercept and slope value of 0.
+
+```{r}
+n_sample <- 100000
+df_gd <- tibble(
+  int = sample(seq(0, 150000), n_sample, T),
+  slope = sample(seq(0, 2000), n_sample, T)
+) %>%
+  rowwise() %>%
+  mutate(cost = obtain_cost(y, x, b = c(int, slope)))
+
+df_train_sorted <- df_train %>% arrange(cost, iter)
+df_min <- df_train_sorted[1, ]
+
+ggplot(df_gd, aes(slope, int, color = cost)) +
+  geom_point() +
+  scale_color_distiller(palette = "Blues") +
+  theme_minimal() +
+  labs(
+    y = "intercept",
+    color = "cost (mse)"
+  ) +
+  geom_line(data = df_train, mapping = aes(slope, int), color = "black", size = 0.5, alpha = 0.5) +
+  geom_point(data = df_min, mapping = aes(slope, int), color = "black", shape = 21, alpha = .5) +
+  geom_text_repel(
+    data = df_min,
+    mapping = aes(label = paste0("min(cost) = ", cost, "\nintercept = ", int, "\nslope = ", slope)),
+    nudge_y = 30000,
+    nudge_x = 1000,
+    box.padding = 1.5,
+    point.padding = 0.5,
+    segment.size = 0.2,
+    segment.color = "black",
+    color = "black"
+  )
+```
+
+We can see that most of the iterations were spent optimizing the slope with minimal changes to the intercept as well as the cost (MSE) up until around iteration 1000. Then, the optimal intercept was found within a few iterations, which dramatically reduced cost (MSE).
+
+<br>
+
+## Compare Gradient Descent and `lm()`
+
+We can compare the results of gradient descent with `lm()` to ensure that we did this correctly. We should approximately have the same results within rounding error because OLS is a convex shape with only one global minima.
+
+<br>
+
+### Solve OLS using Gradient Descent
+```{r}
+coef <- c("(Intercept)" = df_min$int, "yrs.since.phd" = df_min$slope)
+rmse_coef <- (solve(t(x) %*% x) * df_min$cost) %>%
+  diag() %>%
+  sqrt()
+t_stat <- coef / rmse_coef
+n <- nrow(x)
+p <- ncol(x)
+df <- n - p
+p_value <- 2 * pt(t_stat, df, lower = FALSE)
+tibble(
+  term = colnames(x),
+  estimate = coef,
+  std.error = rmse_coef,
+  statistic = t_stat,
+  p.value = p_value
+)
+```
+
+<br>
+
+### Solve OLS using `lm()`
+```{r}
+model <- lm(y ~ x)
+tidy(model)
+```
+
+<br>
+
+### Cost
+```{r}
+glue("Cost using GD: {df_min$cost}\nCost using lm(): {glance(model)$sigma^2}")
+```
+
+<br>
+
+### Figure
+```{r}
+fig_gd <- ggplot(mapping = aes(x[, 2], y)) +
+  geom_point(alpha = 0.5) +
+  geom_abline(intercept = coef[1], slope = coef[2], size = 1) +
+  theme_minimal() +
+  labs(
+    title = "Solved using Gradient Descent",
+    x = "yrs.since.phd",
+    y = "salary"
+  )
+
+fig_lm <- ggplot(mapping = aes(x[, 2], y)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(color = "black", method = "lm", se = F) +
+  theme_minimal() +
+  labs(
+    title = "Solved using lm()",
+    x = "yrs.since.phd",
+    y = "salary"
+  )
+
+gridExtra::grid.arrange(fig_gd, fig_lm, nrow = 1)
+```

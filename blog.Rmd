@@ -63,6 +63,19 @@ blog_se <- describe(blog_summary_complete$frequency)["se"]
 </div></div>
 
 <div class="divTableRow"><div class="divTableCell">
+2019-06-09
+</div><div class="divTableCell">
+<div class="divBlogTitle">
+[Solving Ordinary Least Squares (OLS) Regression Using Gradient Descent](blog_solving_ols_regression_using_gradient_descent.html)
+</div>
+A brief guide to solving ordianry least squares (OLS) regression using gradient descent in R.
+<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
+<span class="badge badge-pill badge-primary">R</span>
+</div></div>
+
+<BR>
+
+<div class="divTableRow"><div class="divTableCell">
 2019-03-07
 </div><div class="divTableCell">
 <div class="divBlogTitle">

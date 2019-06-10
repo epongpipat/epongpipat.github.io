@@ -24,22 +24,22 @@ link <- text_spec("Google", link = "https://google.com")
 
 updates_table <- as.data.frame(rbind(
   cbind(
+    "Date" = "2019-06-10",
+    "Category" = "Blog Post",
+    "Item" = "Solving Ordinary Least Squares (OLS) Regression using Gradient Descent",
+    "Link" = "<a href='file:///Users/epongpipat/Documents/GitHub/epongpipat.github.io/blog_solving_ols_regression_using_gradient_descent.html'><i class='fas fa-link'></i></a>"
+  ),
+  cbind(
+    "Date" = "2019-05-03",
+    "Category" = "eBook",
+    "Item" = "A Practical Extension of Introductory Statistics in Psychology using R",
+    "Link" = "<a href='https://ekarinpongpipat.com/practical-ext-of-intro-stats-in-psy-using-R/', target='_blank'><i class='fas fa-link'></i></a>"
+  ),
+  cbind(
     "Date" = "2019-03-07",
     "Category" = "Blog Post",
     "Item" = "Exploring 11 Years of Chicago Blackhawk's Data using Principal Components Analysis",
     "Link" = "<a href='https://mattkmiecik.com/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis.html', target='_blank'><i class='fas fa-link'></i></a>"
-  ),
-  cbind(
-    "Date" = "2019-01-30",
-    "Category" = "Blog Post",
-    "Item" = "Solving Ordinary Least Squares (OLS) Regression Using Matrix Algebra",
-    "Link" = "<a href='blog_solving_ols_regression_using_matrix_algebra.html'><i class='fas fa-link'></i></a>"
-  ),
-  cbind(
-    "Date" = "2018-09-01",
-    "Category" = "Blog Post",
-    "Item" = "Bootstrapping and Permutation Testing: A Shiny App (A Dashboard Update)",
-    "Link" = "<a href='https://mattkmiecik.shinyapps.io/boot-perm-dash/' target='_blank'><i class='fas fa-link'></i></a>"
   )
 ))
 

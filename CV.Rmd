@@ -11,13 +11,8 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-library(tidyverse)
-library(knitr)
-library(kableExtra)
-library(dplyr)
-library(glue)
-library(psych)
-library(scales)
+packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales")
+xfun::pkg_attach(packages, message = F)
 ```
 
 *Updated on January 4, 2019*

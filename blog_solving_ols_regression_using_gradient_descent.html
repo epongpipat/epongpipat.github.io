@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Ekarin Eric Pongpipat, M.A." />
+
+
+<title>Solving Ordinary Least Squares (OLS) Regression using Gradient Descent</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116039246-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116039246-1');
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("blog_solving_ols_regression_using_gradient_descent.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <a class="navbar-brand" href="index.html"><span class="fas fa-terminal" aria-hidden="true"></span></a>
+      <a class="navbar-brand" href="index.html"><img src="images/icons8-artificial-intelligence-100.png" style="height: 20px"></a>
+      <a class="navbar-brand" href="index.html"><img src="images/icons8-scatter-plot-96.png" style="height: 20px"></a>
+      <a class="navbar-brand" href="index.html">Ekarin Eric Pongpipat, M.A.</a>
+    </div> <!-- /.navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="blog.html"><span class="fas fa-quote-left" aria-hidden="true"></span> &ensp;Blog</a></li>
+         <li><a href="books.html"><span class="fas fa-book" aria-hidden="true"></span> &ensp;eBooks</a></li>
+        <li><a href="CV.html"><span class="far fa-id-badge" aria-hidden="true"></span> &ensp;CV</a></li>
+        <li><a href="https://github.com/epongpipat" target="_blank"><span class="fa fa-github" aria-hidden="true"></span> &ensp;GitHub</a></li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fas fa-handshake" aria-hidden="true"></span> &ensp;Connect<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="mailto:epongpipat@gmail.com" target="_blank"><span class="fa fa-envelope" aria-hidden="true"></span> &ensp;Email</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="https://www.researchgate.net/profile/Ekarin_Pongpipat" target="_blank"><span class="fab fa-researchgate" aria-hidden="true"></span> &ensp;ResearchGate</a></li>
+            <li><a href="https://www.linkedin.com/in/epongpipat/" target="_blank"><span class="fa fa-linkedin" aria-hidden="true"></span> &ensp;LinkedIn</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div> <!-- /.navbar-collapse -->
+
+  </div> <!-- /.container -->
+</nav> <!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Solving Ordinary Least Squares (OLS) Regression using Gradient Descent</h1>
+<h4 class="author">Ekarin Eric Pongpipat, M.A.</h4>
+<h4 class="date">6/9/2019</h4>
+
+</div>
+
+
+<p><br></p>
+<p>A brief tutorial on solving OLS using gradient descent using R.</p>
+<p>Remember that the equation for OLS is:</p>
+<p><span class="math display">\[
+\tag{1}
+Y = X\beta + \epsilon
+\]</span></p>
+<p>where <span class="math inline">\(Y\)</span> is a column-wise vector of DVs, <span class="math inline">\(X\)</span> is a matrix of IVs, <span class="math inline">\(\beta\)</span> is a column-wise vector of regression coefficients, and <span class="math inline">\(\epsilon\)</span> is a column-wise vector of error.</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+\tag{2}
+y_1 \\
+y_2 \\
+. \\
+. \\
+. \\
+y_n \\
+\end{bmatrix} = 
+\begin{bmatrix}
+1 &amp; x_{1, 1} &amp; x_{1, 2} &amp; . &amp; . &amp; . &amp; x_{1, n} \\
+1 &amp; x_{2, 1} &amp; x_{2, 2} &amp; . &amp; . &amp; . &amp; x_{2, n}\\
+. &amp; . &amp; . &amp; . &amp; . &amp; . &amp; .\\
+. &amp; . &amp; . &amp; . &amp; . &amp; . &amp; .\\
+. &amp; . &amp; . &amp; . &amp; . &amp; . &amp; .\\
+1 &amp; x_{n, 1} &amp; x_{n, 2} &amp; . &amp; . &amp; . &amp; x_{n, n}\\
+\end{bmatrix}
+\begin{bmatrix}
+b_0 \\
+b_1 \\
+. \\
+. \\
+. \\
+b_n \\
+\end{bmatrix} +
+\begin{bmatrix}
+e_1 \\
+e_2 \\
+. \\
+. \\
+. \\
+e_n \\
+\end{bmatrix}
+\]</span></p>
+<p>For a review of matrix multiplication, check out my <a href="blog_solving_ols_regression_using_matrix_algebra.html">previous blog post</a>.</p>
+<p><br></p>
+<p>OLS tries to minimize error using the mean squared error (MSE) formula:</p>
+<p><span class="math display">\[
+\tag{3}
+MSE = \frac{\Sigma (Y-\hat{Y})^2}{N} = \frac{\Sigma e_i^2}{N} = mean(e_i^2)
+\]</span></p>
+<center>
+where <span class="math inline">\(\hat{Y} = X\beta\)</span>
+</center>
+<p><br></p>
+<p>Note: MSE is a single cost function (or formula) from many that we could choose from. For example, another cost function is mean absolute error (MAE):</p>
+<p><span class="math display">\[
+\tag{4}
+MAE = \frac{\Sigma |Y-\hat{Y}|}{N} = \frac{\Sigma|e_i|}{N} = mean(abs(e_i))
+\]</span></p>
+<pre class="r"><code>obtain_cost &lt;- function(y, x, b) {
+  y_pred &lt;- x %*% b
+  e &lt;- y - y_pred
+  se &lt;- e^2
+  mse &lt;- mean(se)
+  return(mse)
+}</code></pre>
+<p><br></p>
+<blockquote>
+<p>Let’s say that we are interested in understanding if the number of years a professor has had their Ph.D. is associated with a higher 9-month academic salary.</p>
+</blockquote>
+<p><br></p>
+<div id="r-libraries" class="section level2">
+<h2>R Libraries</h2>
+<p>First, let’s load some packages.</p>
+<pre class="r"><code>packages &lt;- c(&quot;tidyverse&quot;,   # data manipulation and visualization
+              &quot;carData&quot;,     # data set to obtain professor&#39;s 9-month salary
+              &quot;broom&quot;,       # nice table format of cofficients from lm()
+              &quot;ggrepel&quot;,     # ggplot extension to repel text and extra features
+              &quot;glue&quot;,        # concatentate strings and alias
+              &quot;plot3D&quot;,      # plot 3D figures
+              &quot;RColorBrewer&quot; # load color palettes
+              )
+xfun::pkg_attach(packages, message = F)</code></pre>
+<p><br></p>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>Then, let’s define our IV (<code>yrs.since.phd</code>) as <code>x</code> and our DV (<code>salary</code>) as <code>y</code> using the <code>Salaries</code> dataset in the <code>carData</code> package.</p>
+<pre class="r"><code>x &lt;- model.matrix(~ scale(yrs.since.phd, scale = F), Salaries)
+colnames(x) &lt;- c(&quot;(Intercept)&quot;, &quot;yrs.since.phd&quot;)
+dim(x)</code></pre>
+<pre><code>## [1] 397   2</code></pre>
+<pre class="r"><code>head(x)</code></pre>
+<pre><code>##   (Intercept) yrs.since.phd
+## 1           1     -3.314861
+## 2           1     -2.314861
+## 3           1    -18.314861
+## 4           1     22.685139
+## 5           1     17.685139
+## 6           1    -16.314861</code></pre>
+<pre class="r"><code>y &lt;- Salaries$salary %&gt;% as.matrix()
+colnames(y) &lt;- c(&quot;salary&quot;)
+dim(y)</code></pre>
+<pre><code>## [1] 397   1</code></pre>
+<pre class="r"><code>head(y)</code></pre>
+<pre><code>##      salary
+## [1,] 139750
+## [2,] 173200
+## [3,]  79750
+## [4,] 115000
+## [5,] 141500
+## [6,]  97000</code></pre>
+<p><br></p>
+</div>
+<div id="gradient-descent" class="section level2">
+<h2>Gradient Descent</h2>
+<p>What is gradient descent?</p>
+<p>Starting at any position (i.e., intercept and slope combination), gradient descent takes the partial derivative of each coefficient (<span class="math inline">\(\beta\)</span>) from the cost function (MSE) and moves (or descends) in the direction that will continue to minimize the cost (or gradient) function.</p>
+<pre class="r"><code># random sample of possible intercepts and slopes
+# then calculate cost function (mse) for each intercept and slope combination
+n_sample &lt;- 200000
+df_gd &lt;- tibble(
+  int = sample(seq(0, 200000), n_sample, T),
+  slope = sample(seq(-10000, 10000), n_sample, T)
+) %&gt;%
+  rowwise() %&gt;%
+  mutate(cost = obtain_cost(y, x, b = c(int, slope)))</code></pre>
+<pre class="r"><code>scatter3D(x = df_gd$int,
+          y = df_gd$slope,
+          z = df_gd$cost,
+          xlab = &quot;intercept&quot;,
+          ylab = &quot;slope&quot;,
+          zlab = &quot;cost (mse)&quot;,
+          col = ramp.col(col = sort(RColorBrewer::brewer.pal(9, &quot;Blues&quot;), decreasing = F),
+                         n = length(unique(df_gd$cost))),
+          colkey = F,
+          phi = 10,
+          theta = 45,
+          main = &quot;Gradient Descent (3D View)&quot;
+          )</code></pre>
+<p><img src="blog_solving_ols_regression_using_gradient_descent_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code># plot intercept and slope, and color by cost (mse)
+# highlight and label min(cost)
+ggplot(df_gd, aes(slope, int, color = cost)) +
+  geom_point() +
+  geom_point(data = subset(df_gd, cost == min(cost)), color = &quot;black&quot;, shape = 21, alpha = .5) +
+  geom_text_repel(
+    data = subset(df_gd, cost == min(cost)),
+    mapping = aes(label = paste0(&quot;min(cost) = &quot;, cost, &quot;\nintercept = &quot;, int, &quot;\nslope = &quot;, slope)),
+    nudge_y = 30000,
+    nudge_x = 1000,
+    box.padding = 1.5,
+    point.padding = 0.5,
+    segment.size = 0.2,
+    segment.color = &quot;black&quot;,
+    color = &quot;black&quot;
+  ) +
+  labs(
+    title = &quot;Gradient Descent (2D View)&quot;,
+    y = &quot;intercept&quot;,
+    color = &quot;cost (mse)&quot;
+  ) +
+  scale_color_distiller(palette = &quot;Blues&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="blog_solving_ols_regression_using_gradient_descent_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We can see from these random samples of intercepts and slopes that the lowest cost is 7.543877310^{8} with an intercept of 114006 and slope of 996. So no matter where we start (any intercept and slope combination), we should descend and ultimately end up with the lowest cost value of 7.543877310^{8}.</p>
+<p><br></p>
+</div>
+<div id="partial-derivatives" class="section level2">
+<h2>Partial Derivatives</h2>
+<p>How do we calculate the partial derivatives?</p>
+<p>First, we expand MSE.</p>
+<p><span class="math display">\[ 
+\tag{5}
+\begin{align}
+MSE &amp; = \frac{(Y-X\beta)^2}{N} \\
+&amp; = \frac{(Y-X\beta)(Y-X\beta)}{N} \\
+&amp; = \frac{(Y^2-2YX\beta+X^2\beta^2)}{N} \\
+&amp; = \frac{Y^2}{N} - \frac{2YX\beta}{N}+\frac{X^2\beta^2}{N} \\
+\end{align}
+\]</span></p>
+<p>To calculate the partial derivative, we repeat the following for each term:</p>
+<ol style="list-style-type: decimal">
+<li>Set the term without <span class="math inline">\(\beta\)</span> to 0</li>
+<li>Multiply the term by the exponent of <span class="math inline">\(\beta\)</span></li>
+<li>Subtract 1 from the exponent of <span class="math inline">\(\beta\)</span></li>
+</ol>
+<p>and simplify.</p>
+<p><span class="math display">\[
+\tag{6}
+\begin{align}
+\frac{\partial MSE}{\partial \hat{\beta}} &amp; = 0 - \frac{1*2YX\beta^0}{N} + \frac{2X^2\beta^1}{N} \\
+&amp; = \frac{-2YX+2X^2\beta}{N} \\
+&amp; = \frac{-2X(Y-X\beta)}{N} \\
+&amp; = \frac{-2X\epsilon}{N}
+\end{align}
+\]</span> Note: We set the term without <span class="math inline">\(\beta\)</span> to 0 in step 1 because that term can be thought of as having <span class="math inline">\(\beta^0\)</span>, which equals 1. When we then multiply the term by the exponent of 0, we end up with a term of 0.</p>
+<p><br></p>
+</div>
+<div id="update-coefficients" class="section level2">
+<h2>Update Coefficients</h2>
+<p>How do we update the coefficients?</p>
+<p>We can update the coefficients <span class="math inline">\(\beta\)</span> by subtracting the partial derivatives multiplied by the learning rate.</p>
+<p><span class="math display">\[
+\tag{7}
+\hat{\beta} = \hat{\beta} - \frac{\partial MSE}{\partial \hat{\beta}}*learning\ rate
+\]</span></p>
+<p>This essentially moves the coefficients into the direction of a lower cost function. How fast the coefficients update is determined by the learning rate. A higher learning rate descends quickly but may be susceptible to skipping or moving passed the global minima. A lower learning rate is more precise but is slower as it takes more time to compute.</p>
+<pre class="r"><code>update_b &lt;- function(y, x, b, lr) {
+  y_pred &lt;- x %*% b
+  e &lt;- y - y_pred
+  derivatives &lt;- (-2 * t(x) %*% e ) / nrow(x)
+  b &lt;- b - derivatives * lr
+  return(b)
+}</code></pre>
+<p><br></p>
+</div>
+<div id="train" class="section level2">
+<h2>Train</h2>
+<p>Now, let’s train the data arbitrarily starting the coefficients at 0.</p>
+<pre class="r"><code># set number of iterations
+iter &lt;- 50000
+
+# set learning rate
+lr &lt;- 0.0001
+
+# set initial values of coefficients
+b &lt;- NULL
+for (i in 1:ncol(x)) {
+  b[i] &lt;- 0
+}
+b &lt;- as.matrix(b)
+
+cat(paste(&quot;iteration&quot;, &quot;intercept&quot;, &quot;slope&quot;, &quot;cost\n&quot;, 
+          &quot;0&quot;, b[1], b[2], obtain_cost(y, x, b)))</code></pre>
+<pre><code>## iteration intercept slope cost
+##  0 0 0 13844273659.2443</code></pre>
+<pre class="r"><code># set initial training dataset
+df_train &lt;- tibble(
+  iter = NA,
+  int = NA,
+  slope = NA,
+  cost = NA,
+  .rows = iter
+)
+
+# train and save training history using for loop
+for (i in 1:iter) {
+  b &lt;- update_b(y, x, b, lr)
+  df_train$iter[i] &lt;- i
+  df_train$int[i] &lt;- b[1]
+  df_train$slope[i] &lt;- b[2]
+  df_train$cost[i] &lt;- obtain_cost(y, x, b)
+  if (i %in% round(seq(1, iter, length.out = 10), 0)) {
+    cat(paste(&quot;\n&quot;, i, b[1], b[2], obtain_cost(y, x, b)))
+  }
+}</code></pre>
+<pre><code>## 
+##  1 22.7412916876574 32.6456713829794 13828621661.1008
+##  5556 76282.5760643239 985.342124121374 2154826164.68728
+##  11112 101389.24276579 985.342124121374 905992994.66985
+##  16667 109651.717424604 985.342124121374 770720117.435087
+##  22223 112371.933092611 985.342124121374 756060150.645294
+##  27778 113267.142054066 985.342124121374 754472191.632487
+##  33334 113561.867489683 985.342124121374 754300099.289461
+##  38889 113658.860112082 985.342124121374 754281458.3477
+##  44445 113690.792536934 985.342124121374 754279438.167507
+##  50000 113701.301333433 985.342124121374 754279219.342773</code></pre>
+<p><br></p>
+<div id="plot-training" class="section level3">
+<h3>Plot Training</h3>
+<pre class="r"><code>ggplot(df_train, aes(iter, cost)) +
+  geom_line() +
+  theme_minimal() +
+  labs(
+    x = &quot;iterations&quot;,
+    y = &quot;cost (mse)&quot;
+  )</code></pre>
+<p><img src="blog_solving_ols_regression_using_gradient_descent_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>We can see that cost (MSE) flattens out around 15,000 iterations.</p>
+<p><br></p>
+</div>
+<div id="plot-gradient-descent-path" class="section level3">
+<h3>Plot Gradient Descent Path</h3>
+<p>Let’s visualize the path that the gradient descent took starting from our initial intercept and slope value of 0.</p>
+<pre class="r"><code>n_sample &lt;- 100000
+df_gd &lt;- tibble(
+  int = sample(seq(0, 150000), n_sample, T),
+  slope = sample(seq(0, 2000), n_sample, T)
+) %&gt;%
+  rowwise() %&gt;%
+  mutate(cost = obtain_cost(y, x, b = c(int, slope)))
+
+df_train_sorted &lt;- df_train %&gt;% arrange(cost, iter)
+df_min &lt;- df_train_sorted[1, ]
+
+ggplot(df_gd, aes(slope, int, color = cost)) +
+  geom_point() +
+  scale_color_distiller(palette = &quot;Blues&quot;) +
+  theme_minimal() +
+  labs(
+    y = &quot;intercept&quot;,
+    color = &quot;cost (mse)&quot;
+  ) +
+  geom_line(data = df_train, mapping = aes(slope, int), color = &quot;black&quot;, size = 0.5, alpha = 0.5) +
+  geom_point(data = df_min, mapping = aes(slope, int), color = &quot;black&quot;, shape = 21, alpha = .5) +
+  geom_text_repel(
+    data = df_min,
+    mapping = aes(label = paste0(&quot;min(cost) = &quot;, cost, &quot;\nintercept = &quot;, int, &quot;\nslope = &quot;, slope)),
+    nudge_y = 30000,
+    nudge_x = 1000,
+    box.padding = 1.5,
+    point.padding = 0.5,
+    segment.size = 0.2,
+    segment.color = &quot;black&quot;,
+    color = &quot;black&quot;
+  )</code></pre>
+<p><img src="blog_solving_ols_regression_using_gradient_descent_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>We can see that most of the iterations were spent optimizing the slope with minimal changes to the intercept as well as the cost (MSE) up until around iteration 1000. Then, the optimal intercept was found within a few iterations, which dramatically reduced cost (MSE).</p>
+<p><br></p>
+</div>
+</div>
+<div id="compare-gradient-descent-and-lm" class="section level2">
+<h2>Compare Gradient Descent and <code>lm()</code></h2>
+<p>We can compare the results of gradient descent with <code>lm()</code> to ensure that we did this correctly. We should approximately have the same results within rounding error because OLS is a convex shape with only one global minima.</p>
+<p><br></p>
+<div id="solve-ols-using-gradient-descent" class="section level3">
+<h3>Solve OLS using Gradient Descent</h3>
+<pre class="r"><code>coef &lt;- c(&quot;(Intercept)&quot; = df_min$int, &quot;yrs.since.phd&quot; = df_min$slope)
+rmse_coef &lt;- (solve(t(x) %*% x) * df_min$cost) %&gt;%
+  diag() %&gt;%
+  sqrt()
+t_stat &lt;- coef / rmse_coef
+n &lt;- nrow(x)
+p &lt;- ncol(x)
+df &lt;- n - p
+p_value &lt;- 2 * pt(t_stat, df, lower = FALSE)
+tibble(
+  term = colnames(x),
+  estimate = coef,
+  std.error = rmse_coef,
+  statistic = t_stat,
+  p.value = p_value
+)</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   term          estimate std.error statistic   p.value
+##   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    113701.     1378.     82.5  4.24e-251
+## 2 yrs.since.phd     985.      107.      9.20 2.09e- 18</code></pre>
+<p><br></p>
+</div>
+<div id="solve-ols-using-lm" class="section level3">
+<h3>Solve OLS using <code>lm()</code></h3>
+<pre class="r"><code>model &lt;- lm(y ~ x)
+tidy(model)</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   term           estimate std.error statistic   p.value
+##   &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)     113706.     1382.     82.3  1.07e-250
+## 2 xyrs.since.phd     985.      107.      9.18 2.50e- 18</code></pre>
+<p><br></p>
+</div>
+<div id="cost" class="section level3">
+<h3>Cost</h3>
+<pre class="r"><code>glue(&quot;Cost using GD: {df_min$cost}\nCost using lm(): {glance(model)$sigma^2}&quot;)</code></pre>
+<pre><code>## Cost using GD: 754279219.342773
+## Cost using lm(): 758098327.900192</code></pre>
+<p><br></p>
+</div>
+<div id="figure" class="section level3">
+<h3>Figure</h3>
+<pre class="r"><code>fig_gd &lt;- ggplot(mapping = aes(x[, 2], y)) +
+  geom_point(alpha = 0.5) +
+  geom_abline(intercept = coef[1], slope = coef[2], size = 1) +
+  theme_minimal() +
+  labs(
+    title = &quot;Solved using Gradient Descent&quot;,
+    x = &quot;yrs.since.phd&quot;,
+    y = &quot;salary&quot;
+  )
+
+fig_lm &lt;- ggplot(mapping = aes(x[, 2], y)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(color = &quot;black&quot;, method = &quot;lm&quot;, se = F) +
+  theme_minimal() +
+  labs(
+    title = &quot;Solved using lm()&quot;,
+    x = &quot;yrs.since.phd&quot;,
+    y = &quot;salary&quot;
+  )
+
+gridExtra::grid.arrange(fig_gd, fig_lm, nrow = 1)</code></pre>
+<p><img src="blog_solving_ols_regression_using_gradient_descent_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiU29sdmluZyBPcmRpbmFyeSBMZWFzdCBTcXVhcmVzIChPTFMpIFJlZ3Jlc3Npb24gdXNpbmcgR3JhZGllbnQgRGVzY2VudCIKYXV0aG9yOiAiRWthcmluIEVyaWMgUG9uZ3BpcGF0LCBNLkEuIgpkYXRlOiAiNi85LzIwMTkiCm91dHB1dDogCiAgaHRtbF9kb2N1bWVudDoKICAgIGhpZ2hsaWdodDogdGV4dG1hdGUKICAgIHRoZW1lOiBsdW1lbgogICAgY29kZV9kb3dubG9hZDogVFJVRQogICAgY29kZV9mb2xkaW5nOiBzaG93CiAgICB0b2M6IHllcwogICAgdG9jX2RlcHRoOiAzCiAgICB0b2NfZmxvYXQ6CiAgICAgIGNvbGxhcHNlZDogeWVzCiAgICAgIHNtb290aF9zY3JvbGw6IHllcwotLS0KCjxicj4KCkEgYnJpZWYgdHV0b3JpYWwgb24gc29sdmluZyBPTFMgdXNpbmcgZ3JhZGllbnQgZGVzY2VudCB1c2luZyBSLiAKClJlbWVtYmVyIHRoYXQgdGhlIGVxdWF0aW9uIGZvciBPTFMgaXM6CgokJApcdGFnezF9ClkgPSBYXGJldGEgKyBcZXBzaWxvbgokJAoKd2hlcmUgJFkkIGlzIGEgY29sdW1uLXdpc2UgdmVjdG9yIG9mIERWcywgJFgkIGlzIGEgbWF0cml4IG9mIElWcywgJFxiZXRhJCBpcyBhIGNvbHVtbi13aXNlIHZlY3RvciBvZiByZWdyZXNzaW9uIGNvZWZmaWNpZW50cywgYW5kICRcZXBzaWxvbiQgaXMgYSBjb2x1bW4td2lzZSB2ZWN0b3Igb2YgZXJyb3IuCgokJApcYmVnaW57Ym1hdHJpeH0KXHRhZ3syfQp5XzEgXFwKeV8yIFxcCi4gXFwKLiBcXAouIFxcCnlfbiBcXApcZW5ke2JtYXRyaXh9ID0gClxiZWdpbntibWF0cml4fQoxICYgeF97MSwgMX0gJiB4X3sxLCAyfSAmIC4gJiAuICYgLiAmIHhfezEsIG59IFxcCjEgJiB4X3syLCAxfSAmIHhfezIsIDJ9ICYgLiAmIC4gJiAuICYgeF97Miwgbn1cXAouICYgLiAmIC4gJiAuICYgLiAmIC4gJiAuXFwKLiAmIC4gJiAuICYgLiAmIC4gJiAuICYgLlxcCi4gJiAuICYgLiAmIC4gJiAuICYgLiAmIC5cXAoxICYgeF97biwgMX0gJiB4X3tuLCAyfSAmIC4gJiAuICYgLiAmIHhfe24sIG59XFwKXGVuZHtibWF0cml4fQpcYmVnaW57Ym1hdHJpeH0KYl8wIFxcCmJfMSBcXAouIFxcCi4gXFwKLiBcXApiX24gXFwKXGVuZHtibWF0cml4fSArClxiZWdpbntibWF0cml4fQplXzEgXFwKZV8yIFxcCi4gXFwKLiBcXAouIFxcCmVfbiBcXApcZW5ke2JtYXRyaXh9CiQkCgpGb3IgYSByZXZpZXcgb2YgbWF0cml4IG11bHRpcGxpY2F0aW9uLCBjaGVjayBvdXQgbXkgW3ByZXZpb3VzIGJsb2cgcG9zdF0oYmxvZ19zb2x2aW5nX29sc19yZWdyZXNzaW9uX3VzaW5nX21hdHJpeF9hbGdlYnJhLmh0bWwpLgoKPGJyPgoKT0xTIHRyaWVzIHRvIG1pbmltaXplIGVycm9yIHVzaW5nIHRoZSBtZWFuIHNxdWFyZWQgZXJyb3IgKE1TRSkgZm9ybXVsYToKCiQkClx0YWd7M30KTVNFID0gXGZyYWN7XFNpZ21hIChZLVxoYXR7WX0pXjJ9e059ID0gXGZyYWN7XFNpZ21hIGVfaV4yfXtOfSA9IG1lYW4oZV9pXjIpCiQkCgo8Y2VudGVyPndoZXJlICRcaGF0e1l9ID0gWFxiZXRhJDwvY2VudGVyPgoKPGJyPgoKTm90ZTogTVNFIGlzIGEgc2luZ2xlIGNvc3QgZnVuY3Rpb24gKG9yIGZvcm11bGEpIGZyb20gbWFueSB0aGF0IHdlIGNvdWxkIGNob29zZSBmcm9tLiBGb3IgZXhhbXBsZSwgYW5vdGhlciBjb3N0IGZ1bmN0aW9uIGlzIG1lYW4gYWJzb2x1dGUgZXJyb3IgKE1BRSk6IAoKJCQKXHRhZ3s0fQpNQUUgPSBcZnJhY3tcU2lnbWEgfFktXGhhdHtZfXx9e059ID0gXGZyYWN7XFNpZ21hfGVfaXx9e059ID0gbWVhbihhYnMoZV9pKSkKJCQKCgpgYGB7cn0Kb2J0YWluX2Nvc3QgPC0gZnVuY3Rpb24oeSwgeCwgYikgewogIHlfcHJlZCA8LSB4ICUqJSBiCiAgZSA8LSB5IC0geV9wcmVkCiAgc2UgPC0gZV4yCiAgbXNlIDwtIG1lYW4oc2UpCiAgcmV0dXJuKG1zZSkKfQpgYGAKCjxicj4KCj4gTGV0J3Mgc2F5IHRoYXQgd2UgYXJlIGludGVyZXN0ZWQgaW4gdW5kZXJzdGFuZGluZyBpZiB0aGUgbnVtYmVyIG9mIHllYXJzIGEgcHJvZmVzc29yIGhhcyBoYWQgdGhlaXIgUGguRC4gaXMgYXNzb2NpYXRlZCB3aXRoIGEgaGlnaGVyIDktbW9udGggYWNhZGVtaWMgc2FsYXJ5LiAKCjxicj4KCiMjIFIgTGlicmFyaWVzCgpGaXJzdCwgbGV0J3MgbG9hZCBzb21lIHBhY2thZ2VzLiAKCmBgYHtyfQpwYWNrYWdlcyA8LSBjKCJ0aWR5dmVyc2UiLCAgICMgZGF0YSBtYW5pcHVsYXRpb24gYW5kIHZpc3VhbGl6YXRpb24KICAgICAgICAgICAgICAiY2FyRGF0YSIsICAgICAjIGRhdGEgc2V0IHRvIG9idGFpbiBwcm9mZXNzb3IncyA5LW1vbnRoIHNhbGFyeQogICAgICAgICAgICAgICJicm9vbSIsICAgICAgICMgbmljZSB0YWJsZSBmb3JtYXQgb2YgY29mZmljaWVudHMgZnJvbSBsbSgpCiAgICAgICAgICAgICAgImdncmVwZWwiLCAgICAgIyBnZ3Bsb3QgZXh0ZW5zaW9uIHRvIHJlcGVsIHRleHQgYW5kIGV4dHJhIGZlYXR1cmVzCiAgICAgICAgICAgICAgImdsdWUiLCAgICAgICAgIyBjb25jYXRlbnRhdGUgc3RyaW5ncyBhbmQgYWxpYXMKICAgICAgICAgICAgICAicGxvdDNEIiwgICAgICAjIHBsb3QgM0QgZmlndXJlcwogICAgICAgICAgICAgICJSQ29sb3JCcmV3ZXIiICMgbG9hZCBjb2xvciBwYWxldHRlcwogICAgICAgICAgICAgICkKeGZ1bjo6cGtnX2F0dGFjaChwYWNrYWdlcywgbWVzc2FnZSA9IEYpCmBgYAoKPGJyPgoKIyMgRGF0YQoKVGhlbiwgbGV0J3MgZGVmaW5lIG91ciBJViAoYHlycy5zaW5jZS5waGRgKSBhcyBgeGAgYW5kIG91ciBEViAoYHNhbGFyeWApIGFzIGB5YCB1c2luZyB0aGUgYFNhbGFyaWVzYCBkYXRhc2V0IGluIHRoZSBgY2FyRGF0YWAgcGFja2FnZS4KYGBge3J9CnggPC0gbW9kZWwubWF0cml4KH4gc2NhbGUoeXJzLnNpbmNlLnBoZCwgc2NhbGUgPSBGKSwgU2FsYXJpZXMpCmNvbG5hbWVzKHgpIDwtIGMoIihJbnRlcmNlcHQpIiwgInlycy5zaW5jZS5waGQiKQpkaW0oeCkKaGVhZCh4KQp5IDwtIFNhbGFyaWVzJHNhbGFyeSAlPiUgYXMubWF0cml4KCkKY29sbmFtZXMoeSkgPC0gYygic2FsYXJ5IikKZGltKHkpCmhlYWQoeSkKYGBgCgo8YnI+CgojIyBHcmFkaWVudCBEZXNjZW50CgpXaGF0IGlzIGdyYWRpZW50IGRlc2NlbnQ/CgpTdGFydGluZyBhdCBhbnkgcG9zaXRpb24gKGkuZS4sIGludGVyY2VwdCBhbmQgc2xvcGUgY29tYmluYXRpb24pLCBncmFkaWVudCBkZXNjZW50IHRha2VzIHRoZSBwYXJ0aWFsIGRlcml2YXRpdmUgb2YgZWFjaCBjb2VmZmljaWVudCAoJFxiZXRhJCkgZnJvbSB0aGUgY29zdCBmdW5jdGlvbiAoTVNFKSBhbmQgbW92ZXMgKG9yIGRlc2NlbmRzKSBpbiB0aGUgZGlyZWN0aW9uIHRoYXQgd2lsbCBjb250aW51ZSB0byBtaW5pbWl6ZSB0aGUgY29zdCAob3IgZ3JhZGllbnQpIGZ1bmN0aW9uLgoKYGBge3J9CiMgcmFuZG9tIHNhbXBsZSBvZiBwb3NzaWJsZSBpbnRlcmNlcHRzIGFuZCBzbG9wZXMKIyB0aGVuIGNhbGN1bGF0ZSBjb3N0IGZ1bmN0aW9uIChtc2UpIGZvciBlYWNoIGludGVyY2VwdCBhbmQgc2xvcGUgY29tYmluYXRpb24Kbl9zYW1wbGUgPC0gMjAwMDAwCmRmX2dkIDwtIHRpYmJsZSgKICBpbnQgPSBzYW1wbGUoc2VxKDAsIDIwMDAwMCksIG5fc2FtcGxlLCBUKSwKICBzbG9wZSA9IHNhbXBsZShzZXEoLTEwMDAwLCAxMDAwMCksIG5fc2FtcGxlLCBUKQopICU+JQogIHJvd3dpc2UoKSAlPiUKICBtdXRhdGUoY29zdCA9IG9idGFpbl9jb3N0KHksIHgsIGIgPSBjKGludCwgc2xvcGUpKSkKYGBgCgpgYGB7cn0Kc2NhdHRlcjNEKHggPSBkZl9nZCRpbnQsCiAgICAgICAgICB5ID0gZGZfZ2Qkc2xvcGUsCiAgICAgICAgICB6ID0gZGZfZ2QkY29zdCwKICAgICAgICAgIHhsYWIgPSAiaW50ZXJjZXB0IiwKICAgICAgICAgIHlsYWIgPSAic2xvcGUiLAogICAgICAgICAgemxhYiA9ICJjb3N0IChtc2UpIiwKICAgICAgICAgIGNvbCA9IHJhbXAuY29sKGNvbCA9IHNvcnQoUkNvbG9yQnJld2VyOjpicmV3ZXIucGFsKDksICJCbHVlcyIpLCBkZWNyZWFzaW5nID0gRiksCiAgICAgICAgICAgICAgICAgICAgICAgICBuID0gbGVuZ3RoKHVuaXF1ZShkZl9nZCRjb3N0KSkpLAogICAgICAgICAgY29sa2V5ID0gRiwKICAgICAgICAgIHBoaSA9IDEwLAogICAgICAgICAgdGhldGEgPSA0NSwKICAgICAgICAgIG1haW4gPSAiR3JhZGllbnQgRGVzY2VudCAoM0QgVmlldykiCiAgICAgICAgICApCmBgYAoKYGBge3J9CiMgcGxvdCBpbnRlcmNlcHQgYW5kIHNsb3BlLCBhbmQgY29sb3IgYnkgY29zdCAobXNlKQojIGhpZ2hsaWdodCBhbmQgbGFiZWwgbWluKGNvc3QpCmdncGxvdChkZl9nZCwgYWVzKHNsb3BlLCBpbnQsIGNvbG9yID0gY29zdCkpICsKICBnZW9tX3BvaW50KCkgKwogIGdlb21fcG9pbnQoZGF0YSA9IHN1YnNldChkZl9nZCwgY29zdCA9PSBtaW4oY29zdCkpLCBjb2xvciA9ICJibGFjayIsIHNoYXBlID0gMjEsIGFscGhhID0gLjUpICsKICBnZW9tX3RleHRfcmVwZWwoCiAgICBkYXRhID0gc3Vic2V0KGRmX2dkLCBjb3N0ID09IG1pbihjb3N0KSksCiAgICBtYXBwaW5nID0gYWVzKGxhYmVsID0gcGFzdGUwKCJtaW4oY29zdCkgPSAiLCBjb3N0LCAiXG5pbnRlcmNlcHQgPSAiLCBpbnQsICJcbnNsb3BlID0gIiwgc2xvcGUpKSwKICAgIG51ZGdlX3kgPSAzMDAwMCwKICAgIG51ZGdlX3ggPSAxMDAwLAogICAgYm94LnBhZGRpbmcgPSAxLjUsCiAgICBwb2ludC5wYWRkaW5nID0gMC41LAogICAgc2VnbWVudC5zaXplID0gMC4yLAogICAgc2VnbWVudC5jb2xvciA9ICJibGFjayIsCiAgICBjb2xvciA9ICJibGFjayIKICApICsKICBsYWJzKAogICAgdGl0bGUgPSAiR3JhZGllbnQgRGVzY2VudCAoMkQgVmlldykiLAogICAgeSA9ICJpbnRlcmNlcHQiLAogICAgY29sb3IgPSAiY29zdCAobXNlKSIKICApICsKICBzY2FsZV9jb2xvcl9kaXN0aWxsZXIocGFsZXR0ZSA9ICJCbHVlcyIpICsKICB0aGVtZV9taW5pbWFsKCkKCmBgYAoKV2UgY2FuIHNlZSBmcm9tIHRoZXNlIHJhbmRvbSBzYW1wbGVzIG9mIGludGVyY2VwdHMgYW5kIHNsb3BlcyB0aGF0IHRoZSBsb3dlc3QgY29zdCBpcyBgciByb3VuZChtaW4oZGZfZ2QkY29zdCksIDIpYCB3aXRoIGFuIGludGVyY2VwdCBvZiBgciBzdWJzZXQoZGZfZ2QsIGNvc3QgPT0gbWluKGNvc3QpKSRpbnRgIGFuZCBzbG9wZSBvZiBgciBzdWJzZXQoZGZfZ2QsIGNvc3QgPT0gbWluKGNvc3QpKSRzbG9wZWAuIFNvIG5vIG1hdHRlciB3aGVyZSB3ZSBzdGFydCAoYW55IGludGVyY2VwdCBhbmQgc2xvcGUgY29tYmluYXRpb24pLCB3ZSBzaG91bGQgZGVzY2VuZCBhbmQgdWx0aW1hdGVseSBlbmQgdXAgd2l0aCB0aGUgbG93ZXN0IGNvc3QgdmFsdWUgb2YgYHIgcm91bmQobWluKGRmX2dkJGNvc3QpLCAyKWAuCgo8YnI+CgojIyBQYXJ0aWFsIERlcml2YXRpdmVzCgpIb3cgZG8gd2UgY2FsY3VsYXRlIHRoZSBwYXJ0aWFsIGRlcml2YXRpdmVzPwoKRmlyc3QsIHdlIGV4cGFuZCBNU0UuCgokJCAKXHRhZ3s1fQpcYmVnaW57YWxpZ259Ck1TRSAmID0gXGZyYWN7KFktWFxiZXRhKV4yfXtOfSBcXAomID0gXGZyYWN7KFktWFxiZXRhKShZLVhcYmV0YSl9e059IFxcCiYgPSBcZnJhY3soWV4yLTJZWFxiZXRhK1heMlxiZXRhXjIpfXtOfSBcXAomID0gXGZyYWN7WV4yfXtOfSAtIFxmcmFjezJZWFxiZXRhfXtOfStcZnJhY3tYXjJcYmV0YV4yfXtOfSBcXApcZW5ke2FsaWdufQokJAoKVG8gY2FsY3VsYXRlIHRoZSBwYXJ0aWFsIGRlcml2YXRpdmUsIHdlIHJlcGVhdCB0aGUgZm9sbG93aW5nIGZvciBlYWNoIHRlcm06CgoxLiBTZXQgdGhlIHRlcm0gd2l0aG91dCAkXGJldGEkIHRvIDAgCjIuIE11bHRpcGx5IHRoZSB0ZXJtIGJ5IHRoZSBleHBvbmVudCBvZiAkXGJldGEkCjMuIFN1YnRyYWN0IDEgZnJvbSB0aGUgZXhwb25lbnQgb2YgJFxiZXRhJAoKYW5kIHNpbXBsaWZ5LgoKJCQKXHRhZ3s2fQpcYmVnaW57YWxpZ259ClxmcmFje1xwYXJ0aWFsIE1TRX17XHBhcnRpYWwgXGhhdHtcYmV0YX19ICYgPSAwIC0gXGZyYWN7MSoyWVhcYmV0YV4wfXtOfSArIFxmcmFjezJYXjJcYmV0YV4xfXtOfSBcXAomID0gXGZyYWN7LTJZWCsyWF4yXGJldGF9e059IFxcCiYgPSBcZnJhY3stMlgoWS1YXGJldGEpfXtOfSBcXAomID0gXGZyYWN7LTJYXGVwc2lsb259e059ClxlbmR7YWxpZ259CiQkCk5vdGU6IFdlIHNldCB0aGUgdGVybSB3aXRob3V0ICRcYmV0YSQgdG8gMCBpbiBzdGVwIDEgYmVjYXVzZSB0aGF0IHRlcm0gY2FuIGJlIHRob3VnaHQgb2YgYXMgaGF2aW5nICRcYmV0YV4wJCwgd2hpY2ggZXF1YWxzIDEuIFdoZW4gd2UgdGhlbiBtdWx0aXBseSB0aGUgdGVybSBieSB0aGUgZXhwb25lbnQgb2YgMCwgd2UgZW5kIHVwIHdpdGggYSB0ZXJtIG9mIDAuCgo8YnI+CgojIyBVcGRhdGUgQ29lZmZpY2llbnRzCgpIb3cgZG8gd2UgdXBkYXRlIHRoZSBjb2VmZmljaWVudHM/CgpXZSBjYW4gdXBkYXRlIHRoZSBjb2VmZmljaWVudHMgJFxiZXRhJCBieSBzdWJ0cmFjdGluZyB0aGUgcGFydGlhbCBkZXJpdmF0aXZlcyBtdWx0aXBsaWVkIGJ5IHRoZSBsZWFybmluZyByYXRlLgoKJCQKXHRhZ3s3fQpcaGF0e1xiZXRhfSA9IFxoYXR7XGJldGF9IC0gXGZyYWN7XHBhcnRpYWwgTVNFfXtccGFydGlhbCBcaGF0e1xiZXRhfX0qbGVhcm5pbmdcIHJhdGUKJCQKClRoaXMgZXNzZW50aWFsbHkgbW92ZXMgdGhlIGNvZWZmaWNpZW50cyBpbnRvIHRoZSBkaXJlY3Rpb24gb2YgYSBsb3dlciBjb3N0IGZ1bmN0aW9uLiBIb3cgZmFzdCB0aGUgY29lZmZpY2llbnRzIHVwZGF0ZSBpcyBkZXRlcm1pbmVkIGJ5IHRoZSBsZWFybmluZyByYXRlLiBBIGhpZ2hlciBsZWFybmluZyByYXRlIGRlc2NlbmRzIHF1aWNrbHkgYnV0IG1heSBiZSBzdXNjZXB0aWJsZSB0byBza2lwcGluZyBvciBtb3ZpbmcgcGFzc2VkIHRoZSBnbG9iYWwgbWluaW1hLiBBIGxvd2VyIGxlYXJuaW5nIHJhdGUgaXMgbW9yZSBwcmVjaXNlIGJ1dCBpcyBzbG93ZXIgYXMgaXQgdGFrZXMgbW9yZSB0aW1lIHRvIGNvbXB1dGUuCgpgYGB7cn0KdXBkYXRlX2IgPC0gZnVuY3Rpb24oeSwgeCwgYiwgbHIpIHsKICB5X3ByZWQgPC0geCAlKiUgYgogIGUgPC0geSAtIHlfcHJlZAogIGRlcml2YXRpdmVzIDwtICgtMiAqIHQoeCkgJSolIGUgKSAvIG5yb3coeCkKICBiIDwtIGIgLSBkZXJpdmF0aXZlcyAqIGxyCiAgcmV0dXJuKGIpCn0KYGBgCgo8YnI+CgojIyBUcmFpbgoKTm93LCBsZXQncyB0cmFpbiB0aGUgZGF0YSBhcmJpdHJhcmlseSBzdGFydGluZyB0aGUgY29lZmZpY2llbnRzIGF0IDAuCgpgYGB7cn0KIyBzZXQgbnVtYmVyIG9mIGl0ZXJhdGlvbnMKaXRlciA8LSA1MDAwMAoKIyBzZXQgbGVhcm5pbmcgcmF0ZQpsciA8LSAwLjAwMDEKCiMgc2V0IGluaXRpYWwgdmFsdWVzIG9mIGNvZWZmaWNpZW50cwpiIDwtIE5VTEwKZm9yIChpIGluIDE6bmNvbCh4KSkgewogIGJbaV0gPC0gMAp9CmIgPC0gYXMubWF0cml4KGIpCgpjYXQocGFzdGUoIml0ZXJhdGlvbiIsICJpbnRlcmNlcHQiLCAic2xvcGUiLCAiY29zdFxuIiwgCiAgICAgICAgICAiMCIsIGJbMV0sIGJbMl0sIG9idGFpbl9jb3N0KHksIHgsIGIpKSkKCiMgc2V0IGluaXRpYWwgdHJhaW5pbmcgZGF0YXNldApkZl90cmFpbiA8LSB0aWJibGUoCiAgaXRlciA9IE5BLAogIGludCA9IE5BLAogIHNsb3BlID0gTkEsCiAgY29zdCA9IE5BLAogIC5yb3dzID0gaXRlcgopCgojIHRyYWluIGFuZCBzYXZlIHRyYWluaW5nIGhpc3RvcnkgdXNpbmcgZm9yIGxvb3AKZm9yIChpIGluIDE6aXRlcikgewogIGIgPC0gdXBkYXRlX2IoeSwgeCwgYiwgbHIpCiAgZGZfdHJhaW4kaXRlcltpXSA8LSBpCiAgZGZfdHJhaW4kaW50W2ldIDwtIGJbMV0KICBkZl90cmFpbiRzbG9wZVtpXSA8LSBiWzJdCiAgZGZfdHJhaW4kY29zdFtpXSA8LSBvYnRhaW5fY29zdCh5LCB4LCBiKQogIGlmIChpICVpbiUgcm91bmQoc2VxKDEsIGl0ZXIsIGxlbmd0aC5vdXQgPSAxMCksIDApKSB7CiAgICBjYXQocGFzdGUoIlxuIiwgaSwgYlsxXSwgYlsyXSwgb2J0YWluX2Nvc3QoeSwgeCwgYikpKQogIH0KfQpgYGAKCjxicj4KCiMjIyBQbG90IFRyYWluaW5nCgpgYGB7cn0KZ2dwbG90KGRmX3RyYWluLCBhZXMoaXRlciwgY29zdCkpICsKICBnZW9tX2xpbmUoKSArCiAgdGhlbWVfbWluaW1hbCgpICsKICBsYWJzKAogICAgeCA9ICJpdGVyYXRpb25zIiwKICAgIHkgPSAiY29zdCAobXNlKSIKICApCmBgYAoKV2UgY2FuIHNlZSB0aGF0IGNvc3QgKE1TRSkgZmxhdHRlbnMgb3V0IGFyb3VuZCAxNSwwMDAgaXRlcmF0aW9ucy4gCgo8YnI+CgojIyMgUGxvdCBHcmFkaWVudCBEZXNjZW50IFBhdGgKCkxldCdzIHZpc3VhbGl6ZSB0aGUgcGF0aCB0aGF0IHRoZSBncmFkaWVudCBkZXNjZW50IHRvb2sgc3RhcnRpbmcgZnJvbSBvdXIgaW5pdGlhbCBpbnRlcmNlcHQgYW5kIHNsb3BlIHZhbHVlIG9mIDAuCgpgYGB7cn0Kbl9zYW1wbGUgPC0gMTAwMDAwCmRmX2dkIDwtIHRpYmJsZSgKICBpbnQgPSBzYW1wbGUoc2VxKDAsIDE1MDAwMCksIG5fc2FtcGxlLCBUKSwKICBzbG9wZSA9IHNhbXBsZShzZXEoMCwgMjAwMCksIG5fc2FtcGxlLCBUKQopICU+JQogIHJvd3dpc2UoKSAlPiUKICBtdXRhdGUoY29zdCA9IG9idGFpbl9jb3N0KHksIHgsIGIgPSBjKGludCwgc2xvcGUpKSkKCmRmX3RyYWluX3NvcnRlZCA8LSBkZl90cmFpbiAlPiUgYXJyYW5nZShjb3N0LCBpdGVyKQpkZl9taW4gPC0gZGZfdHJhaW5fc29ydGVkWzEsIF0KCmdncGxvdChkZl9nZCwgYWVzKHNsb3BlLCBpbnQsIGNvbG9yID0gY29zdCkpICsKICBnZW9tX3BvaW50KCkgKwogIHNjYWxlX2NvbG9yX2Rpc3RpbGxlcihwYWxldHRlID0gIkJsdWVzIikgKwogIHRoZW1lX21pbmltYWwoKSArCiAgbGFicygKICAgIHkgPSAiaW50ZXJjZXB0IiwKICAgIGNvbG9yID0gImNvc3QgKG1zZSkiCiAgKSArCiAgZ2VvbV9saW5lKGRhdGEgPSBkZl90cmFpbiwgbWFwcGluZyA9IGFlcyhzbG9wZSwgaW50KSwgY29sb3IgPSAiYmxhY2siLCBzaXplID0gMC41LCBhbHBoYSA9IDAuNSkgKwogIGdlb21fcG9pbnQoZGF0YSA9IGRmX21pbiwgbWFwcGluZyA9IGFlcyhzbG9wZSwgaW50KSwgY29sb3IgPSAiYmxhY2siLCBzaGFwZSA9IDIxLCBhbHBoYSA9IC41KSArCiAgZ2VvbV90ZXh0X3JlcGVsKAogICAgZGF0YSA9IGRmX21pbiwKICAgIG1hcHBpbmcgPSBhZXMobGFiZWwgPSBwYXN0ZTAoIm1pbihjb3N0KSA9ICIsIGNvc3QsICJcbmludGVyY2VwdCA9ICIsIGludCwgIlxuc2xvcGUgPSAiLCBzbG9wZSkpLAogICAgbnVkZ2VfeSA9IDMwMDAwLAogICAgbnVkZ2VfeCA9IDEwMDAsCiAgICBib3gucGFkZGluZyA9IDEuNSwKICAgIHBvaW50LnBhZGRpbmcgPSAwLjUsCiAgICBzZWdtZW50LnNpemUgPSAwLjIsCiAgICBzZWdtZW50LmNvbG9yID0gImJsYWNrIiwKICAgIGNvbG9yID0gImJsYWNrIgogICkKYGBgCgpXZSBjYW4gc2VlIHRoYXQgbW9zdCBvZiB0aGUgaXRlcmF0aW9ucyB3ZXJlIHNwZW50IG9wdGltaXppbmcgdGhlIHNsb3BlIHdpdGggbWluaW1hbCBjaGFuZ2VzIHRvIHRoZSBpbnRlcmNlcHQgYXMgd2VsbCBhcyB0aGUgY29zdCAoTVNFKSB1cCB1bnRpbCBhcm91bmQgaXRlcmF0aW9uIDEwMDAuIFRoZW4sIHRoZSBvcHRpbWFsIGludGVyY2VwdCB3YXMgZm91bmQgd2l0aGluIGEgZmV3IGl0ZXJhdGlvbnMsIHdoaWNoIGRyYW1hdGljYWxseSByZWR1Y2VkIGNvc3QgKE1TRSkuCgo8YnI+CgojIyBDb21wYXJlIEdyYWRpZW50IERlc2NlbnQgYW5kIGBsbSgpYAoKV2UgY2FuIGNvbXBhcmUgdGhlIHJlc3VsdHMgb2YgZ3JhZGllbnQgZGVzY2VudCB3aXRoIGBsbSgpYCB0byBlbnN1cmUgdGhhdCB3ZSBkaWQgdGhpcyBjb3JyZWN0bHkuIFdlIHNob3VsZCBhcHByb3hpbWF0ZWx5IGhhdmUgdGhlIHNhbWUgcmVzdWx0cyB3aXRoaW4gcm91bmRpbmcgZXJyb3IgYmVjYXVzZSBPTFMgaXMgYSBjb252ZXggc2hhcGUgd2l0aCBvbmx5IG9uZSBnbG9iYWwgbWluaW1hLgoKPGJyPgoKIyMjIFNvbHZlIE9MUyB1c2luZyBHcmFkaWVudCBEZXNjZW50CmBgYHtyfQpjb2VmIDwtIGMoIihJbnRlcmNlcHQpIiA9IGRmX21pbiRpbnQsICJ5cnMuc2luY2UucGhkIiA9IGRmX21pbiRzbG9wZSkKcm1zZV9jb2VmIDwtIChzb2x2ZSh0KHgpICUqJSB4KSAqIGRmX21pbiRjb3N0KSAlPiUKICBkaWFnKCkgJT4lCiAgc3FydCgpCnRfc3RhdCA8LSBjb2VmIC8gcm1zZV9jb2VmCm4gPC0gbnJvdyh4KQpwIDwtIG5jb2woeCkKZGYgPC0gbiAtIHAKcF92YWx1ZSA8LSAyICogcHQodF9zdGF0LCBkZiwgbG93ZXIgPSBGQUxTRSkKdGliYmxlKAogIHRlcm0gPSBjb2xuYW1lcyh4KSwKICBlc3RpbWF0ZSA9IGNvZWYsCiAgc3RkLmVycm9yID0gcm1zZV9jb2VmLAogIHN0YXRpc3RpYyA9IHRfc3RhdCwKICBwLnZhbHVlID0gcF92YWx1ZQopCmBgYAoKPGJyPgoKIyMjIFNvbHZlIE9MUyB1c2luZyBgbG0oKWAKYGBge3J9Cm1vZGVsIDwtIGxtKHkgfiB4KQp0aWR5KG1vZGVsKQpgYGAKCjxicj4KCiMjIyBDb3N0CmBgYHtyfQpnbHVlKCJDb3N0IHVzaW5nIEdEOiB7ZGZfbWluJGNvc3R9XG5Db3N0IHVzaW5nIGxtKCk6IHtnbGFuY2UobW9kZWwpJHNpZ21hXjJ9IikKYGBgCgo8YnI+CgojIyMgRmlndXJlCmBgYHtyfQpmaWdfZ2QgPC0gZ2dwbG90KG1hcHBpbmcgPSBhZXMoeFssIDJdLCB5KSkgKwogIGdlb21fcG9pbnQoYWxwaGEgPSAwLjUpICsKICBnZW9tX2FibGluZShpbnRlcmNlcHQgPSBjb2VmWzFdLCBzbG9wZSA9IGNvZWZbMl0sIHNpemUgPSAxKSArCiAgdGhlbWVfbWluaW1hbCgpICsKICBsYWJzKAogICAgdGl0bGUgPSAiU29sdmVkIHVzaW5nIEdyYWRpZW50IERlc2NlbnQiLAogICAgeCA9ICJ5cnMuc2luY2UucGhkIiwKICAgIHkgPSAic2FsYXJ5IgogICkKCmZpZ19sbSA8LSBnZ3Bsb3QobWFwcGluZyA9IGFlcyh4WywgMl0sIHkpKSArCiAgZ2VvbV9wb2ludChhbHBoYSA9IDAuNSkgKwogIGdlb21fc21vb3RoKGNvbG9yID0gImJsYWNrIiwgbWV0aG9kID0gImxtIiwgc2UgPSBGKSArCiAgdGhlbWVfbWluaW1hbCgpICsKICBsYWJzKAogICAgdGl0bGUgPSAiU29sdmVkIHVzaW5nIGxtKCkiLAogICAgeCA9ICJ5cnMuc2luY2UucGhkIiwKICAgIHkgPSAic2FsYXJ5IgogICkKCmdyaWRFeHRyYTo6Z3JpZC5hcnJhbmdlKGZpZ19nZCwgZmlnX2xtLCBucm93ID0gMSkKYGBg</div>
+</div>
+</div>
+</div>
+<div class="footer" style="red">
+  <hr style="solid 1px">
+  &copy; 2018 Ekarin Eric Pongpipat. <a href="https://raw.githubusercontent.com/epongpipat/epongpipat.github.io/master/LICENSE" target="_blank">All rights reserved.</a>
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

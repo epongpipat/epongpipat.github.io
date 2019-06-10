@@ -1,0 +1,34 @@
+---
+title: "eBooks"
+output: html_document
+---
+
+<BR>
+
+```{r blog_figure, echo = F, warning = F, message = F, fig.width = 3, fig.height = 2, fig.asp = T, dev='svg'}
+packages <- c("readr", "glue", "tidyverse", "psych", "zoo")
+xfun::pkg_attach(packages, message = F)
+```
+
+<div class="divTable">
+<div class="divTableBody">
+
+<div class="divTableRow"><div class="divTableCell">
+**Date**
+</div><div class="divTableCell">
+**Book**
+</div></div>
+
+<div class="divTableRow"><div class="divTableCell">
+2019-05
+</div><div class="divTableCell">
+<div class="divBlogTitle">
+<a href="https://ekarinpongpipat.com/practical-ext-of-intro-stats-in-psy-using-R/" target="_blank">A Practical Extension of Introductory Statistics in Psychology using R</a>
+</div>
+A collaborative ebook with Guiseppe Miranda and Matt Kmiecik that aims to provide a practical extension of introductory statistics typically taught in psychology into the general linear model (GLM) using R.
+<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
+<span class="badge badge-pill badge-primary">R</span>
+</div></div>
+
+</div>
+</div>
