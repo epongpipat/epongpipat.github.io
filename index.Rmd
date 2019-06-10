@@ -30,7 +30,7 @@ updates_table <- as.data.frame(rbind(
     "Link" = "<a href='blog_solving_ols_regression_using_gradient_descent.html'><i class='fas fa-link'></i></a>"
   ),
   cbind(
-    "Date" = "2019-05-03a",
+    "Date" = "2019-05-03",
     "Category" = "eBook",
     "Item" = "A Practical Extension of Introductory Statistics in Psychology using R",
     "Link" = "<a href='https://ekarinpongpipat.com/practical-ext-of-intro-stats-in-psy-using-R/', target='_blank'><i class='fas fa-link'></i></a>"
