@@ -27,10 +27,10 @@ updates_table <- as.data.frame(rbind(
     "Date" = "2019-06-10",
     "Category" = "Blog Post",
     "Item" = "Solving Ordinary Least Squares (OLS) Regression using Gradient Descent",
-    "Link" = "<a href='file:///Users/epongpipat/Documents/GitHub/epongpipat.github.io/blog_solving_ols_regression_using_gradient_descent.html'><i class='fas fa-link'></i></a>"
+    "Link" = "<a href='blog_solving_ols_regression_using_gradient_descent.html'><i class='fas fa-link'></i></a>"
   ),
   cbind(
-    "Date" = "2019-05-03",
+    "Date" = "2019-05-03a",
     "Category" = "eBook",
     "Item" = "A Practical Extension of Introductory Statistics in Psychology using R",
     "Link" = "<a href='https://ekarinpongpipat.com/practical-ext-of-intro-stats-in-psy-using-R/', target='_blank'><i class='fas fa-link'></i></a>"
