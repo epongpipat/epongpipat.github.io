@@ -19,6 +19,8 @@ output:
 
 A brief tutorial on solving OLS using gradient descent using R. 
 
+<br>
+
 Remember that the equation for OLS is:
 
 $$
@@ -112,6 +114,7 @@ packages <- c("tidyverse",   # data manipulation and visualization
               "carData",     # data set to obtain professor's 9-month salary
               "broom",       # nice table format of cofficients from lm()
               "ggrepel",     # ggplot extension to repel text and extra features
+              "gganimate",   # animate ggplot
               "glue",        # concatentate strings and alias
               "plot3D",      # plot 3D figures
               "RColorBrewer" # load color palettes
@@ -123,7 +126,7 @@ xfun::pkg_attach(packages, message = F)
 
 ## Data
 
-Then, let's define our IV (`yrs.since.phd`) as `x` and our DV (`salary`) as `y` using the `Salaries` dataset in the `carData` package.
+Then, let's define our independent variable (IV: `yrs.since.phd`) as `x` and our dependent variable  (DV: `salary`) as `y` using the `Salaries` dataset in the `carData` package.
 ```{r}
 x <- model.matrix(~ scale(yrs.since.phd, scale = F), Salaries)
 colnames(x) <- c("(Intercept)", "yrs.since.phd")
@@ -141,7 +144,7 @@ head(y)
 
 What is gradient descent?
 
-Starting at any position (i.e., intercept and slope combination), gradient descent takes the partial derivative of each coefficient ($\beta$) from the cost function (MSE) and moves (or descends) in the direction that will continue to minimize the cost (or gradient) function.
+Starting at any position (e.g., intercept and slope combination), gradient descent takes the partial derivative of each coefficient ($\beta$) from the cost function (MSE) and moves (or descends) in the direction that will continue to minimize the cost (or gradient) function.
 
 ```{r}
 # random sample of possible intercepts and slopes
@@ -204,6 +207,12 @@ We can see from these random samples of intercepts and slopes that the lowest co
 
 ## Partial Derivatives
 
+What are partial derivatives?
+
+Partial derivatives allow us to obtain a slope at any point that is specific to a variable on any function (or line). In our case, partial derivatives allow us to obtain a slope at any specific $\beta$ on the cost function of MSE, which can be denoted as $\frac{\partial MSE}{\partial \hat{\beta}}$. 
+
+<br>
+
 How do we calculate the partial derivatives?
 
 First, we expand MSE.
@@ -241,6 +250,10 @@ Note: We set the term without $\beta$ to 0 in step 1 because that term can be th
 
 ## Update Coefficients
 
+We can then use the information from partial derivatives to update the coefficients ($\beta$) so that coefficients ($\beta$) change and descend into a lower MSE. 
+
+<br>
+
 How do we update the coefficients?
 
 We can update the coefficients $\beta$ by subtracting the partial derivatives multiplied by the learning rate.
@@ -250,7 +263,13 @@ $$
 \hat{\beta} = \hat{\beta} - \frac{\partial MSE}{\partial \hat{\beta}}*learning\ rate
 $$
 
-This essentially moves the coefficients into the direction of a lower cost function. How fast the coefficients update is determined by the learning rate. A higher learning rate descends quickly but may be susceptible to skipping or moving passed the global minima. A lower learning rate is more precise but is slower as it takes more time to compute.
+A $\beta$ lower than should be will have a negative slope and when we subtract the partial derivative ($\frac{\partial MSE}{\partial \hat{\beta}}$) from the old $\beta$, the new $\beta$ will then be less negative. Conversely, a $\beta$ higher than should be will have a positive slope and when we subtract the partial derivative ($\frac{\partial MSE}{\partial \hat{\beta}}$), the new $\beta$ will be less positive. When we are at the lowest cost value, the partial derivative ($\frac{\partial MSE}{\partial \hat{\beta}}$) will be 0 and $\beta$ will stop updating.
+
+<br>
+
+What is the learning rate?
+
+The learning rate determines how fast the coefficients update (descends). A higher learning rate descends quickly but may be susceptible to skipping or moving passed the global minima. A lower learning rate is more precise but is slower as it takes more time to compute.
 
 ```{r}
 update_b <- function(y, x, b, lr) {
@@ -266,7 +285,7 @@ update_b <- function(y, x, b, lr) {
 
 ## Train
 
-Now, let's train the data arbitrarily starting the coefficients at 0.
+Now, let's train the data arbitrarily starting the coefficients at 0 and a learning rate of 0.0001 for 50,000 iterations.
 
 ```{r}
 # set number of iterations
@@ -409,6 +428,8 @@ tidy(model)
 glue("Cost using GD: {df_min$cost}\nCost using lm(): {glance(model)$sigma^2}")
 ```
 
+We can see that solving OLS regression using gradient descent produced a lower cost function (MSE) than by using `lm()`. The lower MSE using gradient descent was produced from using a smaller intercept. Since MSE was smaller using gradient descent, the standard error was also smaller using gradient descent and subsequently a larger statistic and lower p-value.
+
 <br>
 
 ### Figure
@@ -435,3 +456,5 @@ fig_lm <- ggplot(mapping = aes(x[, 2], y)) +
 
 gridExtra::grid.arrange(fig_gd, fig_lm, nrow = 1)
 ```
+
+However, since the range of salary is so large, each method produced nearly identical graphs.
