@@ -461,6 +461,10 @@ However, since the range of salary is so large, each method produced nearly iden
 
 <br>
 
+<hr>
+
+<br>
+
 <!-- disqus START -->
 <div id="disqus_thread"></div>
 <script>

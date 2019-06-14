@@ -223,4 +223,30 @@ Friston, K. J., Williams, S., Howard, R., Frackowiak, R. S. J., & Turner, R. (19
 Yan, C.-G., Cheung, B., Kelly, C., Colcombe, S., Craddock, R. C., Di Martino, A., … Milham, M. P. (2013). A comprehensive assessment of regional variation in the impact of head micromovements on functional connectomics. *NeuroImage, 76*, 183–201. http://doi.org/10.1016/j.neuroimage.2013.03.004
 </div>
 
+<!-- disqus START -->
+<br>
 
+<hr>
+
+<br>
+
+<div id="disqus_thread"></div>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = 'https://ekarinpongpipat.com/blog_Calculate_Motion_Regressors.html';  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = 'blog_Calculate_Motion_Regressors'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://epongpipat.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<!-- disqus END -->
