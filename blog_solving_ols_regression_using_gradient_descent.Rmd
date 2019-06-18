@@ -1,7 +1,6 @@
 ---
 title: "Solving Ordinary Least Squares (OLS) Regression using Gradient Descent"
 author: "Ekarin Eric Pongpipat, M.A."
-date: "6/10/2019"
 output: 
   html_document:
     highlight: textmate
@@ -15,9 +14,16 @@ output:
       smooth_scroll: yes
 ---
 
+<font color="black">Original Post: 6/10/2019
+<br>Modified Post: 6/17/2019</font>
+
+```{r, include=F}
+options(scipen = 999, digits = 3)
+```
+
 <br>
 
-A brief tutorial on solving OLS using gradient descent using R. 
+A brief tutorial on solving OLS using gradient descent using R.
 
 <br>
 
@@ -114,12 +120,12 @@ packages <- c("tidyverse",   # data manipulation and visualization
               "carData",     # data set to obtain professor's 9-month salary
               "broom",       # nice table format of cofficients from lm()
               "ggrepel",     # ggplot extension to repel text and extra features
-              "gganimate",   # animate ggplot
               "glue",        # concatentate strings and alias
               "plot3D",      # plot 3D figures
               "RColorBrewer" # load color palettes
               )
 xfun::pkg_attach(packages, message = F)
+n_round <- 3
 ```
 
 <br>
@@ -182,7 +188,7 @@ ggplot(df_gd, aes(slope, int, color = cost)) +
   geom_point(data = subset(df_gd, cost == min(cost)), color = "black", shape = 21, alpha = .5) +
   geom_text_repel(
     data = subset(df_gd, cost == min(cost)),
-    mapping = aes(label = paste0("min(cost) = ", cost, "\nintercept = ", int, "\nslope = ", slope)),
+    mapping = aes(label = paste0("min(cost) = ", round(cost, n_round), "\nintercept = ", round(int, n_round), "\nslope = ", round(slope, n_round))),
     nudge_y = 30000,
     nudge_x = 1000,
     box.padding = 1.5,
@@ -201,7 +207,7 @@ ggplot(df_gd, aes(slope, int, color = cost)) +
 
 ```
 
-We can see from these random samples of intercepts and slopes that the lowest cost is `r round(min(df_gd$cost), 2)` with an intercept of `r subset(df_gd, cost == min(cost))$int` and slope of `r subset(df_gd, cost == min(cost))$slope`. So no matter where we start (any intercept and slope combination), we should descend and ultimately end up with the lowest cost value of `r round(min(df_gd$cost), 2)`.
+We can see from these random samples of intercepts and slopes that the lowest cost is `r subset(df_gd, cost == min(cost))$cost` with an intercept of `r subset(df_gd, cost == min(cost))$int` and slope of `r subset(df_gd, cost == min(cost))$slope`. So no matter where we start (any intercept and slope combination), we should descend and ultimately end up with the lowest cost value of `r subset(df_gd, cost == min(cost))$cost`.
 
 <br>
 
@@ -263,13 +269,13 @@ $$
 \hat{\beta} = \hat{\beta} - \frac{\partial MSE}{\partial \hat{\beta}}*learning\ rate
 $$
 
-A $\beta$ lower than should be will have a negative slope and when we subtract the partial derivative ($\frac{\partial MSE}{\partial \hat{\beta}}$) from the old $\beta$, the new $\beta$ will then be less negative. Conversely, a $\beta$ higher than should be will have a positive slope and when we subtract the partial derivative ($\frac{\partial MSE}{\partial \hat{\beta}}$), the new $\beta$ will be less positive. When we are at the lowest cost value, the partial derivative ($\frac{\partial MSE}{\partial \hat{\beta}}$) will be 0 and $\beta$ will stop updating.
+A $\beta$ lower than it should be will have a negative slope and when we subtract the partial derivative ($\frac{\partial MSE}{\partial \hat{\beta}}$) from the old $\beta$, the new $\beta$ will then be less negative. Conversely, a $\beta$ higher than should be will have a positive slope and when we subtract the partial derivative ($\frac{\partial MSE}{\partial \hat{\beta}}$), the new $\beta$ will be less positive. When we are at the lowest cost value, the partial derivative ($\frac{\partial MSE}{\partial \hat{\beta}}$) will be 0 and $\beta$ will stop updating.
 
 <br>
 
 What is the learning rate?
 
-The learning rate determines how fast the coefficients update (descends). A higher learning rate descends quickly but may be susceptible to skipping or moving passed the global minima. A lower learning rate is more precise but is slower as it takes more time to compute.
+The learning rate determines how fast the coefficients update (descends). A higher learning rate descends quickly but may be susceptible to skipping or moving past the global minima. A lower learning rate is more precise but is slower as it takes more time to compute.
 
 ```{r}
 update_b <- function(y, x, b, lr) {
@@ -285,7 +291,7 @@ update_b <- function(y, x, b, lr) {
 
 ## Train
 
-Now, let's train the data arbitrarily starting the coefficients at 0 and a learning rate of 0.0001 for 50,000 iterations.
+Now let's train the data, arbitrarily starting the coefficients at 0 and a learning rate of 0.0001 for 50,000 iterations.
 
 ```{r}
 # set number of iterations
@@ -302,7 +308,7 @@ for (i in 1:ncol(x)) {
 b <- as.matrix(b)
 
 cat(paste("iteration", "intercept", "slope", "cost\n", 
-          "0", b[1], b[2], obtain_cost(y, x, b)))
+          "0", round(b[1], n_round), round(b[2], n_round), round(obtain_cost(y, x, b), n_round)))
 
 # set initial training dataset
 df_train <- tibble(
@@ -321,7 +327,7 @@ for (i in 1:iter) {
   df_train$slope[i] <- b[2]
   df_train$cost[i] <- obtain_cost(y, x, b)
   if (i %in% round(seq(1, iter, length.out = 10), 0)) {
-    cat(paste("\n", i, b[1], b[2], obtain_cost(y, x, b)))
+    cat(paste("\n", round(i, n_round), round(b[1], n_round), round(b[2], n_round), round(obtain_cost(y, x, b), n_round)))
   }
 }
 ```
@@ -346,7 +352,7 @@ We can see that cost (MSE) flattens out around 15,000 iterations.
 
 ### Plot Gradient Descent Path
 
-Let's visualize the path that the gradient descent took starting from our initial intercept and slope value of 0.
+Let's visualize the path that the gradient descent took, starting from our initial intercept and slope value of 0.
 
 ```{r}
 n_sample <- 100000
@@ -372,7 +378,7 @@ ggplot(df_gd, aes(slope, int, color = cost)) +
   geom_point(data = df_min, mapping = aes(slope, int), color = "black", shape = 21, alpha = .5) +
   geom_text_repel(
     data = df_min,
-    mapping = aes(label = paste0("min(cost) = ", cost, "\nintercept = ", int, "\nslope = ", slope)),
+    mapping = aes(label = paste0("min(cost) = ", round(cost, n_round), "\nintercept = ", round(int, n_round), "\nslope = ", round(slope, n_round))),
     nudge_y = 30000,
     nudge_x = 1000,
     box.padding = 1.5,
@@ -425,7 +431,7 @@ tidy(model)
 
 ### Cost
 ```{r}
-glue("Cost using GD: {df_min$cost}\nCost using lm(): {glance(model)$sigma^2}")
+glue("Cost using GD: {round(df_min$cost, n_round)}\nCost using lm(): {round(glance(model)$sigma^2, n_round)}")
 ```
 
 We can see that solving OLS regression using gradient descent produced a lower cost function (MSE) than by using `lm()`. The lower MSE using gradient descent was produced from using a smaller intercept. Since MSE was smaller using gradient descent, the standard error was also smaller using gradient descent and subsequently a larger statistic and lower p-value.
@@ -458,6 +464,16 @@ gridExtra::grid.arrange(fig_gd, fig_lm, nrow = 1)
 ```
 
 However, since the range of salary is so large, each method produced nearly identical graphs.
+
+<br>
+
+## Acknowledgements
+
+<a href="https://ml-cheatsheet.readthedocs.io/en/latest/gradient_descent.html" target="_blank">@bfortuner</a> for his gradient descent in python tutorial.
+
+<a href='https://github.com/mychan24' target='_blank'>@mychan24</a> for her helpful feedback and suggestions to this blog.
+
+<a href='https://github.com/praxling' target='_blank'>@praxling</a> for her proofing and feedback to this blog.
 
 <br>
 
