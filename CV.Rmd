@@ -15,7 +15,7 @@ packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales")
 xfun::pkg_attach(packages, message = F)
 ```
 
-*Updated on January 4, 2019*
+*Updated on July 5, 2019*
 <BR><BR><BR>
 
 ## Education
@@ -116,10 +116,12 @@ xfun::pkg_attach(packages, message = F)
 <img src="images/logo_utd.svg" width="100">
 </div>
 <div class="divTableCellInfo"> 
-<B>Graduate Teaching Assistant</B> (2017 - Present)
+<B>Graduate Teaching Assistant</B> (2017 - 2019)
 <BR>The University of Texas at Dallas
-<BR>Statistics for Psychology, PSY2317 (Fall 2017, Spring 2018, Fall 2018)
-<BR><div class="divIndent">Working with Dr. Nancy Juhn</div>
+<BR>1. Statistics for Psychology, ACN6312/HCS6312 (Spring 2019)
+<BR><div class="divIndent">Worked with Dr. Nancy Juhn</div>
+<BR>2. Statistics for Psychology, PSY2317 (Fall 2017, Spring 2018, Fall 2018)
+<BR><div class="divIndent">Worked with Dr. Nancy Juhn</div>
 </div>
 </div>
 
@@ -143,6 +145,7 @@ xfun::pkg_attach(packages, message = F)
 <BR><BR>
 
 ## Publications
+
 <div class="divReferences">
 McIntosh, E. C., Jacobson, A., Kemmotsu, N., **Pongpipat, E. E.**, Green, E., Haase, L., & Murphy, C. (2016). Does medial temporal lobe thickness mediate the association between risk factor burden and memory performance in middle-aged or older adults with metabolic syndrome? *Neuroscience Letters, 636*, 1-9. http://doi.org/10.1016/j.neulet.2016.10.010
 </div>
@@ -150,7 +153,6 @@ McIntosh, E. C., Jacobson, A., Kemmotsu, N., **Pongpipat, E. E.**, Green, E., Ha
 <BR><BR>
 
 ## Poster Presentations
-
 
 <div class="divReferences">
 ```{r posters, warning = F, message = F, fig.width = 5, fig.height = 2, fig.asp = T, dev='svg'}
@@ -199,6 +201,12 @@ ggplot(poster_summary, aes(x = as.Date(paste0(poster_summary$Year,"-01-01"), "%Y
 
 <BR><BR>
 
+## Service to the Profession
+
+Co-reviewer for NeuroImage with Dr. Kennedy
+
+<BR><BR>
+
 ## Honors and Awards
 ```{r honors_awards}
 
@@ -219,7 +227,8 @@ honors_awards <- honors_awards %>%
   add_row(., Year = "2015", Institution = "Western Psychological Association", Award = "Robert L. Solso Award", .before = 1) %>%
   add_row(., Year = "2015", Institution = "San Diego State University", Award = "Dr. Edward Geldreich Scholarship", .before = 1) %>%
   add_row(., Year = "2016", Institution = "Western Psychological Association", Award = "Robert L. Solso Award", .before = 1) %>%
-  add_row(., Year = "2016", Institution = "San Diego State University", Award = "Honorable Mention for Outstanding Service as a Teaching Assistant", .before = 1)
+  add_row(., Year = "2016", Institution = "San Diego State University", Award = "Honorable Mention for Outstanding Service as a Teaching Assistant", .before = 1) %>%
+  add_row(., Year = "2018", Institution = "The University of Texas at Dallas", Award = "Student Travel Award", .before = 1)
 # add_row(., Year = "", Institution = "", Award = "", .before = 1) %>%
 
 

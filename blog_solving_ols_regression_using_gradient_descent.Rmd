@@ -23,7 +23,7 @@ options(scipen = 999, digits = 3)
 
 <br>
 
-A brief tutorial on solving OLS using gradient descent using R.
+Already familiar with OLS regression and wanted to learn about gradient descent? This blog post will provide a brief tutorial on solving OLS using gradient descent using R.
 
 <br>
 

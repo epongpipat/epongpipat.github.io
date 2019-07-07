@@ -63,7 +63,7 @@ blog_se <- describe(blog_summary_complete$frequency)["se"]
 </div></div>
 
 <div class="divTableRow"><div class="divTableCell">
-2019-06-10
+2019-06-10www
 </div><div class="divTableCell">
 <div class="divBlogTitle">
 [Solving Ordinary Least Squares (OLS) Regression Using Gradient Descent](blog_solving_ols_regression_using_gradient_descent.html)

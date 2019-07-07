@@ -11,7 +11,7 @@ output: html_document
 <br>
 
 ### <i class="fas fa-info-circle"></i> &nbsp; About Me
-<br>I'm a second-year Ph.D. student studying cognitive neuroscience at the University of Texas at Dallas. I am primarly interested in understanding the relationship between brain networks and cognition and how this relationship can change as we age and for different groups of individuals (e.g., disease-disorder states and genetic predispositions). I'm also interested in statistics, research methods, intuitive data visualization, open source, and open science.
+<br>I'm a Ph.D. student studying cognitive neuroscience at the University of Texas at Dallas. I am primarly interested in understanding the relationship between brain networks and cognition and how this relationship can change as we age and for different groups of individuals (e.g., disease-disorder states and genetic predispositions). I'm also interested in statistics, research methods, intuitive data visualization, open source, and open science.
 
 <br>
 
