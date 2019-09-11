@@ -1,6 +1,14 @@
 ---
+title: "Ekarin Eric Pongpipat, M.A."
 output: html_document
+
 ---
+
+<style type="text/css">
+h1.title {
+  font-size: 0px;
+}
+</style>
 
 <center>
 
