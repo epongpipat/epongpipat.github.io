@@ -7,3 +7,4 @@ blog_editing_*
 .Rhistory
 archive-*
 /rsconnect
+.*

@@ -11,11 +11,11 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales")
-xfun::pkg_attach(packages, message = F)
+packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", "eepR", "icon")
+xfun::pkg_attach(packages, install = T, message = F)
 ```
 
-*Updated on July 5, 2019*
+*Updated on October 3, 2019*
 <BR><BR><BR>
 
 ## Education
@@ -201,6 +201,24 @@ ggplot(poster_summary, aes(x = as.Date(paste0(poster_summary$Year,"-01-01"), "%Y
 
 <BR><BR>
 
+## Talks and Workshops
+
+```{r talks, results = 'asis'}
+talks <- tribble(~Date, ~Description, ~Location,
+                 "2019-10", "Talk on 'Functional connectivity of the fronto-parietal and default mode networks during the n-back across the adult lifespan' given at the Developmental, Cognitive and Social/Personality Brownbag Series", "UT Dallas",
+                 
+                 "2019-09", "Assisted in an introduction to Git/GitHub Workshop with Dr. Micaela Chan <br><a href='https://gitbookdown.site' target='_blank'><i class='fas fa-book'></i></a> &#8201 <a href='https://github.com/mychan24/git_github_workshop' target='_blank'><i class='fab fa-github'></i></a>", "Center for Vital Longevity, UT Dallas",
+                 
+                 "2019-04", "Guest lectured on using R for descriptive and inferential statistics for Dr. Juhn's Research Methods 2 Course", "UT Dallas")
+
+kable(talks, escape = F) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, width = "80px") %>%
+  column_spec(3, width = "150px")
+```
+
+<BR><BR>
+
 ## Service to the Profession
 
 Co-reviewer for NeuroImage with Dr. Kennedy
@@ -209,7 +227,6 @@ Co-reviewer for NeuroImage with Dr. Kennedy
 
 ## Honors and Awards
 ```{r honors_awards}
-
 honors_awards <- tibble("2017 (Fall)", "CSU Northridge", "Dean's List")
 
 # test <- cbind(2016, "WPA Robert L. Solso Award")
@@ -234,7 +251,8 @@ honors_awards <- honors_awards %>%
 
 # Prints table
 kable(honors_awards, "html") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "responsive"))
+  kable_styling(bootstrap_options = c("striped", "hover", "responsive")) %>%
+  column_spec(1, width = "150px")
 ```
 
 <BR><BR>
@@ -248,16 +266,15 @@ professional_society_membership <- tibble("2012 - 2016", "Western Psychological 
 colnames(professional_society_membership) <- c("Year", "Institution")
 
 professional_society_membership <- professional_society_membership %>%
-  add_row(., Year = "2015 - 2016", Institution = "The Obesity Society", .before = 1) %>%
+  add_row(., Year = "2015 - 2017", Institution = "The Obesity Society", .before = 1) %>%
   add_row(., Year = "2012 - Present", Institution = "Society for Neuroscience", .before = 1) %>%
   add_row(., Year = "2016 - Present", Institution = "Phi Kappa Phi Honor Society", .before = 1)
 # add_row(., Year = "", Institution = "", .before = 1) %>%
 
-
 # Prints table
 kable(professional_society_membership, "html") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "responsive"))
+  kable_styling(bootstrap_options = c("striped", "hover", "responsive")) %>%
+  column_spec(1, width = "150px")
 ```
 
 <BR><BR>
-

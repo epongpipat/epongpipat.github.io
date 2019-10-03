@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -99,7 +100,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -260,48 +260,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -430,7 +391,7 @@ div.tocify {
 </div>
 
 
-<p><em>Updated on July 5, 2019</em> <BR><BR><BR></p>
+<p><em>Updated on October 3, 2019</em> <BR><BR><BR></p>
 <div id="education" class="section level2">
 <h2>Education</h2>
 <div class="divTable">
@@ -563,6 +524,60 @@ Worked with Dr. Melody Sadler, Dr. Amy Spilkin, Dr. Dale Glaser
 </div>
 <p><BR><BR></p>
 </div>
+<div id="talks-and-workshops" class="section level2">
+<h2>Talks and Workshops</h2>
+<table class="table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+Description
+</th>
+<th style="text-align:left;">
+Location
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 80px; ">
+2019-10
+</td>
+<td style="text-align:left;">
+Talk on ‘Functional connectivity of the fronto-parietal and default mode networks during the n-back across the adult lifespan’ given at the Developmental, Cognitive and Social/Personality Brownbag Series
+</td>
+<td style="text-align:left;width: 150px; ">
+UT Dallas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 80px; ">
+2019-09
+</td>
+<td style="text-align:left;">
+Assisted in an introduction to Git/GitHub Workshop with Dr. Micaela Chan <br><a href="https://gitbookdown.site" target="_blank"><i class="fas fa-book"></i></a>   <a href="https://github.com/mychan24/git_github_workshop" target="_blank"><i class="fab fa-github"></i></a>
+</td>
+<td style="text-align:left;width: 150px; ">
+Center for Vital Longevity, UT Dallas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 80px; ">
+2019-04
+</td>
+<td style="text-align:left;">
+Guest lectured on using R for descriptive and inferential statistics for Dr. Juhn’s Research Methods 2 Course
+</td>
+<td style="text-align:left;width: 150px; ">
+UT Dallas
+</td>
+</tr>
+</tbody>
+</table>
+<p><BR><BR></p>
+</div>
 <div id="service-to-the-profession" class="section level2">
 <h2>Service to the Profession</h2>
 <p>Co-reviewer for NeuroImage with Dr. Kennedy</p>
@@ -586,7 +601,7 @@ Award
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2018
 </td>
 <td style="text-align:left;">
@@ -597,7 +612,7 @@ Student Travel Award
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2016
 </td>
 <td style="text-align:left;">
@@ -608,7 +623,7 @@ Honorable Mention for Outstanding Service as a Teaching Assistant
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2016
 </td>
 <td style="text-align:left;">
@@ -619,7 +634,7 @@ Robert L. Solso Award
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2015
 </td>
 <td style="text-align:left;">
@@ -630,7 +645,7 @@ Dr. Edward Geldreich Scholarship
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2015
 </td>
 <td style="text-align:left;">
@@ -641,7 +656,7 @@ Robert L. Solso Award
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2014 (June)
 </td>
 <td style="text-align:left;">
@@ -652,7 +667,7 @@ Teacher of the Month
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2014
 </td>
 <td style="text-align:left;">
@@ -663,7 +678,7 @@ Student Scholarship Award
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2014 (January)
 </td>
 <td style="text-align:left;">
@@ -674,7 +689,7 @@ Teacher of the Month
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2012 (Fall)
 </td>
 <td style="text-align:left;">
@@ -685,7 +700,7 @@ Dean’s List
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2011 (Spring)
 </td>
 <td style="text-align:left;">
@@ -696,7 +711,7 @@ Dean’s List
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2011 (Fall)
 </td>
 <td style="text-align:left;">
@@ -707,7 +722,7 @@ Dean’s List
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2010 (Spring)
 </td>
 <td style="text-align:left;">
@@ -718,7 +733,7 @@ Dean’s List
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2010 (September)
 </td>
 <td style="text-align:left;">
@@ -729,7 +744,7 @@ Clinical Care Extender Intern of the Rotation Award
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2017 (Fall)
 </td>
 <td style="text-align:left;">
@@ -758,7 +773,7 @@ Institution
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2016 - Present
 </td>
 <td style="text-align:left;">
@@ -766,7 +781,7 @@ Phi Kappa Phi Honor Society
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2012 - Present
 </td>
 <td style="text-align:left;">
@@ -774,15 +789,15 @@ Society for Neuroscience
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-2015 - 2016
+<td style="text-align:left;width: 150px; ">
+2015 - 2017
 </td>
 <td style="text-align:left;">
 The Obesity Society
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;width: 150px; ">
 2012 - 2016
 </td>
 <td style="text-align:left;">
@@ -819,6 +834,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
