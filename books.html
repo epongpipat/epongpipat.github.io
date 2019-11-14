@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -95,7 +96,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -256,18 +256,6 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
@@ -333,29 +321,56 @@ $(document).ready(function () {
 
 
 <p><BR></p>
-<div class="divTable">
-<div class="divTableBody">
-<div class="divTableRow">
-<div class="divTableCell">
-<p><strong>Date</strong></p>
-</div>
-<div class="divTableCell">
-<p><strong>Book</strong></p>
-</div>
-</div>
-<div class="divTableRow">
-<div class="divTableCell">
-<p>2019-05</p>
-</div>
-<div class="divTableCell">
-<div class="divBlogTitle">
-<p><a href="https://ekarinpongpipat.com/practical-ext-of-intro-stats-in-psy-using-R/" target="_blank">A Practical Extension of Introductory Statistics in Psychology using R</a></p>
-</div>
-<p>A collaborative ebook with Guiseppe Miranda and Matt Kmiecik that aims to provide a practical extension of introductory statistics typically taught in psychology into the general linear model (GLM) using R. <BR><em>Tags:</em> <span class="badge badge-pill badge-light">Statistics</span> <span class="badge badge-pill badge-primary">R</span></p>
-</div>
-</div>
-</div>
-</div>
+<table class="table col-lg-12">
+<thead>
+<tr>
+<th class="col-lg-1">
+Date
+</th>
+<th class="col-lg-11">
+Book
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-lg-1" rowspan="3">
+2019-09
+</td>
+<td class="col-lg-11 divBlogTitle">
+<a href="https://gitbookdown.site/" target="_blank">Git &amp; GitHub Tutorial for Scientists: It’s Not Only for Programmers</a>
+</td>
+</tr>
+<tr>
+<td class="col-lg-11">
+A collaborative ebook with Micaela Chan that aims to provide a practical tutorial on using git and GitHub for scientists.
+</td>
+</tr>
+<tr>
+<td class="col-lg-11">
+<i>Tags</i>: <span class="badge badge-pill badge-dark">Git</span> <span class="badge badge-pill badge-dark">GitHub</span><br><br><br>
+</td>
+</tr>
+<tr>
+<td class="col-lg-1" rowspan="3">
+2019-05
+</td>
+<td class="col-lg-11 divBlogTitle">
+<a href="https://rpsystats.com" target="_blank">A Practical Extension of Introductory Statistics in Psychology using R</a>
+</td>
+</tr>
+<tr>
+<td class="col-lg-11">
+A collaborative ebook with Guiseppe Miranda and Matt Kmiecik that aims to provide a practical extension of introductory statistics typically taught in psychology into the general linear model (GLM) using R.
+</td>
+</tr>
+<tr>
+<td class="col-lg-11">
+<i>Tags</i>: <span class="badge badge-pill badge-light">Statistics</span> <span class="badge badge-pill badge-primary">R</span><br><br><br>
+</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
@@ -381,6 +396,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

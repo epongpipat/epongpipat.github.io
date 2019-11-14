@@ -8,27 +8,35 @@ output: html_document
 ```{r blog_figure, echo = F, warning = F, message = F, fig.width = 3, fig.height = 2, fig.asp = T, dev='svg'}
 packages <- c("readr", "glue", "tidyverse", "psych", "zoo")
 xfun::pkg_attach(packages, message = F)
-```
 
-<div class="divTable">
-<div class="divTableBody">
+df <- tribble(~date, ~title, ~url, ~description, ~tags,
+              "2019-09", "Git & GitHub Tutorial for Scientists:
+It’s Not Only for Programmers", "https://gitbookdown.site/", "A collaborative ebook with Micaela Chan that aims to provide a practical tutorial on using git and GitHub for scientists.", '<span class="badge badge-pill badge-dark">Git</span> <span class="badge badge-pill badge-dark">GitHub</span>',
+              "2019-05", "A Practical Extension of Introductory Statistics in Psychology using R", "https://rpsystats.com",'A collaborative ebook with Guiseppe Miranda and Matt Kmiecik that aims to provide a practical extension of introductory statistics typically taught in psychology into the general linear model (GLM) using R.', '<span class="badge badge-pill badge-light">Statistics</span> <span class="badge badge-pill badge-primary">R</span>') %>%
+  mutate(html_code = glue('<tr>
+			<td class="col-lg-1" rowspan="3">{date}</td>
+			<td class="col-lg-11 divBlogTitle"><a href="{url}" target="_blank">{title}</a></td>
+		</tr>
+		<tr>
+			<td class="col-lg-11">{description}</td>
+		</tr>
+		<tr>
+			<td class="col-lg-11"><i>Tags</i>: {tags}<br><br><br></td>
+		</tr>'))
+``` 
 
-<div class="divTableRow"><div class="divTableCell">
-**Date**
-</div><div class="divTableCell">
-**Book**
-</div></div>
+<table class="table col-lg-12">
+<thead>
+<tr>
+<th class="col-lg-1">Date</th>
+<th class="col-lg-11">Book</th>
+</tr>
+</thead>
+<tbody>
 
-<div class="divTableRow"><div class="divTableCell">
-2019-05
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-<a href="https://ekarinpongpipat.com/practical-ext-of-intro-stats-in-psy-using-R/" target="_blank">A Practical Extension of Introductory Statistics in Psychology using R</a>
-</div>
-A collaborative ebook with Guiseppe Miranda and Matt Kmiecik that aims to provide a practical extension of introductory statistics typically taught in psychology into the general linear model (GLM) using R.
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-</div></div>
+`r df$html_code %>% unlist() %>% as.character() %>% paste0(., collapse = "")`
 
-</div>
-</div>
+</tbody>
+</table>
+
+

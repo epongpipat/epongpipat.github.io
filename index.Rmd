@@ -12,7 +12,7 @@ h1.title {
 
 <center>
 
-<img src="images/profile-picture-circle.png" width="150px">
+<img src="https://ekarinpongpipat.com/images/profile-picture-circle.png" width="150px">
 
 ## Ekarin Eric Pongpipat, M.A.
 
@@ -23,7 +23,10 @@ h1.title {
 
 <br>
 
-### <i class="fas fa-sync-alt"></i> &nbsp; Updates
+<div class="container col-lg-12">
+
+<br>
+<h3><i class="fas fa-sync-alt"></i> &nbsp; Updates</h3><br>
 ```{r, echo = FALSE, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(kableExtra)
@@ -31,6 +34,12 @@ library(kableExtra)
 link <- text_spec("Google", link = "https://google.com")
 
 updates_table <- as.data.frame(rbind(
+  cbind(
+    "Date" = "2019-09-30",
+    "Category" = "eBook",
+    "Item" = "Git & GitHub Tutorial for Scientists: It’s Not Only for Programmers",
+    "Link" = "<a href='https://gitbookdown.site/' target='_blank'><i class='fas fa-link'></i></a>"
+  ),
   cbind(
     "Date" = "2019-06-10",
     "Category" = "Blog Post",
@@ -49,14 +58,15 @@ updates_table <- as.data.frame(rbind(
     "Item" = "Exploring 11 Years of Chicago Blackhawk's Data using Principal Components Analysis",
     "Link" = "<a href='https://mattkmiecik.com/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis.html', target='_blank'><i class='fas fa-link'></i></a>"
   )
-))
-
-updates_table <- updates_table %>%
+)) %>%
+  as_tibble() %>%
+  mutate(Date = lubridate::as_date(Date)) %>%
+  arrange(desc(Date)) %>%
+  top_n(-3) %>%
   kable(., format = "html", escape = FALSE) %>%
-  kable_styling(., bootstrap_options = c("striped", "hover", "responsive"), full_width = FALSE)
+  kable_styling(., bootstrap_options = c("striped", "hover", "responsive"), full_width = TRUE)
 
 gsub("<thead>.*</thead>", "", updates_table)
 ```
 
-</center>
-
+</div>
