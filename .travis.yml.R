@@ -18,4 +18,4 @@ local_dir: docs                  # Deploy the docs folder
 on:
   branch:
   - master
-fqdn: gitbookdown.site
+fqdn: ekarinpongpipat.com
