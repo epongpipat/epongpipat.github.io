@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 # load packages
 packages <- c("tidyverse")
 xfun::pkg_attach(packages, message = F)
