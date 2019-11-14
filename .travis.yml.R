@@ -2,8 +2,13 @@ language: R
 sudo: required
 cache: packages
 
+r_packages:
+  - tidyverse
+  - xfun
+  - rmarkdown
+
 script:
-  - Rscript build_site.R
+  - Rscript -e 'source("build_site.R")'
 
 deploy:
   provider: pages                # Specify the gh-pages deployment method
@@ -13,4 +18,4 @@ local_dir: docs                  # Deploy the docs folder
 on:
   branch:
   - master
-fqdn: ekarinpongpipat.com
+fqdn: gitbookdown.site
