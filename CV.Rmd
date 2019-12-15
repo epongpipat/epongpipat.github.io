@@ -15,7 +15,7 @@ packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", "ee
 xfun::pkg_attach(packages, install = T, message = F)
 ```
 
-*Updated on October 3, 2019*
+*Updated on December 14, 2019*
 <BR><BR><BR>
 
 ## Education
@@ -205,16 +205,17 @@ ggplot(poster_summary, aes(x = as.Date(paste0(poster_summary$Year,"-01-01"), "%Y
 
 ```{r talks, results = 'asis'}
 talks <- tribble(~Date, ~Description, ~Location,
+                 "2019-11", "Brianhack Dallas 2019 <br><a href='https://github.com/Brainhack-Dallas/mini-brainhack-utd' target='blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://brainhack-dallas.github.io/mini-brainhack-utd/' target='_blank'><i class='fas fa-link'></i></a>", "UT Dallas",
                  "2019-10", "Talk on 'Functional connectivity of the fronto-parietal and default mode networks during the n-back across the adult lifespan' given at the Developmental, Cognitive and Social/Personality Brownbag Series", "UT Dallas",
                  
-                 "2019-09", "Assisted in an introduction to Git/GitHub Workshop with Dr. Micaela Chan <br><a href='https://gitbookdown.site' target='_blank'><i class='fas fa-book'></i></a> &#8201 <a href='https://github.com/mychan24/git_github_workshop' target='_blank'><i class='fab fa-github'></i></a>", "Center for Vital Longevity, UT Dallas",
+                 "2019-09", "Assisted in an introduction to Git/GitHub Workshop with Dr. Micaela Chan <br><a href='https://github.com/mychan24/git_github_workshop' target='_blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://gitbookdown.site' target='_blank'><i class='fas fa-book'></i></a>", "Center for Vital Longevity<br>UT Dallas",
                  
                  "2019-04", "Guest lectured on using R for descriptive and inferential statistics for Dr. Juhn's Research Methods 2 Course", "UT Dallas")
 
 kable(talks, escape = F) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, width = "80px") %>%
-  column_spec(3, width = "150px")
+  column_spec(3, width = "175px")
 ```
 
 <BR><BR>
