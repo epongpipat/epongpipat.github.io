@@ -15,7 +15,7 @@ packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", "ee
 xfun::pkg_attach(packages, install = T, message = F)
 ```
 
-*Updated on December 14, 2019*
+*Updated on February 25, 2020*
 <BR><BR><BR>
 
 ## Education
@@ -246,7 +246,8 @@ honors_awards <- honors_awards %>%
   add_row(., Year = "2015", Institution = "San Diego State University", Award = "Dr. Edward Geldreich Scholarship", .before = 1) %>%
   add_row(., Year = "2016", Institution = "Western Psychological Association", Award = "Robert L. Solso Award", .before = 1) %>%
   add_row(., Year = "2016", Institution = "San Diego State University", Award = "Honorable Mention for Outstanding Service as a Teaching Assistant", .before = 1) %>%
-  add_row(., Year = "2018", Institution = "The University of Texas at Dallas", Award = "Student Travel Award", .before = 1)
+  add_row(., Year = "2018", Institution = "The University of Texas at Dallas", Award = "Student Travel Award", .before = 1) %>%
+  add_row(., Year = "2020", Institution = "The University of Texas at Dallas", Award = "Student Travel Award", .before = 1)
 # add_row(., Year = "", Institution = "", Award = "", .before = 1) %>%
 
 
