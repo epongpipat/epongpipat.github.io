@@ -15,7 +15,7 @@ packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", "ee
 xfun::pkg_attach(packages, install = T, message = F)
 ```
 
-*Updated on February 25, 2020*
+*Updated on July 27, 2020*
 <BR><BR><BR>
 
 ## Education
@@ -222,7 +222,7 @@ kable(talks, escape = F) %>%
 
 ## Service to the Profession
 
-Co-reviewer for NeuroImage with Dr. Kennedy
+Co-reviewer for NeuroImage and Journal of Cognitive Neuroscience with Dr. Kennedy
 
 <BR><BR>
 
