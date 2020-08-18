@@ -1,11 +1,8 @@
-shinyApps/.Rhistory
-shinyApps/lmVoice/.Rhistory
-.Rproj.user
 books
 CV_files
 blog_editing_*
-.Rhistory
 archive-*
 /rsconnect
-*.icloud
-*.html
+.*
+!.gitignore
+!.travis.yml

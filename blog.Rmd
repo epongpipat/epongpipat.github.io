@@ -63,7 +63,21 @@ blog_se <- describe(blog_summary_complete$frequency)["se"]
 </div></div>
 
 <div class="divTableRow"><div class="divTableCell">
-2019-06-10www
+2020-08-18
+</div><div class="divTableCell">
+<div class="divBlogTitle">
+<a href="https://epongpipat.shinyapps.io/covid19_shinydashboard/" target="_blank">COVID-19 Shiny Dashboard App</a>
+</div>
+COVID-19 tracker for regions and metrics that I consistently check.
+<BR>*Tags:* 
+<span class="badge badge-pill badge-primary">R</span>
+<span class="badge badge-pill badge-primary">Shiny Apps</span>
+</div></div>
+
+<BR>
+
+<div class="divTableRow"><div class="divTableCell">
+2019-06-10
 </div><div class="divTableCell">
 <div class="divBlogTitle">
 [Solving Ordinary Least Squares (OLS) Regression Using Gradient Descent](blog_solving_ols_regression_using_gradient_descent.html)

@@ -38,7 +38,7 @@ updates_table <- as.data.frame(rbind(
     "Date" = "2019-09-30",
     "Category" = "eBook",
     "Item" = "Git & GitHub Tutorial for Scientists: It’s Not Only for Programmers",
-    "Link" = "<a href='https://gitbookdown.site/' target='_blank'><i class='fas fa-link'></i></a>"
+    "Link" = "<a href='https://gitbookdown.dallasdatascience.com/' target='_blank'><i class='fas fa-link'></i></a>"
   ),
   cbind(
     "Date" = "2019-06-10",
@@ -50,7 +50,7 @@ updates_table <- as.data.frame(rbind(
     "Date" = "2019-05-03",
     "Category" = "eBook",
     "Item" = "A Practical Extension of Introductory Statistics in Psychology using R",
-    "Link" = "<a href='https://ekarinpongpipat.com/practical-ext-of-intro-stats-in-psy-using-R/', target='_blank'><i class='fas fa-link'></i></a>"
+    "Link" = "<a href='https://rpsystats.com', target='_blank'><i class='fas fa-link'></i></a>"
   ),
   cbind(
     "Date" = "2019-03-07",
@@ -62,7 +62,7 @@ updates_table <- as.data.frame(rbind(
   as_tibble() %>%
   mutate(Date = lubridate::as_date(Date)) %>%
   arrange(desc(Date)) %>%
-  top_n(-3) %>%
+  .[1:3, ] %>%
   kable(., format = "html", escape = FALSE) %>%
   kable_styling(., bootstrap_options = c("striped", "hover", "responsive"), full_width = TRUE)
 

@@ -11,7 +11,7 @@ xfun::pkg_attach(packages, message = F)
 
 df <- tribble(~date, ~title, ~url, ~description, ~tags,
               "2019-09", "Git & GitHub Tutorial for Scientists:
-It’s Not Only for Programmers", "https://gitbookdown.site/", "A collaborative ebook with Micaela Chan that aims to provide a practical tutorial on using git and GitHub for scientists.", '<span class="badge badge-pill badge-dark">Git</span> <span class="badge badge-pill badge-dark">GitHub</span>',
+It’s Not Only for Programmers", "https://gitbookdown.dallasdatascience.com/", "A collaborative ebook with Micaela Chan that aims to provide a practical tutorial on using git and GitHub for scientists.", '<span class="badge badge-pill badge-dark">Git</span> <span class="badge badge-pill badge-dark">GitHub</span>',
               "2019-05", "A Practical Extension of Introductory Statistics in Psychology using R", "https://rpsystats.com",'A collaborative ebook with Guiseppe Miranda and Matt Kmiecik that aims to provide a practical extension of introductory statistics typically taught in psychology into the general linear model (GLM) using R.', '<span class="badge badge-pill badge-light">Statistics</span> <span class="badge badge-pill badge-primary">R</span>') %>%
   mutate(html_code = glue('<tr>
 			<td class="col-lg-1" rowspan="3">{date}</td>
