@@ -4,7 +4,7 @@ subtitle: "Mostly a reference"
 output: html_document
 ---
 
-<BR>
+---
 
 ```{r blog_figure, echo = F, warning = F, message = F, fig.width = 3, fig.height = 2, fig.asp = T, dev='svg'}
 packages <- c("readr", "glue", "tidyverse", "psych", "zoo")
