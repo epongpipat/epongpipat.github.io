@@ -9,16 +9,23 @@ output:
       smooth_scroll: yes
 ---
 
+---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", "eepR", "icon")
+packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", 
+              "eepR", "icon", "tibble")
 xfun::pkg_attach(packages, install = T, message = F)
 ```
 
-*Updated on July 27, 2020*
-<BR><BR><BR>
+*Updated on September 1, 2020*
+
+<br><br>
 
 ## Education
+
+---
+
 <div class="divTable">
 <div class="divTableBody">
 
@@ -59,9 +66,12 @@ xfun::pkg_attach(packages, install = T, message = F)
 </div>
 </div>
 
-<BR><BR>
+<br><br>
 
 ## Research Experience
+
+---
+
 <div class="divTable">
 <div class="divTableBody">
 
@@ -108,6 +118,9 @@ xfun::pkg_attach(packages, install = T, message = F)
 <BR><BR>
 
 ## Teaching Experience
+
+---
+
 <div class="divTable">
 <div class="divTableBody">
 
@@ -146,13 +159,87 @@ xfun::pkg_attach(packages, install = T, message = F)
 
 ## Publications
 
-<div class="divReferences">
-McIntosh, E. C., Jacobson, A., Kemmotsu, N., **Pongpipat, E. E.**, Green, E., Haase, L., & Murphy, C. (2016). Does medial temporal lobe thickness mediate the association between risk factor burden and memory performance in middle-aged or older adults with metabolic syndrome? *Neuroscience Letters, 636*, 1-9. http://doi.org/10.1016/j.neulet.2016.10.010
-</div>
+---
+
+```{r publications, warning = F, message = F}
+pubs <- read_csv("publications.csv")
+```
+
+```{r}
+pubs2html <- function(data) {
+  
+  data <- data %>%
+    arrange(desc(status), desc(year))
+  
+  html_code <- ""
+  for (i in 1:nrow(data)) {
+    
+    reference <- '<div class="divReferences">'
+    authors <- str_replace(data$authors[i], "Pongpipat, E. E.", "**Pongpipat, E. E.**")
+    reference <- glue("{reference}{authors}")
+    
+    if (tolower(data$status[i]) == "accepted") {
+      reference <- glue("{reference} ({data$year[i]}).")
+    } else if (tolower(data$status[i]) == "in press") {
+      reference <- glue("{reference} ({data$year[i]}, *{data$status[i]}*).")
+    } else {
+      reference <- glue("{reference} (*{data$status[i]}*).")
+    }
+  
+    reference <- glue("{reference} {data$title[i]}.")
+    
+    if (!is.na(data$journal[i]) & !is.na(data$volume[i])) {
+      reference <- glue("{reference} *{data$journal[i]}, {data$volume[i]}*")
+    } else if (!is.na(data$journal[i]) & is.na(data$volume[i])) {
+      reference <- glue("{reference} *{data$journal[i]}*")
+    }
+    
+    if (!is.na(data$issue[i])) {
+      reference <- glue("{reference}({data$issue[i]})")
+    } 
+      
+    if (!is.na(data$pages[i])) {
+      reference <- glue("{reference}, {data$pages[i]}")
+    } 
+    reference <- glue("{reference}.")
+      
+    if (!is.na(data$doi[i])) {
+      reference <- glue("{reference} <a href='https://doi.org/{data$doi[i]}' target='_blank'>https://doi.org/{data$doi[i]}</a>.")
+    }
+    
+    # reference <- glue("{reference}. <br>[<a href='{pubs$google_scholar}' target='_blank'>Google Scholar</a>]")
+    # reference <- glue("{reference} [PMID: <a href='https://pubmed.ncbi.nlm.nih.gov/{pubs$pmid}' target='_blank'>{pubs$pmid}</a>]")
+    
+    if (!is.na(data$note[i])) {
+      reference <- glue("{reference} ({data$note[i]}).")
+    }
+    
+    if (!is.na(data$pdf[i])) {
+      reference <- glue("{reference} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='{data$pdf[i]}' target='_blank'><i class='fas fa-file-pdf'></i></a>")
+    }
+    
+    reference <- glue("{reference}</div>") 
+    
+    if (i > 1) {
+      html_code <- glue("{html_code}<br>{reference}")
+    } else {
+      html_code <- reference 
+    }
+  }
+  
+  return(html_code)
+}
+```
+
+
+`r pubs2html(pubs)`
+
 
 <BR><BR>
 
 ## Poster Presentations
+
+---
 
 <div class="divReferences">
 ```{r posters, warning = F, message = F, fig.width = 5, fig.height = 2, fig.asp = T, dev='svg'}
@@ -203,6 +290,8 @@ ggplot(poster_summary, aes(x = as.Date(paste0(poster_summary$Year,"-01-01"), "%Y
 
 ## Talks and Workshops
 
+---
+
 ```{r talks, results = 'asis'}
 talks <- tribble(~Date, ~Description, ~Location,
                  "2019-11", "Brianhack Dallas 2019 <br><a href='https://github.com/Brainhack-Dallas/mini-brainhack-utd' target='blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://brainhack-dallas.github.io/mini-brainhack-utd/' target='_blank'><i class='fas fa-link'></i></a>", "UT Dallas",
@@ -222,11 +311,16 @@ kable(talks, escape = F) %>%
 
 ## Service to the Profession
 
+---
+
 Co-reviewer for NeuroImage and Journal of Cognitive Neuroscience with Dr. Kennedy
 
 <BR><BR>
 
 ## Honors and Awards
+
+---
+
 ```{r honors_awards}
 honors_awards <- tibble("2017 (Fall)", "CSU Northridge", "Dean's List")
 
@@ -260,23 +354,19 @@ kable(honors_awards, "html") %>%
 <BR><BR>
 
 ## Professional Society Membership
+
+---
+
 ```{r professional_society_membership}
-
-professional_society_membership <- tibble("2012 - 2016", "Western Psychological Association")
-
-# test <- cbind(2016, "WPA Robert L. Solso Award")
-colnames(professional_society_membership) <- c("Year", "Institution")
-
-professional_society_membership <- professional_society_membership %>%
-  add_row(., Year = "2015 - 2017", Institution = "The Obesity Society", .before = 1) %>%
-  add_row(., Year = "2012 - Present", Institution = "Society for Neuroscience", .before = 1) %>%
-  add_row(., Year = "2016 - Present", Institution = "Phi Kappa Phi Honor Society", .before = 1)
-# add_row(., Year = "", Institution = "", .before = 1) %>%
-
+professional_society_membership <- tribble(~Year, ~Institution,
+                                           "2020 - Present", "Organization for Human Brain Mapping",
+                                           "2020 - Present", "Cognitive Neuroscience Society",
+                                           "2012 - Present", "Society for Neuroscience",
+                                           "2016 - 2017", "Phi Kappa Phi Honor Society",
+                                           "2015 - 2017", "The Obesity Society",
+                                           "2012 - 2016", "Western Psychological Association")
 # Prints table
 kable(professional_society_membership, "html") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "responsive")) %>%
   column_spec(1, width = "150px")
 ```
-
-<BR><BR>
