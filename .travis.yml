@@ -21,7 +21,6 @@ r_packages:
   - knitr
   - kableExtra
   - scales
-  - icon
   - tibble
 
 script:

@@ -13,8 +13,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", 
-              "icon", "tibble")
+packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", "tibble")
 xfun::pkg_attach(packages, install = T, message = F)
 ```
 
@@ -206,9 +205,6 @@ pubs2html <- function(data) {
     if (!is.na(data$doi[i])) {
       reference <- glue("{reference} <a href='https://doi.org/{data$doi[i]}' target='_blank'>https://doi.org/{data$doi[i]}</a>.")
     }
-    
-    # reference <- glue("{reference}. <br>[<a href='{pubs$google_scholar}' target='_blank'>Google Scholar</a>]")
-    # reference <- glue("{reference} [PMID: <a href='https://pubmed.ncbi.nlm.nih.gov/{pubs$pmid}' target='_blank'>{pubs$pmid}</a>]")
     
     if (!is.na(data$note[i])) {
       reference <- glue("{reference} ({data$note[i]}).")
