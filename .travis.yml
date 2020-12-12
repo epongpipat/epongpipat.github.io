@@ -7,6 +7,22 @@ r_packages:
   - xfun
   - rmarkdown
   - reshape2
+  - broom
+  - carData
+  - ggrepel
+  - glue
+  - plot3D
+  - RColorBrewer
+  - gridExtra
+  - knitr
+  - psych
+  - zoo
+  - readr
+  - knitr
+  - kableExtra
+  - scales
+  - icon
+  - tibble
 
 script:
   - Rscript build_site.R

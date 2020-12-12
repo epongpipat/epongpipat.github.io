@@ -14,7 +14,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", 
-              "eepR", "icon", "tibble")
+              "icon", "tibble")
 xfun::pkg_attach(packages, install = T, message = F)
 ```
 

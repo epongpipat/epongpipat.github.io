@@ -18,6 +18,8 @@ output:
 <br>Modified Post: 6/17/2019</font>
 
 ```{r, include=F}
+knitr::opts_chunk$set(dev = 'svg', 
+                      warning = FALSE)
 options(scipen = 999, digits = 3)
 ```
 
