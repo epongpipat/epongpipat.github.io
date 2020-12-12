@@ -1,8 +1,9 @@
 books
 CV_files
-blog_editing_*
+*editing*
 archive-*
 /rsconnect
 .*
 !.gitignore
 !.travis.yml
+.Rproj.user
