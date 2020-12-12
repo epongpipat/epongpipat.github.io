@@ -5,38 +5,73 @@ output: html_document
 
 ---
 
-```{r blog_figure, echo = F, warning = F, message = F, fig.width = 3, fig.height = 2, fig.asp = T, dev='svg'}
+```{r include = F}
+knitr::opts_chunk$set(dev = 'svg', 
+                      echo = FALSE,
+                      message = FALSE)
 packages <- c("readr", "glue", "tidyverse", "psych", "zoo")
 xfun::pkg_attach(packages, message = F)
+```
 
-df <- tribble(~date, ~title, ~url, ~description, ~tags,
-              "2019-09", "Git & GitHub Tutorial for Scientists:
-It’s Not Only for Programmers", "https://gitbookdown.dallasdatascience.com/", "A collaborative ebook with Micaela Chan that aims to provide a practical tutorial on using git and GitHub for scientists.", '<span class="badge badge-pill badge-dark">Git</span> <span class="badge badge-pill badge-dark">GitHub</span>',
-              "2019-05", "A Practical Extension of Introductory Statistics in Psychology using R", "https://rpsystats.com",'A collaborative ebook with Guiseppe Miranda and Matt Kmiecik that aims to provide a practical extension of introductory statistics typically taught in psychology into the general linear model (GLM) using R.', '<span class="badge badge-pill badge-light">Statistics</span> <span class="badge badge-pill badge-primary">R</span>') %>%
-  mutate(html_code = glue('<tr>
-			<td class="col-lg-1" rowspan="3">{date}</td>
-			<td class="col-lg-11 divBlogTitle"><a href="{url}" target="_blank">{title}</a></td>
-		</tr>
-		<tr>
-			<td class="col-lg-11">{description}</td>
-		</tr>
-		<tr>
-			<td class="col-lg-11"><i>Tags</i>: {tags}<br><br><br></td>
-		</tr>'))
-``` 
+```{r}
+df <- read_csv("books.csv") %>%
+  mutate(date = glue("{year}-{month}-01")) %>%
+  mutate(date = as.Date(date)) %>%
+  arrange(desc(date))
 
-<table class="table col-lg-12">
-<thead>
-<tr>
-<th class="col-lg-1">Date</th>
-<th class="col-lg-11">Book</th>
-</tr>
-</thead>
-<tbody>
+df_collab <- read_csv("collaborator-urls.csv")
 
-`r df$html_code %>% unlist() %>% as.character() %>% paste0(., collapse = "")`
+df_tags <- read_csv("tag-colors.csv")
+```
 
-</tbody>
-</table>
+```{r, results = 'asis'}
+html_row <- function(df, i) {
+  code <- glue("<div class='divTableRow'>")
+  code <- glue("{code}<div style='width: 100px;' class='divTableCell'>{df$date[i]}</div>")
+  code <- glue("{code}<div class='divTableCell'>")
+  
+  # title
+  code <- glue("{code}<div class='divBlogTitle'>")
+  if (df$link_new_window[i] == TRUE) {
+    code <- glue("{code}<a href='{df$link[i]}' target='_blank'>{df$title[i]}</a>")
+  } else {
+    code <- glue("{code}<a href='{df$link[i]}'>{df$title[i]}</a>")
+  }
+  
+  if (!is.na(df$github_link[i])) {
+    code <- glue("{code} <a href='{df$github_link[i]}' target='_blank'><span class='fa fa-github'></span></a>")
+  }
+  
+  code <- glue("{code}</div>")
+  
+  code <- glue("{code}<br>{df$description[i]}")
+  
+  # tags
+  tags <- str_split(df$tags[i], ",") %>% unlist() %>% sort()
+  tags_code <- ""
+  for (j in 1:length(tags)) {
+    tag_color <- df_tags$color[which(df_tags$tag == tags[j])]
+    tags_code <- glue("{tags_code} <span class='badge badge-pill badge-{tag_color}'>{tags[j]}</span>")
+  }
+  
+  code <- glue("{code}<br>*Tags*: {tags_code}")
+  
+  code <- glue("{code}</div></div>")
+  
+  return(code)
+}
 
+code_all <- "<div class='divTable'><div class='divTableBody'><div class='divTableRow'><div class='divTableCell'>**Date**</div><div class='divTableCell'>**Post**</div></div>"
+for (i in 1:nrow(df)) {
+  code_all <- glue("{code_all}<br>{html_row(df, i)}")
+}
 
+code_all <- glue("{code_all}</div></div>")
+
+# link collaborators to their respective website
+for (i in 1:nrow(df_collab)) {
+  code_all <- str_replace_all(code_all, df_collab$collaborator[i], glue("<a href='{df_collab$link[i]}' target='_blank'>{df_collab$collaborator[i]}</a>"))
+}
+
+cat(code_all)
+```

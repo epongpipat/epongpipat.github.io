@@ -6,194 +6,73 @@ output: html_document
 
 ---
 
-```{r blog_figure, echo = F, warning = F, message = F, fig.width = 3, fig.height = 2, fig.asp = T, dev='svg'}
+```{r include = F}
+knitr::opts_chunk$set(dev = 'svg', 
+                      echo = FALSE,
+                      message = FALSE)
 packages <- c("readr", "glue", "tidyverse", "psych", "zoo")
 xfun::pkg_attach(packages, message = F)
 ```
 
-```{r, echo = F, message = F}
-blogs <- read_csv("blogs.csv") %>%
-  rowwise() %>%
-  mutate(date = paste0(year,"-",month,"-",day)) %>%
-  ungroup() %>%
-  mutate(date = as.Date(date))
+```{r}
+df <- read_csv("blogs.csv") %>%
+  mutate(date = glue("{year}-{month}-{day}")) %>%
+  mutate(date = as.Date(date)) %>%
+  arrange(desc(date))
 
-blogs_summary <- blogs %>%
-  group_by(year,month) %>%
-  summarize(frequency = n()) %>%
-  rowwise() %>%
-  mutate(date = paste0(year,"-",month,"-01")) %>%
-  ungroup() %>%
-  mutate(date = as.Date(date))
+df_collab <- read_csv("collaborator-urls.csv")
 
-# fill in missing dates
-blog_dates <- as.data.frame(seq(from = as.Date(as.yearmon(min(blogs_summary$date))), 
-                 to = as.Date(as.yearmon(max(blogs_summary$date))), 
-                 by="month"))
-colnames(blog_dates) = "date"
-
-blog_summary_complete <- full_join(blog_dates, blogs_summary, by = "date")
-blog_summary_complete <- blog_summary_complete %>%
-  rowwise() %>%
-  mutate(frequency = ifelse(is.na(frequency),0,frequency)) %>%
-  select(-c(year,month))
-
-blog_mean <- describe(blog_summary_complete$frequency)["mean"]
-blog_se <- describe(blog_summary_complete$frequency)["se"]
-
-# ggplot(blog_summary_complete, aes(x = date, y = frequency)) +
-#   geom_line(color = "#106a8c") +
-#   geom_point(color = "#106a8c") +
-#   theme_classic() +
-#   scale_y_continuous(limits = c(0,max(blog_summary_complete$frequency)), breaks = c(0,1,2)) +
-#   scale_x_date(date_labels = "%Y-%m", date_breaks = "1 month") +
-#   labs(subtitle = paste("Mean Per Month =",blog_mean,"±",blog_se),
-#        x = "",
-#        y = "Frequency") +
-#   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+df_tags <- read_csv("tag-colors.csv")
 ```
 
-<div class="divTable">
-<div class="divTableBody">
+```{r, results = 'asis'}
+html_row <- function(df, i) {
+  code <- glue("<div class='divTableRow'>")
+  code <- glue("{code}<div style='width: 100px;' class='divTableCell'>{df$date[i]}</div>")
+  code <- glue("{code}<div class='divTableCell'>")
+  
+  # title
+  code <- glue("{code}<div class='divBlogTitle'>")
+  if (df$link_new_window[i] == TRUE) {
+    code <- glue("{code}<a href='{df$link[i]}' target='_blank'>{df$title[i]}</a>")
+  } else {
+    code <- glue("{code}<a href='{df$link[i]}'>{df$title[i]}</a>")
+  }
+  
+  if (!is.na(df$github_link[i])) {
+    code <- glue("{code} <a href='{df$github_link[i]}' target='_blank'><span class='fa fa-github'></span></a>")
+  }
+  
+  code <- glue("{code}</div>")
+  
+  code <- glue("{code}<br>{df$description[i]}")
+  
+  # tags
+  tags <- str_split(df$tags[i], ",") %>% unlist() %>% sort()
+  tags_code <- ""
+  for (j in 1:length(tags)) {
+    tag_color <- df_tags$color[which(df_tags$tag == tags[j])]
+    tags_code <- glue("{tags_code} <span class='badge badge-pill badge-{tag_color}'>{tags[j]}</span>")
+  }
 
-<div class="divTableRow"><div class="divTableCell">
-**Date**
-</div><div class="divTableCell">
-**Post**
-</div></div>
+  code <- glue("{code}<br>*Tags*: {tags_code}")
+  
+  code <- glue("{code}</div></div>")
+  
+  return(code)
+}
 
-<div class="divTableRow"><div class="divTableCell">
-2020-08-18
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-<a href="https://epongpipat.shinyapps.io/covid19_shinydashboard/" target="_blank">COVID-19 Shiny Dashboard App</a>
-</div>
-COVID-19 tracker for regions and metrics that I consistently check.
-<BR>*Tags:* 
-<span class="badge badge-pill badge-primary">R</span>
-<span class="badge badge-pill badge-primary">Shiny Apps</span>
-</div></div>
+code_all <- "<div class='divTable'><div class='divTableBody'><div class='divTableRow'><div class='divTableCell'>**Date**</div><div class='divTableCell'>**Post**</div></div>"
+for (i in 1:nrow(df)) {
+  code_all <- glue("{code_all}<br>{html_row(df, i)}")
+}
 
-<BR>
+code_all <- glue("{code_all}</div></div>")
 
-<div class="divTableRow"><div class="divTableCell">
-2019-06-10
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-[Solving Ordinary Least Squares (OLS) Regression Using Gradient Descent](blog_solving_ols_regression_using_gradient_descent.html)
-</div>
-A brief guide to solving ordianry least squares (OLS) regression using gradient descent in R.
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-</div></div>
+# link collaborators to their respective website
+for (i in 1:nrow(df_collab)) {
+  code_all <- str_replace_all(code_all, df_collab$collaborator[i], glue("<a href='{df_collab$link[i]}' target='_blank'>{df_collab$collaborator[i]}</a>"))
+}
 
-<BR>
-
-<div class="divTableRow"><div class="divTableCell">
-2019-03-07
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-<a href="https://mattkmiecik.com/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis.html" target="_blank">Exploring 11 Years of Chicago Blackhawk’s Data using Principal Components Analysis</a>
-</div>
-A collaboration post with <a href="https://mattkmiecik.com" target="_blank">Matt Kmiecik</a> using principal components analysis to analyze Blackhawk's data.
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-</div></div>
-
-<BR>
-
-<div class="divTableRow"><div class="divTableCell">
-2019-01-30
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-[Solving Ordinary Least Squares (OLS) Regression Using Matrix Algebra](blog_solving_ols_regression_using_matrix_algebra.html)
-</div>
-A brief guide to solving ordianry least squares (OLS) regression using matrix algebra in R.
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-</div></div>
-
-<BR>
-
-<div class="divTableRow"><div class="divTableCell">
-2018-09-01
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-<a href="https://mattkmiecik.shinyapps.io/boot-perm-dash/" target="_blank">Bootstrapping and Permutation Testing: A Shiny App (A Dashboard Update)</a>
-</div>
-Upate to the previous "Bootstrapping and Permutation Testing: A Shiny App" post using `shinydashboard`.
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-<span class="badge badge-pill badge-primary">Shiny Apps</span>
-</div></div>
-
-<BR>
-
-<div class="divTableRow"><div class="divTableCell">
-2018-08-15
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-<a href="https://epongpipat.shinyapps.io/lm_voice_dashboard/" target="_blank">Simple Linear Regression via Voice Command: A Shiny App (A Dashboard Update)</a>
-</div>
-Upate to the previous "Simple Linear Regression via Voice Command: A Shiny App" post using `shinydashboard`. *(Note: Link may or not work depending on if my free hours have been used up for the month, but feel free to download the code and run locally from my <a href="https://github.com/epongpipat/shiny_apps/tree/master/lm_voice_dashboard" target="_blank">GitHub <span class="fa fa-github"></span></a>.)*
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-<span class="badge badge-pill badge-primary">Shiny Apps</span>
-</div></div>
-
-<BR>
-
-<div class="divTableRow"><div class="divTableCell">
-2018-06-17
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-<a href="https://epongpipat.shinyapps.io/lmvoice" target="_blank">Simple Linear Regression via Voice Command: A Shiny App</a>
-</div>
-Change variables of a simple linear regression via voice commands. *(Note: Link may or not work depending on if my free hours have been used up for the month, but feel free to download the code and run locally from my <a href="https://github.com/epongpipat/epongpipat.github.io/tree/master/shinyApps/lmVoice" target="_blank">GitHub <span class="fa fa-github"></span></a>.)*
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-<span class="badge badge-pill badge-primary">Shiny Apps</span>
-</div></div>
-
-<BR>
-
-<div class="divTableRow"><div class="divTableCell">
-2018-06-07
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-<a href="https://mattkmiecik.com/post-Bootstrapping-and-Permutation-Testing-Shiny-App.html" target="_blank">Bootstrapping and Permutation Testing: A Shiny App</a>
-</div>
-A collaboration post with [Matt Kmiecik](https://mattkmiecik.com) about the differences between bootstrapping and permutation testing with input variables that change on the fly.
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-<span class="badge badge-pill badge-primary">Shiny Apps</span>
-</div></div>
-
-<BR>
-
-<div class="divTableRow"><div class="divTableCell">
-2018-03-20
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-[Calculate 24-Motion Variables](blog_Calculate_Motion_Regressors.html)
-</div>
-A quick guide to calculating 24-motion regressors (with visuals).
-<BR>*Tags:* <span class="badge badge-pill badge-dark">fMRI</span>
-<span class="badge badge-pill badge-primary">R</span>
-</div></div>
-
-<BR>
-
-<div class="divTableRow"><div class="divTableCell" style="width: 100px;">
-2018-02-11
-</div><div class="divTableCell">
-<div class="divBlogTitle">
-<a href="https://mattkmiecik.com/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data.html" target="_blank">Multilevel Modeling in R with NHL Power Play Data</a>
-</div>
-A collaboration post with [Matt Kmiecik](https://mattkmiecik.com) about multilevel modeling in R using professional hockey data from the NHL.
-<BR>*Tags:* <span class="badge badge-pill badge-light">Statistics</span>
-<span class="badge badge-pill badge-primary">R</span>
-</div></div>
-
-</div>
-</div>
+cat(code_all)
+```
