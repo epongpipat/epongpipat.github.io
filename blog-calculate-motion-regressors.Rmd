@@ -65,7 +65,7 @@ The first six motion parameters are the standard motion parameters and include:
 ```{r m6, collapsed = TRUE, dev = "svg", message = F}
 # load 6-rigidy body motion parameters
 # add duration
-motion_file <- "blog_Calculate_Motion_Regressors_files/example_motion_demeand.csv"
+motion_file <- "blog-calculate-motion-regressors_files/example_motion_demeand.csv"
 motion_demeaned <- read_csv(motion_file, col_names = F) %>%
   mutate(Duration = c(1:nrow(.)))
 
