@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
 <title>Calculate 24-Motion Variables</title>
 
+<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -103,7 +104,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -252,6 +252,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -264,57 +265,12 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
-<script>
-$(document).ready(function () {
-  window.initializeSourceEmbed("blog_Calculate_Motion_Regressors.Rmd");
-  window.initializeCodeFolding("show" === "show");
-});
-</script>
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -328,6 +284,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -511,7 +473,7 @@ colnames(motion_demeaned) &lt;- c(motion_variables, &quot;Duration&quot;)
 
 # graph motion parameters
 graph_motion(motion_demeaned, &quot;6-Rigid Body Motion Parameters&quot;)</code></pre>
-<p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m6-1.svg" width="672" /></p>
+<p><img src="blog-calculate-motion-regressors_files/figure-html/m6-1.svg" width="672" /></p>
 <p><BR><BR></p>
 </div>
 <div id="motion-regressors" class="section level2">
@@ -536,7 +498,7 @@ colnames(motion_demeaned_td1) &lt;- c(paste0(motion_variables, &quot;_TD1&quot;)
 
 # graph motion parameters
 graph_motion(motion_demeaned_td1, &quot;First Temporal Derivatives of the 6-Rigid Body Motion Parameters&quot;)</code></pre>
-<p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m12-1.svg" width="672" /></p>
+<p><img src="blog-calculate-motion-regressors_files/figure-html/m12-1.svg" width="672" /></p>
 <p><BR><BR></p>
 </div>
 <div id="motion-regressors-1" class="section level2">
@@ -560,7 +522,7 @@ colnames(motion_demeaned_sq) &lt;- c(paste0(motion_variables, &quot;_Squared&quo
 
 # graph motion parameters
 graph_motion(motion_demeaned_sq, &quot;6-Rigid Body Motion Parameters Squared&quot;)</code></pre>
-<p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m18-1.svg" width="672" /></p>
+<p><img src="blog-calculate-motion-regressors_files/figure-html/m18-1.svg" width="672" /></p>
 <p><BR><BR></p>
 </div>
 <div id="motion-regressors-2" class="section level2">
@@ -584,7 +546,7 @@ colnames(motion_demeaned_td1_sq) &lt;- c(paste0(motion_variables, &quot;_TD1_Squ
 
 # plot motion.td1.sq into one figure
 graph_motion(motion_demeaned_td1_sq, &quot;First Temporal Derivatives of the 6-Rigid Body Motion Parameters Squared&quot;)</code></pre>
-<p><img src="blog_Calculate_Motion_Regressors_files/figure-html/m24-1.svg" width="672" /></p>
+<p><img src="blog-calculate-motion-regressors_files/figure-html/m24-1.svg" width="672" /></p>
 <p><BR><BR></p>
 </div>
 <div id="r-code-example" class="section level2">
@@ -701,6 +663,55 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("blog-calculate-motion-regressors.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

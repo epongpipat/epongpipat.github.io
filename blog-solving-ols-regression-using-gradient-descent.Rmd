@@ -72,7 +72,7 @@ e_n \\
 \end{bmatrix}
 $$
 
-For a review of matrix multiplication, check out my [previous blog post](blog_solving_ols_regression_using_matrix_algebra.html).
+For a review of matrix multiplication, check out my [previous blog post](blog-solving_ols-regression-using-matrix-algebra.html).
 
 <br>
 
@@ -124,7 +124,7 @@ packages <- c("tidyverse",   # data manipulation and visualization
               "plot3D",      # plot 3D figures
               "RColorBrewer" # load color palettes
               )
-xfun::pkg_attach(packages, message = F)
+xfun::pkg_attach2(packages, message = F)
 n_round <- 3
 ```
 
@@ -489,7 +489,7 @@ However, since the range of salary is so large, each method produced nearly iden
 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
 /*
 var disqus_config = function () {
-this.page.url = 'https://ekarinpongpipat.com/blog_solving_ols_regression_using_gradient_descent.html';  // Replace PAGE_URL with your page's canonical URL variable
+this.page.url = 'https://ekarinpongpipat.com/blog-solving-ols-regression-using-gradient-descent.html';  // Replace PAGE_URL with your page's canonical URL variable
 this.page.identifier = 'blog_solving_ols_regression_using_gradient_descent'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
 };
 */

@@ -224,7 +224,7 @@ tibble(
 
 ## Solve Using `lm` Function
 ```{r}
-lm(salary ~ yrs.since.phd, dataset) %>% summary() %>% tidy()
+lm(salary ~ yrs.since.phd, dataset) %>% tidy()
 ```
 
 <!-- disqus START -->
@@ -241,7 +241,7 @@ lm(salary ~ yrs.since.phd, dataset) %>% summary() %>% tidy()
 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
 /*
 var disqus_config = function () {
-this.page.url = 'https://ekarinpongpipat.com/blog_solving_ols_regression_using_matrix_algebra.html';  // Replace PAGE_URL with your page's canonical URL variable
+this.page.url = 'https://ekarinpongpipat.com/blog-solving-ols-regression-using-matrix-algebra.html';  // Replace PAGE_URL with your page's canonical URL variable
 this.page.identifier = 'blog_solving_ols_regression_using_matrix_algebra'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
 };
 */
