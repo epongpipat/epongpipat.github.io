@@ -15,9 +15,9 @@ xfun::pkg_attach(packages, message = F)
 
 ```{r}
 df <- read_csv("books.csv") %>%
-  mutate(date = glue("{year}-{month}-01")) %>%
-  mutate(date = as.Date(date)) %>%
-  arrange(desc(date))
+  mutate(date = glue("{year}-{str_pad(month, 2, 'left', 0)}"),
+         date_r = as.Date(glue("{year}-{month}-01"))) %>%
+  arrange(desc(date_r))
 
 df_collab <- read_csv("collaborator-urls.csv")
 
@@ -61,7 +61,7 @@ html_row <- function(df, i) {
   return(code)
 }
 
-code_all <- "<div class='divTable'><div class='divTableBody'><div class='divTableRow'><div class='divTableCell'>**Date**</div><div class='divTableCell'>**Post**</div></div>"
+code_all <- "<div class='divTable'><div class='divTableBody'><div class='divTableRow'><div class='divTableCell'>**Date**</div><div class='divTableCell'>**Book**</div></div>"
 for (i in 1:nrow(df)) {
   code_all <- glue("{code_all}<br>{html_row(df, i)}")
 }
