@@ -44,7 +44,7 @@ updates_table <- as.data.frame(rbind(
     "Date" = "2019-06-10",
     "Category" = "Blog Post",
     "Item" = "Solving Ordinary Least Squares (OLS) Regression using Gradient Descent",
-    "Link" = "<a href='blog_solving_ols_regression_using_gradient_descent.html'><i class='fas fa-link'></i></a>"
+    "Link" = "<a href='blog-solving-ols-regression-using-gradient-descent.html'><i class='fas fa-link'></i></a>"
   ),
   cbind(
     "Date" = "2019-05-03",
