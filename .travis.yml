@@ -6,6 +6,7 @@ r_packages:
   - tidyverse
   - xfun
   - rmarkdown
+  - reshape2
 
 script:
   - Rscript build_site.R

@@ -36,7 +36,8 @@ library(tidyverse)
 ```{r}
 # graph motion parameters and facet by motion type
 graph_motion <- function(dataset, title) {
-  data_long <- reshape2::melt(dataset, id.var = "Duration") %>%
+  require(reshape2)
+  data_long <- melt(dataset, id.var = "Duration") %>%
     mutate(variable = gsub("_", " ", variable))
   figure <- ggplot(data_long, aes(x = Duration, y = value)) +
     geom_line(color = "#106a8c") +
