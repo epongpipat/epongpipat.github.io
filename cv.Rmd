@@ -17,7 +17,7 @@ packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", "ti
 xfun::pkg_attach(packages, install = T, message = F)
 ```
 
-*Updated on September 1, 2020*
+*Updated on January 21, 2021*
 
 <br><br>
 
@@ -168,7 +168,7 @@ pubs <- read_csv("publications.csv")
 pubs2html <- function(data) {
   
   data <- data %>%
-    arrange(desc(status), desc(year))
+    arrange(desc(status), desc(year), desc(month))
   
   html_code <- ""
   for (i in 1:nrow(data)) {

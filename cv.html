@@ -13,7 +13,7 @@
 
 <title>Curriculum Vitae</title>
 
-<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -27,6 +27,7 @@
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -38,6 +39,15 @@
 
   gtag('config', 'UA-116039246-1');
 </script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -83,6 +93,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -399,7 +410,7 @@ div.tocify {
 
 
 <hr />
-<p><em>Updated on September 1, 2020</em></p>
+<p><em>Updated on January 21, 2021</em></p>
 <p><br><br></p>
 <div id="education" class="section level2">
 <h2>Education</h2>
@@ -510,11 +521,11 @@ Worked with Dr. Melody Sadler, Dr. Amy Spilkin, Dr. Dale Glaser
 <h2>Publications</h2>
 <hr />
 <div class="divReferences">
-<strong>Pongpipat, E. E.</strong>, Kennedy, K. M., Foster, C. M., Boylan, M. A., &amp; Rodrigue, K. M (<em>Pre-Print, Under Review</em>). Functional connectivity within and between n-back modulated regions: An adult lifespan PPI investigation.. <a href='https://doi.org/10.1101/2020.06.11.145219' target='_blank'>https://doi.org/10.1101/2020.06.11.145219</a>.
+<strong>Pongpipat, E. E.</strong>, Kennedy, K. M., Foster, C. M., Boylan, M. A., &amp; Rodrigue, K. M (2020). Functional connectivity within and between n-back modulated regions: An adult lifespan PPI investigation. <em>Brain Connectivity</em>. <a href='https://doi.org/10.1089/brain.2020.0791' target='_blank'>https://doi.org/10.1089/brain.2020.0791</a>.
 </div>
 <br>
 <div class="divReferences">
-Boylan, M. A., Foster, C. M., <strong>Pongpipat, E. E.</strong>, Webb, C. E., Rodrigue, K. M. &amp; Kennedy K. K. (2020). Greater BOLD variability is associated with poorer cognitive function in an adult lifespan sample. <em>Cerebral Cortex</em>. <a href='https://doi.org/10.1093/cercor/bhaa243' target='_blank'>https://doi.org/10.1093/cercor/bhaa243</a>.          <a href='https://academic.oup.com/cercor/advance-article-pdf/doi/10.1093/cercor/bhaa243/33733979/bhaa243.pdf' target='_blank'><i class='fas fa-file-pdf'></i></a>
+Boylan, M. A., Foster, C. M., <strong>Pongpipat, E. E.</strong>, Webb, C. E., Rodrigue, K. M. &amp; Kennedy K. K. (2020). Greater BOLD variability is associated with poorer cognitive function in an adult lifespan sample. <em>Cerebral Cortex, 31</em>(1), 562-574. <a href='https://doi.org/10.1093/cercor/bhaa243' target='_blank'>https://doi.org/10.1093/cercor/bhaa243</a>.          <a href='https://academic.oup.com/cercor/advance-article-pdf/doi/10.1093/cercor/bhaa243/33733979/bhaa243.pdf' target='_blank'><i class='fas fa-file-pdf'></i></a>
 </div>
 <br>
 <div class="divReferences">
@@ -895,7 +906,7 @@ Western Psychological Association
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
