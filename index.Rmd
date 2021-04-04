@@ -28,11 +28,8 @@ h1.title {
 <br>
 <h3><i class="fas fa-sync-alt"></i> &nbsp; Updates</h3><br>
 ```{r, echo = FALSE, warning = FALSE, message = FALSE}
-library(tidyverse)
-library(kableExtra)
-library(glue)
-
-link <- text_spec("Google", link = "https://google.com")
+pkgs <- c("dplyr", "kableExtra", "glue")
+xfun::pkg_attach2(pkgs, message = F)
 
 df <- read.csv("updates.csv") %>%
   arrange(desc(date)) %>%
