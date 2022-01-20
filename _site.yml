@@ -1,5 +1,5 @@
 name: "Ekarin Eric Pongpipat, M.A."
-output_dir: '.'
+output_dir: 'docs/'
 output:
   html_document:
     theme: lumen
