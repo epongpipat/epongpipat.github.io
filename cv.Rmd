@@ -131,9 +131,9 @@ xfun::pkg_attach(packages, install = T, message = F)
 <B>Graduate Teaching Assistant</B> (2017 - 2019)
 <BR>The University of Texas at Dallas
 <BR>1. Statistics for Psychology, ACN6312/HCS6312 (Spring 2019)
-<BR><div class="divIndent">Worked with Dr. Nancy Juhn</div>
+<BR><div class="divIndent">Under the supervision of Dr. Nancy Juhn</div>
 <BR>2. Statistics for Psychology, PSY2317 (Fall 2017, Spring 2018, Fall 2018)
-<BR><div class="divIndent">Worked with Dr. Nancy Juhn</div>
+<BR><div class="divIndent">Under the supervision of Dr. Nancy Juhn</div>
 </div>
 </div>
 
@@ -145,9 +145,9 @@ xfun::pkg_attach(packages, install = T, message = F)
 <B>Graduate Teaching Assistant</B> (2014 - 2016)
 <BR>San Diego State University
 <BR>1. Advanced Statistics in Psychology, PSY670A/B (Fall 2015, Spring 2016)
-<BR><div class="divIndent">Worked with Dr. Melody Sadler</div>
+<BR><div class="divIndent">Under the supervision of Dr. Melody Sadler</div>
 <BR>2. Statistical Methods in Psychology Laboratory, PSY280L (Fall 2014, Spring 2015)
-<BR><div class="divIndent">Worked with Dr. Melody Sadler, Dr. Amy Spilkin, Dr. Dale Glaser</div>
+<BR><div class="divIndent">Under the supervision of Dr. Melody Sadler, Dr. Amy Spilkin, and Dr. Dale Glaser</div>
 </div>
 </div>
 
