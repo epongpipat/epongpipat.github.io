@@ -5,5 +5,4 @@ archive-*
 .*
 !.gitignore
 !.travis.yml
-.Rproj.user
-.DS_Store
+docs/*
