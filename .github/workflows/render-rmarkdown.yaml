@@ -1,11 +1,11 @@
 on:
   push:
-    branches: master
+    branches: main
     paths:
       - "*.Rmd"
       - "*.csv"
   pull_request:
-    branches: master
+    branches: main
     paths:
       - "*.Rmd"
       - "*.csv"
