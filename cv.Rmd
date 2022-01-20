@@ -17,7 +17,7 @@ packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", "ti
 xfun::pkg_attach(packages, install = T, message = F)
 ```
 
-*Updated on January 21, 2021*
+*Updated on January 19, 2022*
 
 <br><br>
 
@@ -35,7 +35,7 @@ xfun::pkg_attach(packages, install = T, message = F)
 <div class="divTableCellInfo"> 
 <B>Ph.D. Student, Cognition and Neuroscience</B> (2017 - Present)
 <BR> The University of Texas at Dallas
-<BR> Advisors: Drs. Karen M. Rodrigue & Kristen M. Kennedy
+<BR> Advisors: Dr. Karen M. Rodrigue & Dr. Kristen M. Kennedy
 </div>
 </div>
 
@@ -266,9 +266,15 @@ poster_mean_per_year <- round(describe(poster_summary$Frequency)[["mean"]], 2)
 poster_se_per_year <- round(describe(poster_summary$Frequency)[["se"]], 2)
 poster_total <- sum(poster_summary$Frequency)
 
-ggplot(poster_summary, aes(x = as.Date(paste0(poster_summary$Year,"-01-01"), "%Y-%m-%d"), y = Frequency)) +
-  geom_line(color = "#106a8c") +
-  geom_point(color = "#106a8c") +
+df_poster <- data.frame(Year = min(poster_summary$Year):max(poster_summary$Year)) %>%
+  left_join(poster_summary) %>%
+  mutate(Frequency = ifelse(is.na(Frequency), 0, Frequency),
+         Year = as.Date(paste0(Year,"-01-01"), "%Y-%m-%d"))
+
+hex_color <- "#106a8c"
+ggplot(df_poster, aes(x = Year, y = Frequency)) +
+  geom_line(color = hex_color) +
+  geom_point(color = hex_color) +
   theme_classic() +
   scale_x_date(labels = date_format("%Y"), date_breaks= "1 year") +
   labs(subtitle = paste0("Total: ", poster_total, ", Mean Per Year: ",poster_mean_per_year," ± ",poster_se_per_year),
@@ -309,7 +315,9 @@ kable(talks, escape = F) %>%
 
 ---
 
-Co-reviewer for NeuroImage and Journal of Cognitive Neuroscience with Dr. Kennedy
+- Co-reviewer for NeuroImage with Dr. Kristen Kennedy
+- Co-reviewer for Journal of Cognitive Neuroscience with Dr. Kristen Kennedy
+- Co-reviewer for Cerebral Cortex with Dr. Karen Rodrigue
 
 <BR><BR>
 
