@@ -37,8 +37,6 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116039246-1"></script>
 <script>
@@ -104,76 +102,6 @@ pre code {
 </style>
 
 
-<style type="text/css">
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu>.dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  border-radius: 0 6px 6px 6px;
-}
-.dropdown-submenu:hover>.dropdown-menu {
-  display: block;
-}
-.dropdown-submenu>a:after {
-  display: block;
-  content: " ";
-  float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-  border-left-color: #adb5bd;
-}
-.dropdown-submenu.pull-left {
-  float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  border-radius: 6px 0 6px 6px;
-}
-</style>
-
-<script type="text/javascript">
-// manage active state of menu based on current page
-$(document).ready(function () {
-  // active menu anchor
-  href = window.location.pathname
-  href = href.substr(href.lastIndexOf('/') + 1)
-  if (href === "")
-    href = "index.html";
-  var menuAnchor = $('a[href="' + href + '"]');
-
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
-
-  // Navbar adjustments
-  var navHeight = $(".navbar").first().height() + 15;
-  var style = document.createElement('style');
-  var pt = "padding-top: " + navHeight + "px; ";
-  var mt = "margin-top: -" + navHeight + "px; ";
-  var css = "";
-  // offset scroll position for anchor links (for fixed navbar)
-  for (var i = 1; i <= 6; i++) {
-    css += ".section h" + i + "{ " + pt + mt + "}\n";
-  }
-  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
-  document.head.appendChild(style);
-});
-</script>
 
 <!-- tabsets -->
 
@@ -318,46 +246,6 @@ div.tocify {
 
 
 
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-
-      <a class="navbar-brand" href="index.html"><span class="fas fa-terminal" aria-hidden="true"></span></a>
-      <a class="navbar-brand" href="index.html"><img src="images/icons8-artificial-intelligence-100.png" style="height: 20px"></a>
-      <a class="navbar-brand" href="index.html"><img src="images/icons8-scatter-plot-96.png" style="height: 20px"></a>
-      <a class="navbar-brand" href="index.html">Ekarin Eric Pongpipat, M.A.</a>
-    </div> <!-- /.navbar-header -->
-
-    <div class="collapse navbar-collapse" id="navbar-collapse">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="blog.html"><span class="fas fa-quote-left" aria-hidden="true"></span> &ensp;Blog</a></li>
-         <li><a href="books.html"><span class="fas fa-book" aria-hidden="true"></span> &ensp;eBooks</a></li>
-        <li><a href="cv.html"><span class="far fa-id-badge" aria-hidden="true"></span> &ensp;CV</a></li>
-        <li><a href="https://github.com/epongpipat" target="_blank"><span class="fa fa-github" aria-hidden="true"></span> &ensp;GitHub</a></li>
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fas fa-handshake" aria-hidden="true"></span> &ensp;Connect<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="mailto:epongpipat@gmail.com" target="_blank"><span class="fa fa-envelope" aria-hidden="true"></span> &ensp;Email</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="https://twitter.com/epongpipat" target="_blank"><span class="fab fa-twitter" aria-hidden="true"></span> &ensp;Twitter</a></li>
-            <li><a href="https://www.researchgate.net/profile/Ekarin_Pongpipat" target="_blank"><span class="fab fa-researchgate" aria-hidden="true"></span> &ensp;ResearchGate</a></li>
-            <li><a href="https://www.linkedin.com/in/epongpipat/" target="_blank"><span class="fa fa-linkedin" aria-hidden="true"></span> &ensp;LinkedIn</a></li>
-          </ul>
-        </li>
-
-      </ul>
-    </div> <!-- /.navbar-collapse -->
-
-  </div> <!-- /.container -->
-</nav> <!--/.navbar -->
 
 <div id="header">
 
@@ -449,11 +337,11 @@ div.tocify {
 <div class="divTableCellInfo">
 <B>Graduate Teaching Assistant</B> (2017 - 2019) <BR>The University of Texas at Dallas <BR>1. Statistics for Psychology, ACN6312/HCS6312 (Spring 2019) <BR>
 <div class="divIndent">
-Worked with Dr. Nancy Juhn
+Under the supervision of Dr. Nancy Juhn
 </div>
 <BR>2. Statistics for Psychology, PSY2317 (Fall 2017, Spring 2018, Fall 2018) <BR>
 <div class="divIndent">
-Worked with Dr. Nancy Juhn
+Under the supervision of Dr. Nancy Juhn
 </div>
 </div>
 </div>
@@ -464,11 +352,11 @@ Worked with Dr. Nancy Juhn
 <div class="divTableCellInfo">
 <B>Graduate Teaching Assistant</B> (2014 - 2016) <BR>San Diego State University <BR>1. Advanced Statistics in Psychology, PSY670A/B (Fall 2015, Spring 2016) <BR>
 <div class="divIndent">
-Worked with Dr. Melody Sadler
+Under the supervision of Dr. Melody Sadler
 </div>
 <BR>2. Statistical Methods in Psychology Laboratory, PSY280L (Fall 2014, Spring 2015) <BR>
 <div class="divIndent">
-Worked with Dr. Melody Sadler, Dr. Amy Spilkin, Dr. Dale Glaser
+Under the supervision of Dr. Melody Sadler, Dr. Amy Spilkin, and Dr. Dale Glaser
 </div>
 </div>
 </div>
@@ -501,7 +389,7 @@ McIntosh, E. C., Jacobson, A., Kemmotsu, N., <strong>Pongpipat, E. E.</strong>, 
 <p><b>Pongpipat, E. E.</b>, Boylan, M. A., Kennedy, K. M., &amp; Rodrigue, K. M. (2022, April, accepted). <i>Influence of β-Amyloid and Age on BOLD variability during n-back</i>. Poster session presented at the 2022 Cognitive Aging Conference, Atlanta, Georgia, United States</p>
 <p>Kennedy, K. M., <b>Pongpipat, E. E.</b>, Boylan, M. A., Lung, T., Rodrigue, K. M. (2022, April, submitted). <i>Age-related longitudinal change in BOLD variability during working memory load is dependent upon beta-amyloid deposition</i>. Poster session presented at the 2022 Cognitive Neuroscience Society, San Francisco, California, United States</p>
 <p><b>Pongpipat, E. E.</b>, Lung, T., Kennedy, K. M., &amp; Rodrigue, K. M. (2022, January, accepted). <i>Four Year Longitudinal Change in Task-Related BOLD Modulation across the Adult Lifespan</i>. Poster session presented at the 2022 Dallas Aging and Cognition Conference, Dallas, Texas, United States. (Conference cancelled due to COVID-19 omicron variant).</p>
-<p><b>Pongpipat, E. E.</b>, Boylan, M. A., Foster, C. M., Web, C. E., Kennedy, K. K., &amp; Rodrigue, K. M. (2020, June). <i>Which BOLD feature is most important to working memory performance?</i>. Poster session presented at the 2020 Organization for Human Brain Mapping, Montreal, Canada</p>
+<p><b>Pongpipat, E. E.</b>, Boylan, M. A., Foster, C. M., Web, C. E., Kennedy, K. K., &amp; Rodrigue, K. M. (2020, June). <i>Which BOLD feature is most important to working memory performance?</i>. Poster session presented at the 2020 Organization for Human Brain Mapping, Virtual</p>
 <p>Kennedy, K. M., Foster, C. M., Webb, C. E., <b>Pongpipat, E. E.</b>, Boylan, M. A., &amp; Rodrigue, K. M. (2020, April, accepted). <i>Four Year Longitudinal Change in Task-Related Functional Activation across the Adult Lifespan</i>. Poster session presented at the 2020 Cognitive Aging Conference, Atlanta, Georgia, United States. (Conference cancelled due to COVID-19).</p>
 <p>Boylan, M. A., Rodrigue, K. M., Webb, C. E., <b>Pongpipat, E. E.</b>, &amp; Kennedy, K. M. (2020, April, accepted). <i>Influence of β-Amyloid and Age on BOLD Variability during n-back</i>. Poster session presented at the 2020 Cognitive Aging Conference, Atlanta, Georgia, United States. (Conference cancelled due to COVID-19).</p>
 <p><b>Pongpipat, E. E.</b>, Kennedy, K. M., Boylan, M. A., &amp; Rodrigue, K. M. (2020, April, accepted). <i>Which is More Important to n-back Performance: Changes in BOLD or Changes in BOLD Synchronization?</i>. Poster session presented at the 2020 Cognitive Aging Conference, Atlanta, Georgia, United States. (Conference cancelled due to COVID-19).</p>
