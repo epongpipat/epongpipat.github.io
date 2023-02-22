@@ -1,5 +1,5 @@
 name: "Ekarin Eric Pongpipat, M.A."
-output_dir: 'docs/'
+output_dir: 'docs'
 output:
   html_document:
     theme: lumen
@@ -8,6 +8,6 @@ output:
       before_body: docs/_navbar.html
       in_header: docs/google_analytics.html
       after_body: docs/footer.html
-    css: docs/style.css
+    css: style.css
     lib_dir: docs/site_libs
     self_contained: no
