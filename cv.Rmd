@@ -7,17 +7,21 @@ output:
     toc_float:
       collapsed: yes
       smooth_scroll: yes
+    
 ---
 
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-packages <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", "tibble")
-xfun::pkg_attach(packages, install = T, message = F)
+pkgs <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", "tibble")
+xfun::pkg_attach(pkgs, install = T, message = F)
 ```
 
-*Updated on January 19, 2022*
+*Updated on February 21, 2023*
+
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <br><br>
 
@@ -244,6 +248,7 @@ posters <- read_csv("posters.csv")
 posters$Authors <- gsub("Pongpipat, E. E.", "<b>Pongpipat, E. E.</b>", posters$Authors)
 
 posters <- posters %>%
+  arrange(desc(Year), desc(Month), Authors) %>%
   rowwise() %>%
   mutate(Date = ifelse(Status != "Complete", paste(Year, Month, tolower(Status), sep = ", "), paste(Year, Month, sep = ", ")))
 
@@ -295,18 +300,17 @@ ggplot(df_poster, aes(x = Year, y = Frequency)) +
 ---
 
 ```{r talks, results = 'asis'}
-talks <- tribble(~Date, ~Description, ~Location,
-                 "2019-11", "Brianhack Dallas 2019 <br><a href='https://github.com/Brainhack-Dallas/mini-brainhack-utd' target='blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://brainhack-dallas.github.io/mini-brainhack-utd/' target='_blank'><i class='fas fa-link'></i></a>", "UT Dallas",
-                 "2019-10", "Talk on 'Functional connectivity of the fronto-parietal and default mode networks during the n-back across the adult lifespan' given at the Developmental, Cognitive and Social/Personality Brownbag Series", "UT Dallas",
-                 
-                 "2019-09", "Assisted in an introduction to Git/GitHub Workshop with Dr. Micaela Chan <br><a href='https://github.com/mychan24/git_github_workshop' target='_blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://gitbookdown.dallasdatascience.com/' target='_blank'><i class='fas fa-book'></i></a>", "Center for Vital Longevity<br>UT Dallas",
-                 
-                 "2019-04", "Guest lectured on using R for descriptive and inferential statistics for Dr. Juhn's Research Methods 2 Course", "UT Dallas")
+talks <- tribble(~Date, ~Description, ~Location, ~Links,
+                 "2022-10", "Multi-Level Modeling Lab Workshop", "Center for Vital Longevity<br>UT Dallas", "<a href='https://github.com/epongpipat/workshop-mlm' target='blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://ekarinpongpipat.com/workshop-mlm' target='_blank'><i class='fas fa-link'></i></a>", 
+                 "2019-11", "Brianhack Dallas 2019", "UT Dallas", "<a href='https://github.com/Brainhack-Dallas/mini-brainhack-utd' target='blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://brainhack-dallas.github.io/mini-brainhack-utd/' target='_blank'><i class='fas fa-link'></i></a>",
+                 "2019-10", "Talk on 'Functional connectivity of the fronto-parietal and default mode networks during the n-back across the adult lifespan' given at the Developmental, Cognitive and Social/Personality Brownbag Series", "UT Dallas", "",
+                 "2019-09", "Assisted in an introduction to Git/GitHub Workshop with Dr. Micaela Chan", "Center for Vital Longevity<br>UT Dallas", "<a href='https://github.com/mychan24/git_github_workshop' target='_blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://gitbookdown.dallasdatascience.com/' target='_blank'><i class='fas fa-book'></i></a>",
+                 "2019-04", "Guest lectured on using R for descriptive and inferential statistics for Dr. Juhn's Research Methods 2 Course", "UT Dallas", "")
 
 kable(talks, escape = F) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  column_spec(1, width = "80px") %>%
-  column_spec(3, width = "175px")
+  column_spec(1, width = "10%") %>%
+  column_spec(2, width = "60%")
 ```
 
 <BR><BR>
@@ -318,6 +322,7 @@ kable(talks, escape = F) %>%
 - Co-reviewer for NeuroImage with Dr. Kristen Kennedy
 - Co-reviewer for Journal of Cognitive Neuroscience with Dr. Kristen Kennedy
 - Co-reviewer for Cerebral Cortex with Dr. Karen Rodrigue
+- Co-reviewer for Journal of Neuroscience with Dr. Karen Rodrigue
 
 <BR><BR>
 
