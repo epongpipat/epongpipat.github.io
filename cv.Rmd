@@ -7,6 +7,7 @@ output:
     toc_float:
       collapsed: yes
       smooth_scroll: yes
+      self_contained: TRUE
     
 ---
 
@@ -348,20 +349,35 @@ kable(talks, escape = F) %>%
 
 ```{r honors_awards}
 df_honors_awards <- read.csv("honors-and-awards.csv")
-reactable(df_honors_awards, 
-          sortable = FALSE,
-          striped = TRUE, 
-          highlight = TRUE, 
-          pagination = FALSE, 
-          columns = list(
-            Year = colDef(footer = "Total", width = 125),
-            Award = colDef(na = '-', 
-                           format = colFormat(prefix = '$'), 
-                           footer = function(values) sprintf("$%.0f", sum(values, na.rm = TRUE)),
-                           width = 75)
-          ),
-          defaultColDef = colDef(footerStyle = list(fontWeight = "bold"))
-)
+
+# total <- sum(df_honors_awards$Award, na.rm = TRUE)
+
+
+total <- c(Year = 'Total', Institution = '', Honor = '', Award = glue(" ${sum(df_honors_awards$Award, na.rm = TRUE)}"))
+
+df_honors_awards <- df_honors_awards %>%
+  mutate(Award = ifelse(is.na(Award), '', glue("${Award}"))) %>%
+  rbind(total)
+
+df_honors_awards %>%
+  kable(., "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "responsive")) %>%
+  column_spec(1, width = "150px")
+
+# reactable(df_honors_awards, 
+#           sortable = FALSE,
+#           striped = TRUE, 
+#           highlight = TRUE, 
+#           pagination = FALSE, 
+#           columns = list(
+#             Year = colDef(footer = "Total", width = 125),
+#             Award = colDef(na = '-', 
+#                            format = colFormat(prefix = '$'), 
+#                            footer = function(values) sprintf("$%.0f", sum(values, na.rm = TRUE)),
+#                            width = 75)
+#           ),
+#           defaultColDef = colDef(footerStyle = list(fontWeight = "bold"))
+# )
 ```
 
 <BR><BR>
