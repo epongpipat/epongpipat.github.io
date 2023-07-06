@@ -14,14 +14,29 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-pkgs <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", "scales", "tibble")
+pkgs <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", 
+          "scales", "tibble", 'reactable')
 xfun::pkg_attach(pkgs, install = T, message = F)
 ```
 
-*Updated on February 21, 2023*
+*Updated on July 5, 2023*
 
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<br><br>
+
+<a href="https://orcid.org/0000-0002-8280-3370" target="blank">
+<img src="images/logo_orcid_24x24.png" width="24" height="24" />
+</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://scholar.google.com/citations?user=-d4Jj1UAAAAJ&hl=en" target="blank">
+<img src="images/logo_google_scholar.png" width="24" height="24">
+</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.researchgate.net/profile/Ekarin_Pongpipat" target="blank">
+<img src="images/logo_researchgate.svg" width="24" height="24">
+</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.webofscience.com/wos/author/record/AEU-4061-2022" target="blank">
+<img src="images/logo_clarivate.png" width="24" height="24">
+</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.linkedin.com/in/epongpipat/" target="blank">
+<img src="images/logo_linkedin.png" width="24" height="24">
+</a>
 
 <br><br>
 
@@ -300,7 +315,7 @@ ggplot(df_poster, aes(x = Year, y = Frequency)) +
 ---
 
 ```{r talks, results = 'asis'}
-talks <- tribble(~Date, ~Description, ~Location, ~Links,
+talks <- tribble(~Date, ~Description, ~Institution, ~Links,
                  "2022-10", "Multi-Level Modeling Lab Workshop", "Center for Vital Longevity<br>UT Dallas", "<a href='https://github.com/epongpipat/workshop-mlm' target='blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://ekarinpongpipat.com/workshop-mlm' target='_blank'><i class='fas fa-link'></i></a>", 
                  "2019-11", "Brianhack Dallas 2019", "UT Dallas", "<a href='https://github.com/Brainhack-Dallas/mini-brainhack-utd' target='blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://brainhack-dallas.github.io/mini-brainhack-utd/' target='_blank'><i class='fas fa-link'></i></a>",
                  "2019-10", "Talk on 'Functional connectivity of the fronto-parietal and default mode networks during the n-back across the adult lifespan' given at the Developmental, Cognitive and Social/Personality Brownbag Series", "UT Dallas", "",
@@ -319,6 +334,7 @@ kable(talks, escape = F) %>%
 
 ---
 
+- Reviewer for Psychophysiology
 - Co-reviewer for NeuroImage with Dr. Kristen Kennedy
 - Co-reviewer for Journal of Cognitive Neuroscience with Dr. Kristen Kennedy
 - Co-reviewer for Cerebral Cortex with Dr. Karen Rodrigue
@@ -331,33 +347,21 @@ kable(talks, escape = F) %>%
 ---
 
 ```{r honors_awards}
-honors_awards <- tibble("2017 (Fall)", "CSU Northridge", "Dean's List")
-
-# test <- cbind(2016, "WPA Robert L. Solso Award")
-colnames(honors_awards) <- c("Year", "Institution", "Award")
-
-honors_awards <- honors_awards %>%
-  add_row(., Year = "2010 (September)", Institution = "Cope Health Solutions", Award = "Clinical Care Extender Intern of the Rotation Award", .before = 1) %>%
-  add_row(., Year = "2010 (Spring)", Institution = "CSU Northridge", Award = "Dean's List", .before = 1) %>%
-  add_row(., Year = "2011 (Fall)", Institution = "CSU Northridge", Award = "Dean's List", .before = 1) %>%
-  add_row(., Year = "2011 (Spring)", Institution = "CSU Northridge", Award = "Dean's List", .before = 1) %>%
-  add_row(., Year = "2012 (Fall)", Institution = "CSU Northridge", Award = "Dean's List", .before = 1) %>%
-  add_row(., Year = "2014 (January)", Institution = "Huntington Learning Center", Award = "Teacher of the Month", .before = 1) %>%
-  add_row(., Year = "2014", Institution = "Western Psychological Association", Award = "Student Scholarship Award", .before = 1) %>%
-  add_row(., Year = "2014 (June)", Institution = "Huntington Learning Center", Award = "Teacher of the Month", .before = 1) %>%
-  add_row(., Year = "2015", Institution = "Western Psychological Association", Award = "Robert L. Solso Award", .before = 1) %>%
-  add_row(., Year = "2015", Institution = "San Diego State University", Award = "Dr. Edward Geldreich Scholarship", .before = 1) %>%
-  add_row(., Year = "2016", Institution = "Western Psychological Association", Award = "Robert L. Solso Award", .before = 1) %>%
-  add_row(., Year = "2016", Institution = "San Diego State University", Award = "Honorable Mention for Outstanding Service as a Teaching Assistant", .before = 1) %>%
-  add_row(., Year = "2018", Institution = "The University of Texas at Dallas", Award = "Student Travel Award", .before = 1) %>%
-  add_row(., Year = "2020", Institution = "The University of Texas at Dallas", Award = "Student Travel Award", .before = 1)
-# add_row(., Year = "", Institution = "", Award = "", .before = 1) %>%
-
-
-# Prints table
-kable(honors_awards, "html") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "responsive")) %>%
-  column_spec(1, width = "150px")
+df_honors_awards <- read.csv("honors-and-awards.csv")
+reactable(df_honors_awards, 
+          sortable = FALSE,
+          striped = TRUE, 
+          highlight = TRUE, 
+          pagination = FALSE, 
+          columns = list(
+            Year = colDef(footer = "Total", width = 125),
+            Award = colDef(na = '-', 
+                           format = colFormat(prefix = '$'), 
+                           footer = function(values) sprintf("$%.0f", sum(values, na.rm = TRUE)),
+                           width = 75)
+          ),
+          defaultColDef = colDef(footerStyle = list(fontWeight = "bold"))
+)
 ```
 
 <BR><BR>
