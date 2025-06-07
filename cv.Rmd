@@ -16,11 +16,11 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 pkgs <- c("tidyverse", "knitr", "kableExtra", "glue", "psych", 
-          "scales", "tibble", 'reactable')
+          "scales", "tibble", 'reactable', 'gt')
 xfun::pkg_attach(pkgs, install = T, message = F)
 ```
 
-*Updated on July 5, 2023*
+*Updated on June 6, 2025*
 
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
@@ -53,9 +53,10 @@ xfun::pkg_attach(pkgs, install = T, message = F)
 <img src="images/logo_utd.svg" width="100">
 </div>
 <div class="divTableCellInfo"> 
-<B>Ph.D. Student, Cognition and Neuroscience</B> (2017 - Present)
+<B>Ph.D., Cognition and Neuroscience</B> (2025)
 <BR> The University of Texas at Dallas
 <BR> Advisors: Dr. Karen M. Rodrigue & Dr. Kristen M. Kennedy
+<BR> Dissertation: The effects of age and dopaminergic predisposition on neurite microstructural properties and working memory
 </div>
 </div>
 
@@ -67,7 +68,7 @@ xfun::pkg_attach(pkgs, install = T, message = F)
 <B>M.A., Psychology</B> (2016)
 <BR> San Diego State University
 <BR> Advisor: Dr. Claire Murphy
-<BR> Thesis: Altered Functional Connectivity and Eating Disinhibition in Individuals with Metabolic Syndrome
+<BR> Thesis: Altered functional connectivity and eating disinhibition in individuals with Metabolic Syndrome <a href="https://digitalcollections.sdsu.edu/do/19d8c36d-c6ad-432b-ac37-a885224821b5" target="_blank"><i class='fas fa-link'></i></a>
 </div>
 </div>
 
@@ -99,7 +100,7 @@ xfun::pkg_attach(pkgs, install = T, message = F)
 <img src="images/logo_utd.svg" width="100">
 </div>
 <div class="divTableCellInfo"> 
-<B>Graduate Research Assistant</B> (2017 - Present)
+<B>Graduate Research Assistant</B> (2017 - 2025)
 <BR>Cognitive Neuroscience of Aging Laboratory
 <BR>Center for Vital Longevity
 <BR>School of Behavioral and Brain Sciences
@@ -181,7 +182,7 @@ xfun::pkg_attach(pkgs, install = T, message = F)
 ---
 
 ```{r publications, warning = F, message = F}
-pubs <- read_csv("publications.csv")
+pubs <- read_csv("data/publications.csv")
 ```
 
 ```{r}
@@ -258,17 +259,13 @@ pubs2html <- function(data) {
 ---
 
 <div class="divReferences">
-```{r posters, warning = F, message = F, fig.width = 5, fig.height = 2, fig.asp = T, dev='svg'}
-posters <- read_csv("posters.csv")
-
+```{r posters, warning = F, message = F, fig.width = 5, fig.height = 2, fig.asp = T}
+posters <- read_csv("data/posters.csv")
 posters$Authors <- gsub("Pongpipat, E. E.", "<b>Pongpipat, E. E.</b>", posters$Authors)
-
 posters <- posters %>%
   arrange(desc(Year), desc(Month), Authors) %>%
   rowwise() %>%
-  mutate(Date = ifelse(Status != "Complete", paste(Year, Month, tolower(Status), sep = ", "), paste(Year, Month, sep = ", ")))
-
-posters <- posters %>%
+  mutate(Date = ifelse(Status != "Complete", paste(Year, Month, tolower(Status), sep = ", "), paste(Year, Month, sep = ", "))) %>%
   mutate(html = paste0(Authors, " (", Date, "). <i>", Title, "</i>. Poster session presented at the ", Conference, ", ", Location, ifelse(is.na(Note), "", paste0(". (", Note, ")."))))
 
 posters_html <- paste(posters$html, collapse = "\n\n")
@@ -316,17 +313,29 @@ ggplot(df_poster, aes(x = Year, y = Frequency)) +
 ---
 
 ```{r talks, results = 'asis'}
-talks <- tribble(~Date, ~Description, ~Institution, ~Links,
-                 "2022-10", "Multi-Level Modeling Lab Workshop", "Center for Vital Longevity<br>UT Dallas", "<a href='https://github.com/epongpipat/workshop-mlm' target='blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://ekarinpongpipat.com/workshop-mlm' target='_blank'><i class='fas fa-link'></i></a>", 
-                 "2019-11", "Brianhack Dallas 2019", "UT Dallas", "<a href='https://github.com/Brainhack-Dallas/mini-brainhack-utd' target='blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://brainhack-dallas.github.io/mini-brainhack-utd/' target='_blank'><i class='fas fa-link'></i></a>",
-                 "2019-10", "Talk on 'Functional connectivity of the fronto-parietal and default mode networks during the n-back across the adult lifespan' given at the Developmental, Cognitive and Social/Personality Brownbag Series", "UT Dallas", "",
-                 "2019-09", "Assisted in an introduction to Git/GitHub Workshop with Dr. Micaela Chan", "Center for Vital Longevity<br>UT Dallas", "<a href='https://github.com/mychan24/git_github_workshop' target='_blank'><i class='fab fa-github'></i></a> &#8201 <a href='https://gitbookdown.dallasdatascience.com/' target='_blank'><i class='fas fa-book'></i></a>",
-                 "2019-04", "Guest lectured on using R for descriptive and inferential statistics for Dr. Juhn's Research Methods 2 Course", "UT Dallas", "")
+df_talks <- read.csv("data/talks-and-workshops.csv") |>
+  rowwise() |>
+  mutate(date = glue("<b>{date}</b>"),
+         description = glue("<b>{description}</b><br>{institution}"),
+         gh_link = ifelse(gh != "", glue("<a href='{gh}' target='_blank'><i class='fab fa-github'></i></a>"), ""),
+         url_link = ifelse(url != "", glue("<a href='{url}' target='_blank'><i class='fas fa-link'></i></a>"), ""),
+         links = glue("{gh_link} {url_link}")) |>
+  ungroup() |>
+  select(-gh, -url, -gh_link, -url_link, -institution)
 
-kable(talks, escape = F) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  column_spec(1, width = "10%") %>%
-  column_spec(2, width = "60%")
+gt(df_talks) |>
+  fmt_markdown() |>
+  cols_width(
+    date ~ px(100),
+    links ~ px(100)
+  ) |>
+  tab_style(style = cell_text(align = 'left', v_align = 'top'), 
+            locations = cells_body(columns = c('date', 'description'))) |>
+  tab_style(style = cell_text(align = 'right', v_align = 'top'), 
+            locations = cells_body(columns = c('links'))) |>
+  tab_options(ihtml.use_highlight = TRUE, 
+              column_labels.hidden = TRUE,
+              table.font.size = 12)
 ```
 
 <BR><BR>
@@ -336,10 +345,8 @@ kable(talks, escape = F) %>%
 ---
 
 - Reviewer for Psychophysiology
-- Co-reviewer for NeuroImage with Dr. Kristen Kennedy
-- Co-reviewer for Journal of Cognitive Neuroscience with Dr. Kristen Kennedy
-- Co-reviewer for Cerebral Cortex with Dr. Karen Rodrigue
-- Co-reviewer for Journal of Neuroscience with Dr. Karen Rodrigue
+- Co-reviewer with Dr. Kristen Kennedy for NeuroImage and Journal of Cognitive Neuroscience
+- Co-reviewer with Dr. Karen Rodrigue for Cerebral Cortex and Journal of Neuroscience
 
 <BR><BR>
 
@@ -348,36 +355,28 @@ kable(talks, escape = F) %>%
 ---
 
 ```{r honors_awards}
-df_honors_awards <- read.csv("honors-and-awards.csv")
+df_honors_awards <- read.csv("data/honors-and-awards.csv") |>
+  select(Year, Honor, Institution, Award)
 
-# total <- sum(df_honors_awards$Award, na.rm = TRUE)
-
-
-total <- c(Year = 'Total', Institution = '', Honor = '', Award = glue(" ${sum(df_honors_awards$Award, na.rm = TRUE)}"))
-
-df_honors_awards <- df_honors_awards %>%
-  mutate(Award = ifelse(is.na(Award), '', glue("${Award}"))) %>%
-  rbind(total)
-
-df_honors_awards %>%
-  kable(., "html") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "responsive")) %>%
-  column_spec(1, width = "150px")
-
-# reactable(df_honors_awards, 
-#           sortable = FALSE,
-#           striped = TRUE, 
-#           highlight = TRUE, 
-#           pagination = FALSE, 
-#           columns = list(
-#             Year = colDef(footer = "Total", width = 125),
-#             Award = colDef(na = '-', 
-#                            format = colFormat(prefix = '$'), 
-#                            footer = function(values) sprintf("$%.0f", sum(values, na.rm = TRUE)),
-#                            width = 75)
-#           ),
-#           defaultColDef = colDef(footerStyle = list(fontWeight = "bold"))
-# )
+gt(df_honors_awards, rowname_col = 'Year') |>
+  fmt_markdown() |>
+  cols_width(
+    Year ~ px(125),
+    Award ~ px(100)
+  ) |>
+  tab_style(style = cell_text(align = 'left', v_align = 'top'), 
+            locations = cells_body(columns = c('Year', 'Institution', 'Honor'))) |>
+  tab_style(style = cell_text(align = 'right', v_align = 'top'), 
+            locations = cells_body(columns = c('Award'))) |>
+  tab_options(ihtml.use_highlight = TRUE, 
+              table.font.size = 12) |>
+  fmt_currency(columns = 'Award', decimals = 0) |>
+  sub_missing(missing_text = "") |>
+  grand_summary_rows(columns = 'Award', 
+                     label = 'Total',
+                     fn = 'sum', 
+                     id = 'total',
+                     fmt = ~fmt_currency(., decimals = 0))
 ```
 
 <BR><BR>
@@ -387,15 +386,18 @@ df_honors_awards %>%
 ---
 
 ```{r professional_society_membership}
-professional_society_membership <- tribble(~Year, ~Institution,
-                                           "2020 - Present", "Organization for Human Brain Mapping",
-                                           "2020 - Present", "Cognitive Neuroscience Society",
-                                           "2012 - Present", "Society for Neuroscience",
-                                           "2016 - 2017", "Phi Kappa Phi Honor Society",
-                                           "2015 - 2017", "The Obesity Society",
-                                           "2012 - 2016", "Western Psychological Association")
-# Prints table
-kable(professional_society_membership, "html") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "responsive")) %>%
-  column_spec(1, width = "150px")
+df_professional_society_membership <- read.csv("data/professional-society-membership.csv")
+gt(df_professional_society_membership) |>
+  fmt_markdown() |>
+  cols_width(
+    date ~ px(125),
+  ) |>
+  tab_style(style = cell_text(align = 'left', v_align = 'top'), 
+            locations = cells_body()) |>
+  tab_options(ihtml.use_highlight = TRUE, 
+              table.width = pct(100),
+              table.align = "left",
+              table.font.size = 12) |>
+  cols_label(date = "Year",
+             organization = "Organization")
 ```

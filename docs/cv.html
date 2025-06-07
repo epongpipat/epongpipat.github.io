@@ -13,7 +13,7 @@
 
 <title>Curriculum Vitae</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -29,14 +29,12 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116039246-1"></script>
 <script>
@@ -71,6 +69,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 
 
@@ -96,6 +95,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
 pre code {
   padding: 0;
 }
@@ -115,8 +117,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -124,16 +126,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -306,7 +301,7 @@ div.tocify {
 
 
 <hr />
-<p><em>Updated on July 5, 2023</em></p>
+<p><em>Updated on June 6, 2025</em></p>
 <p><link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" /></p>
 <p><br><br></p>
@@ -331,9 +326,11 @@ div.tocify {
 <p><img src="images/logo_utd.svg" width="100"></p>
 </div>
 <div class="divTableCellInfo">
-<p><B>Ph.D. Student, Cognition and Neuroscience</B> (2017 - Present)
-<BR> The University of Texas at Dallas <BR> Advisors: Dr. Karen M.
-Rodrigue &amp; Dr. Kristen M. Kennedy</p>
+<p><B>Ph.D., Cognition and Neuroscience</B> (2025) <BR> The University
+of Texas at Dallas <BR> Advisors: Dr. Karen M. Rodrigue &amp;
+Dr. Kristen M. Kennedy <BR> Dissertation: The effects of age and
+dopaminergic predisposition on neurite microstructural properties and
+working memory</p>
 </div>
 </div>
 <div class="divTableRow">
@@ -342,8 +339,9 @@ Rodrigue &amp; Dr. Kristen M. Kennedy</p>
 </div>
 <div class="divTableCellInfo">
 <p><B>M.A., Psychology</B> (2016) <BR> San Diego State University <BR>
-Advisor: Dr. Claire Murphy <BR> Thesis: Altered Functional Connectivity
-and Eating Disinhibition in Individuals with Metabolic Syndrome</p>
+Advisor: Dr. Claire Murphy <BR> Thesis: Altered functional connectivity
+and eating disinhibition in individuals with Metabolic Syndrome
+<a href="https://digitalcollections.sdsu.edu/do/19d8c36d-c6ad-432b-ac37-a885224821b5" target="_blank"><i class='fas fa-link'></i></a></p>
 </div>
 </div>
 <div class="divTableRow">
@@ -369,7 +367,7 @@ Northridge <BR> Advisor: Dr. Jose P. Abara</p>
 <p><img src="images/logo_utd.svg" width="100"></p>
 </div>
 <div class="divTableCellInfo">
-<p><B>Graduate Research Assistant</B> (2017 - Present) <BR>Cognitive
+<p><B>Graduate Research Assistant</B> (2017 - 2025) <BR>Cognitive
 Neuroscience of Aging Laboratory <BR>Center for Vital Longevity
 <BR>School of Behavioral and Brain Sciences <BR>The University of Texas
 at Dallas</p>
@@ -450,7 +448,7 @@ Dr. Dale Glaser
 <hr />
 <div class="divReferences">
 <strong>Pongpipat, E. E.</strong>, Kennedy, K. M., Foster, C. M.,
-Boylan, M. A., &amp; Rodrigue, K. M (2020). Functional connectivity
+Boylan, M. A., &amp; Rodrigue, K. M (2021). Functional connectivity
 within and between n-back modulated regions: An adult lifespan PPI
 investigation. <em>Brain Connectivity, 11</em>(2).
 <a href='https://doi.org/10.1089/brain.2020.0791' target='_blank'>https://doi.org/10.1089/brain.2020.0791</a>.
@@ -459,7 +457,7 @@ investigation. <em>Brain Connectivity, 11</em>(2).
 <br>
 <div class="divReferences">
 Boylan, M. A., Foster, C. M., <strong>Pongpipat, E. E.</strong>, Webb,
-C. E., Rodrigue, K. M. &amp; Kennedy K. K. (2020). Greater BOLD
+C. E., Rodrigue, K. M. &amp; Kennedy K. K. (2021). Greater BOLD
 variability is associated with poorer cognitive function in an adult
 lifespan sample. <em>Cerebral Cortex, 31</em>(1), 562-574.
 <a href='https://doi.org/10.1093/cercor/bhaa243' target='_blank'>https://doi.org/10.1093/cercor/bhaa243</a>.
@@ -481,17 +479,38 @@ metabolic syndrome?. <em>Neuroscience Letters, 636</em>, 225-232.
 <h2>Poster Presentations</h2>
 <hr />
 <div class="divReferences">
-<p><img src="cv_files/figure-html/posters-1.svg" width="480" /></p>
+<p><img src="cv_files/figure-html/posters-1.png" width="480" /></p>
+<p><b>Pongpipat, E. E.</b>, Rodrigue K. M., &amp; Kennedy, K. M. (2025,
+February). <i>Cortico-striato-pallido-thalamic loop: Effects of age and
+dopaminergic predisposition on the spatial gradients of gray-matter
+neurite microstructural properties.</i>. Poster session presented at the
+2025 Dallas Aging and Cognition Conference, Dallas, Texas, United
+States</p>
+<p>Edwards, V. M., <b>Pongpipat, E. E.</b>, Lung, T.-C., Kraft, J. N.,
+Rodrigue, K. M., &amp; Kennedy, K. M. (2025, February). <i>A comparison
+of automated and semi-automated white matter hyperintensity segmentation
+techniques.</i>. Poster session presented at the 2025 Dallas Aging and
+Cognition Conference, Dallas, Texas, United States</p>
+<p>Nguyen, L. T., Nair, J. K., Hoagey, D. A., <b>Pongpipat, E. E.</b>,
+Kraft, J. N., Kennedy, K. M., &amp; Rodrigue, K. M. (2025, February).
+<i>Aging and Alzheimer’s disease risk factors are associated with
+differential 4-year decline in regional medial temporal lobe
+volumes</i>. Poster session presented at the 2025 Dallas Aging and
+Cognition Conference, Dallas, Texas, United States</p>
+<p>Lung, T., <b>Pongpipat, E. E.</b>, Rodrigue, K. M., &amp; Kennedy, K.
+M. (2024, June). <i>Longitudinal BOLD Variability Change Coincides with
+Executive Function Change</i>. Poster session presented at the 2024
+Organization for Human Brain Mapping, Seoul, South Korea</p>
 <p>Hoagey, D. A., <b>Pongpipat, E. E.</b>, Rodrigue, K. M., &amp;
-Kennedy, K. M. (2023, July, accepted). <i>Estimates of structural brain
-health demonstrate regionally differential coupling in aging that aligns
-with underlying biology</i>. Poster session presented at the 2023
+Kennedy, K. M. (2023, July). <i>Estimates of structural brain health
+demonstrate regionally differential coupling in aging that aligns with
+underlying biology</i>. Poster session presented at the 2023
 Organization for Human Brain Mapping, Montreal, Quebec, Canada</p>
 <p>Lung, T., <b>Pongpipat, E. E.</b>, Rodrigue, K. M., &amp; Kennedy, K.
-M. (2023, July, accepted). <i>Longitudinal changes in fMRI task
-difficulty modulation: Differential relations to cognitive change</i>.
-Poster session presented at the 2023 Organization for Human Brain
-Mapping, Montreal, Quebec, Canada</p>
+M. (2023, July). <i>Longitudinal changes in fMRI task difficulty
+modulation: Differential relations to cognitive change</i>. Poster
+session presented at the 2023 Organization for Human Brain Mapping,
+Montreal, Quebec, Canada</p>
 <p>Edwards, V. M., <b>Pongpipat, E. E.</b>, Miranda, G. G., Kennedy, K.
 M., &amp; Rodrigue, K. M. (2023, February). <i>Four-year age-related
 cortical thinning is modified synergistically by inflammation,
@@ -661,103 +680,483 @@ Association, Reno, Nevada, United States</p>
 <div id="talks-and-workshops" class="section level2">
 <h2>Talks and Workshops</h2>
 <hr />
-<table class="table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;">
-Date
-</th>
-<th style="text-align:left;">
-Description
-</th>
-<th style="text-align:left;">
-Institution
-</th>
-<th style="text-align:left;">
-Links
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;width: 10%; ">
-2022-10
-</td>
-<td style="text-align:left;width: 60%; ">
-Multi-Level Modeling Lab Workshop
-</td>
-<td style="text-align:left;">
-Center for Vital Longevity<br>UT Dallas
-</td>
-<td style="text-align:left;">
-<a href="https://github.com/epongpipat/workshop-mlm" target="blank"><i class="fab fa-github"></i></a>
- 
-<a href="https://ekarinpongpipat.com/workshop-mlm" target="_blank"><i class="fas fa-link"></i></a>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 10%; ">
-2019-11
-</td>
-<td style="text-align:left;width: 60%; ">
-Brianhack Dallas 2019
-</td>
-<td style="text-align:left;">
-UT Dallas
-</td>
-<td style="text-align:left;">
-<a href="https://github.com/Brainhack-Dallas/mini-brainhack-utd" target="blank"><i class="fab fa-github"></i></a>
- 
-<a href="https://brainhack-dallas.github.io/mini-brainhack-utd/" target="_blank"><i class="fas fa-link"></i></a>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 10%; ">
-2019-10
-</td>
-<td style="text-align:left;width: 60%; ">
-Talk on ‘Functional connectivity of the fronto-parietal and default mode
-networks during the n-back across the adult lifespan’ given at the
-Developmental, Cognitive and Social/Personality Brownbag Series
-</td>
-<td style="text-align:left;">
-UT Dallas
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 10%; ">
-2019-09
-</td>
-<td style="text-align:left;width: 60%; ">
-Assisted in an introduction to Git/GitHub Workshop with Dr. Micaela Chan
-</td>
-<td style="text-align:left;">
-Center for Vital Longevity<br>UT Dallas
-</td>
-<td style="text-align:left;">
-<a href="https://github.com/mychan24/git_github_workshop" target="_blank"><i class="fab fa-github"></i></a>
- 
-<a href="https://gitbookdown.dallasdatascience.com/" target="_blank"><i class="fas fa-book"></i></a>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 10%; ">
-2019-04
-</td>
-<td style="text-align:left;width: 60%; ">
-Guest lectured on using R for descriptive and inferential statistics for
-Dr. Juhn’s Research Methods 2 Course
-</td>
-<td style="text-align:left;">
-UT Dallas
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-</tbody>
+<div id="jgnuycpleb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jgnuycpleb table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#jgnuycpleb thead, #jgnuycpleb tbody, #jgnuycpleb tfoot, #jgnuycpleb tr, #jgnuycpleb td, #jgnuycpleb th {
+  border-style: none;
+}
+
+#jgnuycpleb p {
+  margin: 0;
+  padding: 0;
+}
+
+#jgnuycpleb .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#jgnuycpleb .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#jgnuycpleb .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#jgnuycpleb .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#jgnuycpleb .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jgnuycpleb .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jgnuycpleb .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jgnuycpleb .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#jgnuycpleb .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#jgnuycpleb .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#jgnuycpleb .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#jgnuycpleb .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#jgnuycpleb .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#jgnuycpleb .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#jgnuycpleb .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#jgnuycpleb .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#jgnuycpleb .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#jgnuycpleb .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#jgnuycpleb .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jgnuycpleb .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#jgnuycpleb .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#jgnuycpleb .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#jgnuycpleb .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jgnuycpleb .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#jgnuycpleb .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#jgnuycpleb .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jgnuycpleb .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jgnuycpleb .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#jgnuycpleb .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jgnuycpleb .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#jgnuycpleb .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jgnuycpleb .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jgnuycpleb .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jgnuycpleb .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jgnuycpleb .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jgnuycpleb .gt_left {
+  text-align: left;
+}
+
+#jgnuycpleb .gt_center {
+  text-align: center;
+}
+
+#jgnuycpleb .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#jgnuycpleb .gt_font_normal {
+  font-weight: normal;
+}
+
+#jgnuycpleb .gt_font_bold {
+  font-weight: bold;
+}
+
+#jgnuycpleb .gt_font_italic {
+  font-style: italic;
+}
+
+#jgnuycpleb .gt_super {
+  font-size: 65%;
+}
+
+#jgnuycpleb .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#jgnuycpleb .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#jgnuycpleb .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#jgnuycpleb .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#jgnuycpleb .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#jgnuycpleb .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#jgnuycpleb .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#jgnuycpleb .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#jgnuycpleb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <colgroup>
+    <col style="width:100px;"/>
+    <col/>
+    <col style="width:100px;"/>
+  </colgroup>
+  
+  <tbody class="gt_table_body">
+    <tr><td headers="date" class="gt_row gt_center" style="text-align: left; vertical-align: top;"><span class='gt_from_md'><b>2022-10</b></span></td>
+<td headers="description" class="gt_row gt_center" style="text-align: left; vertical-align: top;"><span class='gt_from_md'><b>Multi-Level Modeling Lab Workshop</b><br>Cognitive Neuroscience of Aging Laboratory<br>Center for Vital Longevity<br>Behavioral and Brain Sciences<br>UT Dallas</span></td>
+<td headers="links" class="gt_row gt_center" style="text-align: right; vertical-align: top;"><span class='gt_from_md'><a href='https://github.com/epongpipat/workshop-mlm' target='_blank'><i class='fab fa-github'></i></a> <a href='https://ekarinpongpipat.com/workshop-mlm' target='_blank'><i class='fas fa-link'></i></a></span></td></tr>
+    <tr><td headers="date" class="gt_row gt_center" style="text-align: left; vertical-align: top;"><span class='gt_from_md'><b>2019-11</b></span></td>
+<td headers="description" class="gt_row gt_center" style="text-align: left; vertical-align: top;"><span class='gt_from_md'><b>Brianhack Dallas 2019</b><br>Behavioral and Brain Sciences<br>UT Dallas</span></td>
+<td headers="links" class="gt_row gt_center" style="text-align: right; vertical-align: top;"><span class='gt_from_md'><a href='https://github.com/Brainhack-Dallas/mini-brainhack-utd' target='_blank'><i class='fab fa-github'></i></a> <a href='https://brainhack-dallas.github.io/mini-brainhack-utd/' target='_blank'><i class='fas fa-link'></i></a></span></td></tr>
+    <tr><td headers="date" class="gt_row gt_center" style="text-align: left; vertical-align: top;"><span class='gt_from_md'><b>2019-10</b></span></td>
+<td headers="description" class="gt_row gt_center" style="text-align: left; vertical-align: top;"><span class='gt_from_md'><b>Talk on ‘Functional connectivity of the fronto-parietal and default mode networks during the n-back across the adult lifespan’</b><br>Developmental, Cognitive and Social/Personality Brownbag Series<br>Behavioral and Brain Sciences<br>UT Dallas</span></td>
+<td headers="links" class="gt_row gt_center" style="text-align: right; vertical-align: top;"><span class='gt_from_md'></span></td></tr>
+    <tr><td headers="date" class="gt_row gt_center" style="text-align: left; vertical-align: top;"><span class='gt_from_md'><b>2019-09</b></span></td>
+<td headers="description" class="gt_row gt_center" style="text-align: left; vertical-align: top;"><span class='gt_from_md'><b>Assisted in an introduction to Git/GitHub Workshop with Dr. Micaela Chan</b><br>Center for Vital Longevity<br>Behavioral and Brain Sciences<br>UT Dallas</span></td>
+<td headers="links" class="gt_row gt_center" style="text-align: right; vertical-align: top;"><span class='gt_from_md'><a href='https://github.com/mychan24/git_github_workshop' target='_blank'><i class='fab fa-github'></i></a> <a href='https://gitbookdown.dallasdatascience.com/' target='_blank'><i class='fas fa-link'></i></a></span></td></tr>
+    <tr><td headers="date" class="gt_row gt_center" style="text-align: left; vertical-align: top;"><span class='gt_from_md'><b>2019-04</b></span></td>
+<td headers="description" class="gt_row gt_center" style="text-align: left; vertical-align: top;"><span class='gt_from_md'><b>Guest lectured on using R for descriptive and inferential statistics </b><br>Dr. Nancy Juhn’s Research Methods 2 Course (ACN6313/HCS6313) <br>Behavioral and Brain Sciences<br>UT Dallas</span></td>
+<td headers="links" class="gt_row gt_center" style="text-align: right; vertical-align: top;"><span class='gt_from_md'></span></td></tr>
+  </tbody>
+  
+  
 </table>
+</div>
 <p><BR><BR></p>
 </div>
 <div id="service-to-the-profession" class="section level2">
@@ -765,331 +1164,1039 @@ UT Dallas
 <hr />
 <ul>
 <li>Reviewer for Psychophysiology</li>
-<li>Co-reviewer for NeuroImage with Dr. Kristen Kennedy</li>
-<li>Co-reviewer for Journal of Cognitive Neuroscience with Dr. Kristen
-Kennedy</li>
-<li>Co-reviewer for Cerebral Cortex with Dr. Karen Rodrigue</li>
-<li>Co-reviewer for Journal of Neuroscience with Dr. Karen Rodrigue</li>
+<li>Co-reviewer with Dr. Kristen Kennedy for NeuroImage and Journal of
+Cognitive Neuroscience</li>
+<li>Co-reviewer with Dr. Karen Rodrigue for Cerebral Cortex and Journal
+of Neuroscience</li>
 </ul>
 <p><BR><BR></p>
 </div>
 <div id="honors-and-awards" class="section level2">
 <h2>Honors and Awards</h2>
 <hr />
-<table class="table table-striped table-hover table-responsive" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;">
-Year
-</th>
-<th style="text-align:left;">
-Institution
-</th>
-<th style="text-align:left;">
-Honor
-</th>
-<th style="text-align:left;">
-Award
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2023
-</td>
-<td style="text-align:left;">
-The University of Texas at Dallas
-</td>
-<td style="text-align:left;">
-Student Scholarship Award
-</td>
-<td style="text-align:left;">
-$1000
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2020
-</td>
-<td style="text-align:left;">
-The University of Texas at Dallas
-</td>
-<td style="text-align:left;">
-Student Travel Award
-</td>
-<td style="text-align:left;">
-$1000
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2018
-</td>
-<td style="text-align:left;">
-The University of Texas at Dallas
-</td>
-<td style="text-align:left;">
-Student Travel Award
-</td>
-<td style="text-align:left;">
-$1000
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2016
-</td>
-<td style="text-align:left;">
-San Diego State University
-</td>
-<td style="text-align:left;">
-Honorable Mention for Outstanding Service as a Teaching Assistant
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2016
-</td>
-<td style="text-align:left;">
-Western Psychological Association
-</td>
-<td style="text-align:left;">
-Robert L. Solso Award
-</td>
-<td style="text-align:left;">
-$500
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2015
-</td>
-<td style="text-align:left;">
-San Diego State University
-</td>
-<td style="text-align:left;">
-Dr. Edward Geldreich Scholarship
-</td>
-<td style="text-align:left;">
-$425
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2015
-</td>
-<td style="text-align:left;">
-Western Psychological Association
-</td>
-<td style="text-align:left;">
-Robert L. Solso Award
-</td>
-<td style="text-align:left;">
-$500
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2014 (June)
-</td>
-<td style="text-align:left;">
-Huntington Learning Center
-</td>
-<td style="text-align:left;">
-Teacher of the Month
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2014
-</td>
-<td style="text-align:left;">
-Western Psychological Association
-</td>
-<td style="text-align:left;">
-Student Scholarship Award
-</td>
-<td style="text-align:left;">
-$500
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2014 (January)
-</td>
-<td style="text-align:left;">
-Huntington Learning Center
-</td>
-<td style="text-align:left;">
-Teacher of the Month
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2012 (Fall)
-</td>
-<td style="text-align:left;">
-CSU Northridge
-</td>
-<td style="text-align:left;">
-Dean’s List
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2011 (Spring)
-</td>
-<td style="text-align:left;">
-CSU Northridge
-</td>
-<td style="text-align:left;">
-Dean’s List
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2011 (Fall)
-</td>
-<td style="text-align:left;">
-CSU Northridge
-</td>
-<td style="text-align:left;">
-Dean’s List
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2010 (Spring)
-</td>
-<td style="text-align:left;">
-CSU Northridge
-</td>
-<td style="text-align:left;">
-Dean’s List
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2010 (September)
-</td>
-<td style="text-align:left;">
-Cope Health Solutions
-</td>
-<td style="text-align:left;">
-Clinical Care Extender Intern of the Rotation Award
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2017 (Fall)
-</td>
-<td style="text-align:left;">
-CSU Northridge
-</td>
-<td style="text-align:left;">
-Dean’s List
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-Total
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-$4925
-</td>
-</tr>
-</tbody>
+<div id="hvxahsrjih" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hvxahsrjih table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#hvxahsrjih thead, #hvxahsrjih tbody, #hvxahsrjih tfoot, #hvxahsrjih tr, #hvxahsrjih td, #hvxahsrjih th {
+  border-style: none;
+}
+
+#hvxahsrjih p {
+  margin: 0;
+  padding: 0;
+}
+
+#hvxahsrjih .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hvxahsrjih .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#hvxahsrjih .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hvxahsrjih .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hvxahsrjih .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hvxahsrjih .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hvxahsrjih .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hvxahsrjih .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hvxahsrjih .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hvxahsrjih .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hvxahsrjih .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hvxahsrjih .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hvxahsrjih .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#hvxahsrjih .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#hvxahsrjih .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hvxahsrjih .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#hvxahsrjih .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#hvxahsrjih .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hvxahsrjih .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hvxahsrjih .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#hvxahsrjih .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#hvxahsrjih .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#hvxahsrjih .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hvxahsrjih .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#hvxahsrjih .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#hvxahsrjih .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hvxahsrjih .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hvxahsrjih .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hvxahsrjih .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hvxahsrjih .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hvxahsrjih .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hvxahsrjih .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hvxahsrjih .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hvxahsrjih .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hvxahsrjih .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hvxahsrjih .gt_left {
+  text-align: left;
+}
+
+#hvxahsrjih .gt_center {
+  text-align: center;
+}
+
+#hvxahsrjih .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hvxahsrjih .gt_font_normal {
+  font-weight: normal;
+}
+
+#hvxahsrjih .gt_font_bold {
+  font-weight: bold;
+}
+
+#hvxahsrjih .gt_font_italic {
+  font-style: italic;
+}
+
+#hvxahsrjih .gt_super {
+  font-size: 65%;
+}
+
+#hvxahsrjih .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#hvxahsrjih .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#hvxahsrjih .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#hvxahsrjih .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#hvxahsrjih .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#hvxahsrjih .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#hvxahsrjih .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#hvxahsrjih .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#hvxahsrjih div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <colgroup>
+    <col style="width:125px;"/>
+    <col/>
+    <col/>
+    <col style="width:100px;"/>
+  </colgroup>
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="a::stub"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Honor">Honor</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Institution">Institution</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Award">Award</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2023</span></th>
+<td headers="stub_1_1 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Student Scholarship Award</span></td>
+<td headers="stub_1_1 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>The University of Texas at Dallas</span></td>
+<td headers="stub_1_1 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;">$1,000</td></tr>
+    <tr><th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2020</span></th>
+<td headers="stub_1_2 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Student Travel Award</span></td>
+<td headers="stub_1_2 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>The University of Texas at Dallas</span></td>
+<td headers="stub_1_2 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;">$1,000</td></tr>
+    <tr><th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2018</span></th>
+<td headers="stub_1_3 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Student Travel Award</span></td>
+<td headers="stub_1_3 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>The University of Texas at Dallas</span></td>
+<td headers="stub_1_3 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;">$1,000</td></tr>
+    <tr><th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2016</span></th>
+<td headers="stub_1_4 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Honorable Mention for Outstanding Service as a Teaching Assistant</span></td>
+<td headers="stub_1_4 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>San Diego State University</span></td>
+<td headers="stub_1_4 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;"><br /></td></tr>
+    <tr><th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2016</span></th>
+<td headers="stub_1_5 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Robert L. Solso Award</span></td>
+<td headers="stub_1_5 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Western Psychological Association</span></td>
+<td headers="stub_1_5 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;">$500</td></tr>
+    <tr><th id="stub_1_6" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2015</span></th>
+<td headers="stub_1_6 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Dr. Edward Geldreich Scholarship</span></td>
+<td headers="stub_1_6 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>San Diego State University</span></td>
+<td headers="stub_1_6 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;">$425</td></tr>
+    <tr><th id="stub_1_7" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2015</span></th>
+<td headers="stub_1_7 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Robert L. Solso Award</span></td>
+<td headers="stub_1_7 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Western Psychological Association</span></td>
+<td headers="stub_1_7 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;">$500</td></tr>
+    <tr><th id="stub_1_8" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2014 (June)</span></th>
+<td headers="stub_1_8 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Teacher of the Month</span></td>
+<td headers="stub_1_8 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Huntington Learning Center</span></td>
+<td headers="stub_1_8 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;"><br /></td></tr>
+    <tr><th id="stub_1_9" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2014</span></th>
+<td headers="stub_1_9 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Student Scholarship Award</span></td>
+<td headers="stub_1_9 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Western Psychological Association</span></td>
+<td headers="stub_1_9 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;">$500</td></tr>
+    <tr><th id="stub_1_10" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2014 (January)</span></th>
+<td headers="stub_1_10 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Teacher of the Month</span></td>
+<td headers="stub_1_10 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Huntington Learning Center</span></td>
+<td headers="stub_1_10 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;"><br /></td></tr>
+    <tr><th id="stub_1_11" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2012 (Fall)</span></th>
+<td headers="stub_1_11 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Dean’s List</span></td>
+<td headers="stub_1_11 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>CSU Northridge</span></td>
+<td headers="stub_1_11 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;"><br /></td></tr>
+    <tr><th id="stub_1_12" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2011 (Spring)</span></th>
+<td headers="stub_1_12 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Dean’s List</span></td>
+<td headers="stub_1_12 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>CSU Northridge</span></td>
+<td headers="stub_1_12 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;"><br /></td></tr>
+    <tr><th id="stub_1_13" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2011 (Fall)</span></th>
+<td headers="stub_1_13 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Dean’s List</span></td>
+<td headers="stub_1_13 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>CSU Northridge</span></td>
+<td headers="stub_1_13 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;"><br /></td></tr>
+    <tr><th id="stub_1_14" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2010 (Spring)</span></th>
+<td headers="stub_1_14 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Dean’s List</span></td>
+<td headers="stub_1_14 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>CSU Northridge</span></td>
+<td headers="stub_1_14 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;"><br /></td></tr>
+    <tr><th id="stub_1_15" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2010 (September)</span></th>
+<td headers="stub_1_15 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Clinical Care Extender Intern of the Rotation Award</span></td>
+<td headers="stub_1_15 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Cope Health Solutions</span></td>
+<td headers="stub_1_15 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;"><br /></td></tr>
+    <tr><th id="stub_1_16" scope="row" class="gt_row gt_left gt_stub"><span class='gt_from_md'>2017 (Fall)</span></th>
+<td headers="stub_1_16 Honor" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Dean’s List</span></td>
+<td headers="stub_1_16 Institution" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>CSU Northridge</span></td>
+<td headers="stub_1_16 Award" class="gt_row gt_right" style="text-align: right; vertical-align: top;"><br /></td></tr>
+    <tr><th id="grand_summary_stub_1" scope="row" class="gt_row gt_left gt_stub gt_grand_summary_row gt_first_grand_summary_row gt_last_summary_row">sum</th>
+<td headers="grand_summary_stub_1 Honor" class="gt_row gt_left gt_grand_summary_row gt_first_grand_summary_row gt_last_summary_row">—</td>
+<td headers="grand_summary_stub_1 Institution" class="gt_row gt_left gt_grand_summary_row gt_first_grand_summary_row gt_last_summary_row">—</td>
+<td headers="grand_summary_stub_1 Award" class="gt_row gt_right gt_grand_summary_row gt_first_grand_summary_row gt_last_summary_row">$4,925</td></tr>
+  </tbody>
+  
+  
 </table>
+</div>
 <p><BR><BR></p>
 </div>
 <div id="professional-society-membership" class="section level2">
 <h2>Professional Society Membership</h2>
 <hr />
-<table class="table table-striped table-hover table-responsive" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;">
-Year
-</th>
-<th style="text-align:left;">
-Institution
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2020 - Present
-</td>
-<td style="text-align:left;">
-Organization for Human Brain Mapping
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2020 - Present
-</td>
-<td style="text-align:left;">
-Cognitive Neuroscience Society
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2012 - Present
-</td>
-<td style="text-align:left;">
-Society for Neuroscience
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2016 - 2017
-</td>
-<td style="text-align:left;">
-Phi Kappa Phi Honor Society
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2015 - 2017
-</td>
-<td style="text-align:left;">
-The Obesity Society
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 150px; ">
-2012 - 2016
-</td>
-<td style="text-align:left;">
-Western Psychological Association
-</td>
-</tr>
-</tbody>
+<div id="vccqyolckv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#vccqyolckv table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#vccqyolckv thead, #vccqyolckv tbody, #vccqyolckv tfoot, #vccqyolckv tr, #vccqyolckv td, #vccqyolckv th {
+  border-style: none;
+}
+
+#vccqyolckv p {
+  margin: 0;
+  padding: 0;
+}
+
+#vccqyolckv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: 0;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 100%;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#vccqyolckv .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#vccqyolckv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#vccqyolckv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#vccqyolckv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vccqyolckv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vccqyolckv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vccqyolckv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#vccqyolckv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#vccqyolckv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#vccqyolckv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#vccqyolckv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#vccqyolckv .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#vccqyolckv .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#vccqyolckv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#vccqyolckv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#vccqyolckv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#vccqyolckv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#vccqyolckv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vccqyolckv .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#vccqyolckv .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#vccqyolckv .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#vccqyolckv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vccqyolckv .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#vccqyolckv .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#vccqyolckv .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vccqyolckv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vccqyolckv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#vccqyolckv .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vccqyolckv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#vccqyolckv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vccqyolckv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vccqyolckv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vccqyolckv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vccqyolckv .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vccqyolckv .gt_left {
+  text-align: left;
+}
+
+#vccqyolckv .gt_center {
+  text-align: center;
+}
+
+#vccqyolckv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#vccqyolckv .gt_font_normal {
+  font-weight: normal;
+}
+
+#vccqyolckv .gt_font_bold {
+  font-weight: bold;
+}
+
+#vccqyolckv .gt_font_italic {
+  font-style: italic;
+}
+
+#vccqyolckv .gt_super {
+  font-size: 65%;
+}
+
+#vccqyolckv .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#vccqyolckv .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#vccqyolckv .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#vccqyolckv .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#vccqyolckv .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#vccqyolckv .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#vccqyolckv .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#vccqyolckv .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#vccqyolckv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;width:100%;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <colgroup>
+    <col style="width:125px;"/>
+    <col/>
+  </colgroup>
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="date">Year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="organization">Organization</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="date" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>2024 - Present</span></td>
+<td headers="organization" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>International Society for Tractography</span></td></tr>
+    <tr><td headers="date" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>2020 - Present</span></td>
+<td headers="organization" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Organization for Human Brain Mapping</span></td></tr>
+    <tr><td headers="date" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>2020 - Present</span></td>
+<td headers="organization" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Cognitive Neuroscience Society</span></td></tr>
+    <tr><td headers="date" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>2012 - Present</span></td>
+<td headers="organization" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Society for Neuroscience</span></td></tr>
+    <tr><td headers="date" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>2016 - 2017</span></td>
+<td headers="organization" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Phi Kappa Phi Honor Society</span></td></tr>
+    <tr><td headers="date" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>2015 - 2017</span></td>
+<td headers="organization" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>The Obesity Society</span></td></tr>
+    <tr><td headers="date" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>2012 - 2016</span></td>
+<td headers="organization" class="gt_row gt_left" style="text-align: left; vertical-align: top;"><span class='gt_from_md'>Western Psychological Association</span></td></tr>
+  </tbody>
+  
+  
 </table>
+</div>
 </div>
 
 </div>
