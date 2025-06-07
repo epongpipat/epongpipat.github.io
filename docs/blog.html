@@ -13,18 +13,25 @@
 
 <title>Blog</title>
 
-<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116039246-1"></script>
 <script>
@@ -35,12 +42,16 @@
   gtag('config', 'UA-116039246-1');
 </script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -53,34 +64,10 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
-<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+<link rel="stylesheet" href="../docs/style.css" type="text/css" />
 
 
 
@@ -89,10 +76,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -109,96 +92,15 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
-</style>
-
-
-<style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 54px;
-  padding-bottom: 40px;
+details > summary > p:only-child {
+  display: inline;
 }
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 59px;
-  margin-top: -59px;
-}
-.section h2 {
-  padding-top: 59px;
-  margin-top: -59px;
-}
-.section h3 {
-  padding-top: 59px;
-  margin-top: -59px;
-}
-.section h4 {
-  padding-top: 59px;
-  margin-top: -59px;
-}
-.section h5 {
-  padding-top: 59px;
-  margin-top: -59px;
-}
-.section h6 {
-  padding-top: 59px;
-  margin-top: -59px;
-}
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu>.dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  border-radius: 0 6px 6px 6px;
-}
-.dropdown-submenu:hover>.dropdown-menu {
-  display: block;
-}
-.dropdown-submenu>a:after {
-  display: block;
-  content: " ";
-  float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
-}
-.dropdown-submenu.pull-left {
-  float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  border-radius: 6px 0 6px 6px;
+pre code {
+  padding: 0;
 }
 </style>
 
-<script>
-// manage active state of menu based on current page
-$(document).ready(function () {
-  // active menu anchor
-  href = window.location.pathname
-  href = href.substr(href.lastIndexOf('/') + 1)
-  if (href === "")
-    href = "index.html";
-  var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.parent().addClass('active');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
-});
-</script>
 
 <!-- tabsets -->
 
@@ -208,13 +110,12 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -222,16 +123,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -275,7 +169,8 @@ $(document).ready(function () {
   <div class="container">
 
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"
+        aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -283,26 +178,34 @@ $(document).ready(function () {
       </button>
 
       <a class="navbar-brand" href="index.html"><span class="fas fa-terminal" aria-hidden="true"></span></a>
-      <a class="navbar-brand" href="index.html"><img src="images/icons8-artificial-intelligence-100.png" style="height: 20px"></a>
+      <a class="navbar-brand" href="index.html"><img src="images/icons8-artificial-intelligence-100.png"
+          style="height: 20px"></a>
       <a class="navbar-brand" href="index.html"><img src="images/icons8-scatter-plot-96.png" style="height: 20px"></a>
-      <a class="navbar-brand" href="index.html">Ekarin Eric Pongpipat, M.A.</a>
+      <a class="navbar-brand" href="index.html">Ekarin Eric Pongpipat, Ph.D.</a>
     </div> <!-- /.navbar-header -->
 
     <div class="collapse navbar-collapse" id="navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
         <li><a href="blog.html"><span class="fas fa-quote-left" aria-hidden="true"></span> &ensp;Blog</a></li>
-         <li><a href="books.html"><span class="fas fa-book" aria-hidden="true"></span> &ensp;eBooks</a></li>
+        <li><a href="books.html"><span class="fas fa-book" aria-hidden="true"></span> &ensp;eBooks</a></li>
         <li><a href="cv.html"><span class="far fa-id-badge" aria-hidden="true"></span> &ensp;CV</a></li>
-        <li><a href="https://github.com/epongpipat" target="_blank"><span class="fa fa-github" aria-hidden="true"></span> &ensp;GitHub</a></li>
+        <li><a href="https://github.com/epongpipat" target="_blank"><span class="fa fa-github"
+              aria-hidden="true"></span> &ensp;GitHub</a></li>
 
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fas fa-handshake" aria-hidden="true"></span> &ensp;Connect<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+            aria-expanded="false"><span class="fas fa-handshake" aria-hidden="true"></span> &ensp;Connect<span
+              class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="mailto:epongpipat@gmail.com" target="_blank"><span class="fa fa-envelope" aria-hidden="true"></span> &ensp;Email</a></li>
+            <li><a href="mailto:epongpipat@gmail.com" target="_blank"><span class="fa fa-envelope"
+                  aria-hidden="true"></span> &ensp;Email</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="https://twitter.com/epongpipat" target="_blank"><span class="fab fa-twitter" aria-hidden="true"></span> &ensp;Twitter</a></li>
-            <li><a href="https://www.researchgate.net/profile/Ekarin_Pongpipat" target="_blank"><span class="fab fa-researchgate" aria-hidden="true"></span> &ensp;ResearchGate</a></li>
-            <li><a href="https://www.linkedin.com/in/epongpipat/" target="_blank"><span class="fa fa-linkedin" aria-hidden="true"></span> &ensp;LinkedIn</a></li>
+            <li><a href="https://twitter.com/epongpipat" target="_blank"><span class="fab fa-twitter"
+                  aria-hidden="true"></span> &ensp;Twitter</a></li>
+            <li><a href="https://www.researchgate.net/profile/Ekarin_Pongpipat" target="_blank"><span
+                  class="fab fa-researchgate" aria-hidden="true"></span> &ensp;ResearchGate</a></li>
+            <li><a href="https://www.linkedin.com/in/epongpipat/" target="_blank"><span class="fa fa-linkedin"
+                  aria-hidden="true"></span> &ensp;LinkedIn</a></li>
           </ul>
         </li>
 
@@ -312,7 +215,7 @@ $(document).ready(function () {
   </div> <!-- /.container -->
 </nav> <!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -323,6 +226,8 @@ $(document).ready(function () {
 
 
 <hr />
+<p><link href="../docs/site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="../docs/site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" /></p>
 <div class="divTable">
 <div class="divTableBody">
 <div class="divTableRow">
@@ -340,9 +245,15 @@ $(document).ready(function () {
 </div>
 <div class="divTableCell">
 <div class="divBlogTitle">
-<a href='https://epongpipat.shinyapps.io/covid19-shinydashboard/' target='_blank'>COVID-19 Shiny Dashboard App</a> <a href='https://github.com/epongpipat/covid19-shinydashboard' target='_blank'><span class="fa fa-github"></span></a>
+<a href='https://epongpipat.shinyapps.io/covid19-shinydashboard/' target='_blank'>COVID-19
+Shiny Dashboard App</a>
+<a href='https://github.com/epongpipat/covid19-shinydashboard' target='_blank'><span
+class="fa fa-github"></span></a>
 </div>
-<br>COVID-19 tracker for regions and metrics that I consistently check.<br><em>Tags</em>: <span class="badge badge-pill badge-primary">R</span> <span class="badge badge-pill badge-info">Shiny Apps</span>
+<br>COVID-19 tracker for regions and metrics that I consistently
+check.<br><em>Tags</em>: <span
+class="badge badge-pill badge-primary">R</span> <span
+class="badge badge-pill badge-info">Shiny Apps</span>
 </div>
 </div>
 <br>
@@ -352,9 +263,15 @@ $(document).ready(function () {
 </div>
 <div class="divTableCell">
 <div class="divBlogTitle">
-<a href='blog-solving-ols-regression-using-gradient-descent.html'>Solving Ordinary Least Squares (OLS) Regression using Gradient Descent</a> <a href='https://raw.githubusercontent.com/epongpipat/epongpipat.github.io/master/blog-solving-ols-regression-using-gradient-descent.Rmd' target='_blank'><span class="fa fa-github"></span></a>
+<a href='blog-solving-ols-regression-using-gradient-descent.html'>Solving
+Ordinary Least Squares (OLS) Regression using Gradient Descent</a>
+<a href='https://raw.githubusercontent.com/epongpipat/epongpipat.github.io/master/blog-solving-ols-regression-using-gradient-descent.Rmd' target='_blank'><span
+class="fa fa-github"></span></a>
 </div>
-<br>A brief guide to solving ordinary least squares (OLS) regression using gradient descent in R.<br><em>Tags</em>: <span class="badge badge-pill badge-primary">R</span> <span class="badge badge-pill badge-light">Statistics</span>
+<br>A brief guide to solving ordinary least squares (OLS) regression
+using gradient descent in R.<br><em>Tags</em>: <span
+class="badge badge-pill badge-primary">R</span> <span
+class="badge badge-pill badge-light">Statistics</span>
 </div>
 </div>
 <br>
@@ -364,9 +281,16 @@ $(document).ready(function () {
 </div>
 <div class="divTableCell">
 <div class="divBlogTitle">
-<a href='https://mattkmiecik.com/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis.html' target='_blank'>Exploring 11 Years of Chicago Blackhawk’s Data using Principal Components Analysis</a>
+<a href='https://mattkmiecik.com/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis.html' target='_blank'>Exploring
+11 Years of Chicago Blackhawk’s Data using Principal Components
+Analysis</a>
 </div>
-<br>A collaboraion with <a href='https://mattkmiecik.com' target='_blank'>Matt Kmiecik</a> using principal components analysis to analyze Blackhawk’s data.<br><em>Tags</em>: <span class="badge badge-pill badge-primary">R</span> <span class="badge badge-pill badge-light">Statistics</span>
+<br>A collaboraion with
+<a href='https://mattkmiecik.com' target='_blank'>Matt Kmiecik</a> using
+principal components analysis to analyze Blackhawk’s
+data.<br><em>Tags</em>: <span
+class="badge badge-pill badge-primary">R</span> <span
+class="badge badge-pill badge-light">Statistics</span>
 </div>
 </div>
 <br>
@@ -376,9 +300,15 @@ $(document).ready(function () {
 </div>
 <div class="divTableCell">
 <div class="divBlogTitle">
-<a href='blog-solving-ols-regression-using-matrix-algebra.html'>Solving Ordinary Least Squares (OLS) Regression using Matrix Algebra</a> <a href='https://raw.githubusercontent.com/epongpipat/epongpipat.github.io/master/blog-solving-ols-regression-using-matrix-algebra.Rmd' target='_blank'><span class="fa fa-github"></span></a>
+<a href='blog-solving-ols-regression-using-matrix-algebra.html'>Solving
+Ordinary Least Squares (OLS) Regression using Matrix Algebra</a>
+<a href='https://raw.githubusercontent.com/epongpipat/epongpipat.github.io/master/blog-solving-ols-regression-using-matrix-algebra.Rmd' target='_blank'><span
+class="fa fa-github"></span></a>
 </div>
-<br>A brief guide to solving ordinary least squares (OLS) regression using matrix algebra in R.<br><em>Tags</em>: <span class="badge badge-pill badge-primary">R</span> <span class="badge badge-pill badge-light">Statistics</span>
+<br>A brief guide to solving ordinary least squares (OLS) regression
+using matrix algebra in R.<br><em>Tags</em>: <span
+class="badge badge-pill badge-primary">R</span> <span
+class="badge badge-pill badge-light">Statistics</span>
 </div>
 </div>
 <br>
@@ -388,9 +318,14 @@ $(document).ready(function () {
 </div>
 <div class="divTableCell">
 <div class="divBlogTitle">
-<a href='https://mattkmiecik.shinyapps.io/boot-perm-dash/' target='_blank'>Bootstrapping and Permutation Testing: A Shiny App (A Dashboard Update)</a>
+<a href='https://mattkmiecik.shinyapps.io/boot-perm-dash/' target='_blank'>Bootstrapping
+and Permutation Testing: A Shiny App (A Dashboard Update)</a>
 </div>
-<br>Upate to the previous “Bootstrapping and Permutation Testing: A Shiny App” post using shinydashboard. <br><em>Tags</em>: <span class="badge badge-pill badge-primary">R</span> <span class="badge badge-pill badge-info">Shiny Apps</span> <span class="badge badge-pill badge-light">Statistics</span>
+<br>Upate to the previous “Bootstrapping and Permutation Testing: A
+Shiny App” post using shinydashboard. <br><em>Tags</em>: <span
+class="badge badge-pill badge-primary">R</span> <span
+class="badge badge-pill badge-info">Shiny Apps</span> <span
+class="badge badge-pill badge-light">Statistics</span>
 </div>
 </div>
 <br>
@@ -400,9 +335,20 @@ $(document).ready(function () {
 </div>
 <div class="divTableCell">
 <div class="divBlogTitle">
-<a href='https://epongpipat.shinyapps.io/lm_voice_dashboard/' target='_blank'>Simple Linear Regression via Voice Command: A Shiny App (A Dashboard Update)</a> <a href='https://github.com/epongpipat/shiny_apps/tree/master/lm_voice_dashboard' target='_blank'><span class="fa fa-github"></span></a>
+<a href='https://epongpipat.shinyapps.io/lm_voice_dashboard/' target='_blank'>Simple
+Linear Regression via Voice Command: A Shiny App (A Dashboard
+Update)</a>
+<a href='https://github.com/epongpipat/shiny_apps/tree/master/lm_voice_dashboard' target='_blank'><span
+class="fa fa-github"></span></a>
 </div>
-<br>Upate to the previous “Simple Linear Regression via Voice Command: A Shiny App” post using shinydashboard. (Note: Link may or not work depending on if my free hours have been used up for the month, but feel free to download the code and run locally from my GitHub.)<br><em>Tags</em>: <span class="badge badge-pill badge-primary">R</span> <span class="badge badge-pill badge-info">Shiny Apps</span> <span class="badge badge-pill badge-light">Statistics</span>
+<br>Upate to the previous “Simple Linear Regression via Voice Command: A
+Shiny App” post using shinydashboard. (Note: Link may or not work
+depending on if my free hours have been used up for the month, but feel
+free to download the code and run locally from my
+GitHub.)<br><em>Tags</em>: <span
+class="badge badge-pill badge-primary">R</span> <span
+class="badge badge-pill badge-info">Shiny Apps</span> <span
+class="badge badge-pill badge-light">Statistics</span>
 </div>
 </div>
 <br>
@@ -412,9 +358,18 @@ $(document).ready(function () {
 </div>
 <div class="divTableCell">
 <div class="divBlogTitle">
-<a href='https://epongpipat.shinyapps.io/lmvoice' target='_blank'>Simple Linear Regression via Voice Command: A Shiny App</a> <a href='https://github.com/epongpipat/epongpipat.github.io/tree/master/shinyApps/lmVoice' target='_blank'><span class="fa fa-github"></span></a>
+<a href='https://epongpipat.shinyapps.io/lmvoice' target='_blank'>Simple
+Linear Regression via Voice Command: A Shiny App</a>
+<a href='https://github.com/epongpipat/epongpipat.github.io/tree/master/shinyApps/lmVoice' target='_blank'><span
+class="fa fa-github"></span></a>
 </div>
-<br>Change variables of a simple linear regression via voice commands. (Note: Link may or not work depending on if my free hours have been used up for the month, but feel free to download the code and run locally from my GitHub.)<br><em>Tags</em>: <span class="badge badge-pill badge-primary">R</span> <span class="badge badge-pill badge-info">Shiny Apps</span> <span class="badge badge-pill badge-light">Statistics</span>
+<br>Change variables of a simple linear regression via voice commands.
+(Note: Link may or not work depending on if my free hours have been used
+up for the month, but feel free to download the code and run locally
+from my GitHub.)<br><em>Tags</em>: <span
+class="badge badge-pill badge-primary">R</span> <span
+class="badge badge-pill badge-info">Shiny Apps</span> <span
+class="badge badge-pill badge-light">Statistics</span>
 </div>
 </div>
 <br>
@@ -424,9 +379,18 @@ $(document).ready(function () {
 </div>
 <div class="divTableCell">
 <div class="divBlogTitle">
-<a href='https://mattkmiecik.com/post-Bootstrapping-and-Permutation-Testing-Shiny-App.html' target='_blank'>Bootstrapping and Permutation Testing: A Shiny App</a> <a href='https://github.com/mkmiecik14/mkmiecik14.github.io/tree/master/boot-perm-app' target='_blank'><span class="fa fa-github"></span></a>
+<a href='https://mattkmiecik.com/post-Bootstrapping-and-Permutation-Testing-Shiny-App.html' target='_blank'>Bootstrapping
+and Permutation Testing: A Shiny App</a>
+<a href='https://github.com/mkmiecik14/mkmiecik14.github.io/tree/master/boot-perm-app' target='_blank'><span
+class="fa fa-github"></span></a>
 </div>
-<br>A collaboration post with <a href='https://mattkmiecik.com' target='_blank'>Matt Kmiecik</a> about the differences between bootstrapping and permutation testing with input variables that change on the fly.<br><em>Tags</em>: <span class="badge badge-pill badge-primary">R</span> <span class="badge badge-pill badge-info">Shiny Apps</span> <span class="badge badge-pill badge-light">Statistics</span>
+<br>A collaboration post with
+<a href='https://mattkmiecik.com' target='_blank'>Matt Kmiecik</a> about
+the differences between bootstrapping and permutation testing with input
+variables that change on the fly.<br><em>Tags</em>: <span
+class="badge badge-pill badge-primary">R</span> <span
+class="badge badge-pill badge-info">Shiny Apps</span> <span
+class="badge badge-pill badge-light">Statistics</span>
 </div>
 </div>
 <br>
@@ -436,9 +400,15 @@ $(document).ready(function () {
 </div>
 <div class="divTableCell">
 <div class="divBlogTitle">
-<a href='blog-calculate-motion-regressors.html'>Calculate 24-Motion Regressors</a> <a href='https://raw.githubusercontent.com/epongpipat/epongpipat.github.io/master/blog_Calculate_Motion_Regressors.Rmd' target='_blank'><span class="fa fa-github"></span></a>
+<a href='blog-calculate-motion-regressors.html'>Calculate 24-Motion
+Regressors</a>
+<a href='https://raw.githubusercontent.com/epongpipat/epongpipat.github.io/master/blog_Calculate_Motion_Regressors.Rmd' target='_blank'><span
+class="fa fa-github"></span></a>
 </div>
-<br>A quick guide to calculating motion regressors (with visuals).<br><em>Tags</em>: <span class="badge badge-pill badge-active">fMRI</span> <span class="badge badge-pill badge-primary">R</span>
+<br>A quick guide to calculating motion regressors (with
+visuals).<br><em>Tags</em>: <span
+class="badge badge-pill badge-active">fMRI</span> <span
+class="badge badge-pill badge-primary">R</span>
 </div>
 </div>
 <br>
@@ -448,9 +418,17 @@ $(document).ready(function () {
 </div>
 <div class="divTableCell">
 <div class="divBlogTitle">
-<a href='https://mattkmiecik.com/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data.html' target='_blank'>Multilevel Modeling in R with NHL Power Play Data</a> <a href='https://raw.githubusercontent.com/mkmiecik14/mkmiecik14.github.io/master/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data.Rmd' target='_blank'><span class="fa fa-github"></span></a>
+<a href='https://mattkmiecik.com/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data.html' target='_blank'>Multilevel
+Modeling in R with NHL Power Play Data</a>
+<a href='https://raw.githubusercontent.com/mkmiecik14/mkmiecik14.github.io/master/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data.Rmd' target='_blank'><span
+class="fa fa-github"></span></a>
 </div>
-<br>A collaboration post with <a href='https://mattkmiecik.com' target='_blank'>Matt Kmiecik</a> about multilevel modeling in R using professional hockey data from the NHL.<br><em>Tags</em>: <span class="badge badge-pill badge-primary">R</span> <span class="badge badge-pill badge-light">Statistics</span>
+<br>A collaboration post with
+<a href='https://mattkmiecik.com' target='_blank'>Matt Kmiecik</a> about
+multilevel modeling in R using professional hockey data from the
+NHL.<br><em>Tags</em>: <span
+class="badge badge-pill badge-primary">R</span> <span
+class="badge badge-pill badge-light">Statistics</span>
 </div>
 </div>
 </div>
@@ -472,7 +450,7 @@ $(document).ready(function () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -490,7 +468,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
