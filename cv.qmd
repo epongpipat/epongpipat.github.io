@@ -4,12 +4,8 @@ format:
   html:
     toc: true
     toc-depth: 3
-    toc-title: Table of Contents
-    # toc_float:
     toc-location: left
     embed-resources: true
-      # collapsed: yes
-      # smooth_scroll: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -29,9 +25,9 @@ xfun::pkg_attach2(pkgs, message = F)
 
 ------------------------------------------------------------------------
 
-::: divTable
-::: divTableBody
-::: divTableRow
+::::::::::::: divTable
+:::::::::::: divTableBody
+::::: divTableRow
 ::: divTableCellLogo
 <img src="images/logo_utd.svg" width="100"/>
 :::
@@ -39,19 +35,19 @@ xfun::pkg_attach2(pkgs, message = F)
 ::: divTableCellInfo
 <B>Ph.D. Student, Cognition and Neuroscience</B> (2017 - Present) <BR> The University of Texas at Dallas <BR> Advisors: Dr. Karen M. Rodrigue & Dr. Kristen M. Kennedy
 :::
-:::
+:::::
 
-::: divTableRow
+::::: divTableRow
 ::: divTableCellLogo
 <img src="images/logo_sdsu.svg" width="100"/>
 :::
 
 ::: divTableCellInfo
-<B>M.A., Psychology</B> (2016) <BR> San Diego State University <BR> Advisor: Dr. Claire Murphy <BR> Thesis: Altered Functional Connectivity and Eating Disinhibition in Individuals with Metabolic Syndrome
+<B>M.A., Psychology</B> (2016) <BR> San Diego State University <BR> Advisor: Dr. Claire Murphy <BR> Thesis: Altered Functional Connectivity and Eating Disinhibition in Individuals with Metabolic Syndrome https://digitalcollections.sdsu.edu/do/19d8c36d-c6ad-432b-ac37-a885224821b5
 :::
-:::
+:::::
 
-::: divTableRow
+::::: divTableRow
 ::: divTableCellLogo
 <img src="images/logo_csun.svg" width="100"/>
 :::
@@ -59,9 +55,9 @@ xfun::pkg_attach2(pkgs, message = F)
 ::: divTableCellInfo
 <B>B.A., Psychology</B> (2012) <BR> California State University, Northridge <BR> Advisor: Dr. Jose P. Abara
 :::
-:::
-:::
-:::
+:::::
+::::::::::::
+:::::::::::::
 
 <br><br>
 
@@ -69,9 +65,9 @@ xfun::pkg_attach2(pkgs, message = F)
 
 ------------------------------------------------------------------------
 
-::: divTable
-::: divTableBody
-::: divTableRow
+::::::::::::: divTable
+:::::::::::: divTableBody
+::::: divTableRow
 ::: divTableCellLogo
 <img src="images/logo_utd.svg" width="100"/>
 :::
@@ -79,9 +75,9 @@ xfun::pkg_attach2(pkgs, message = F)
 ::: divTableCellInfo
 <B>Graduate Research Assistant</B> (2017 - Present) <BR>Cognitive Neuroscience of Aging Laboratory <BR>Center for Vital Longevity <BR>School of Behavioral and Brain Sciences <BR>The University of Texas at Dallas
 :::
-:::
+:::::
 
-::: divTableRow
+::::: divTableRow
 ::: divTableCellLogo
 <img src="images/logo_sdsu.svg" width="100"/>
 :::
@@ -89,9 +85,9 @@ xfun::pkg_attach2(pkgs, message = F)
 ::: divTableCellInfo
 <B>Graduate Research Assistant</B> (2014 - 2016) <BR>Lifespan Human Senses Laboratory <BR>Department of Psychology <BR>San Diego State University
 :::
-:::
+:::::
 
-::: divTableRow
+::::: divTableRow
 ::: divTableCellLogo
 <img src="images/logo_csun.svg" width="100"/>
 :::
@@ -99,24 +95,22 @@ xfun::pkg_attach2(pkgs, message = F)
 ::: divTableCellInfo
 <B>Undergraduate Research Assistant</B> (2011 - 2013) <BR>Neuroscience Laboratory <BR>Department of Psychology <BR>California State University, Northridge
 :::
-:::
-:::
-:::
-
-<BR><BR>
+:::::
+::::::::::::
+:::::::::::::
 
 ## Teaching Experience
 
 ------------------------------------------------------------------------
 
-::: divTable
-::: divTableBody
-::: divTableRow
+:::::::::::::: divTable
+::::::::::::: divTableBody
+::::::: divTableRow
 ::: divTableCellLogo
 <img src="images/logo_utd.svg" width="100"/>
 :::
 
-::: divTableCellInfo
+::::: divTableCellInfo
 <B>Graduate Teaching Assistant</B> (2017 - 2019) <BR>The University of Texas at Dallas <BR>1. Statistics for Psychology, ACN6312/HCS6312 (Spring 2019) <BR>
 
 ::: divIndent
@@ -128,15 +122,15 @@ Under the supervision of Dr. Nancy Juhn
 ::: divIndent
 Under the supervision of Dr. Nancy Juhn
 :::
-:::
-:::
+:::::
+:::::::
 
-::: divTableRow
+::::::: divTableRow
 ::: divTableCellLogo
 <img src="images/logo_sdsu.svg" width="100"/>
 :::
 
-::: divTableCellInfo
+::::: divTableCellInfo
 <B>Graduate Teaching Assistant</B> (2014 - 2016) <BR>San Diego State University <BR>1. Advanced Statistics in Psychology, PSY670A/B (Fall 2015, Spring 2016) <BR>
 
 ::: divIndent
@@ -148,12 +142,10 @@ Under the supervision of Dr. Melody Sadler
 ::: divIndent
 Under the supervision of Dr. Melody Sadler, Dr. Amy Spilkin, and Dr. Dale Glaser
 :::
-:::
-:::
-:::
-:::
-
-<BR><BR>
+:::::
+:::::::
+:::::::::::::
+::::::::::::::
 
 ## Publications
 
