@@ -22,8 +22,8 @@ xfun::pkg_attach(pkgs, install = T, message = F)
 
 *Updated on June 6, 2025*
 
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="../docs/site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="../docs/site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <br><br>
 
@@ -182,7 +182,7 @@ xfun::pkg_attach(pkgs, install = T, message = F)
 ---
 
 ```{r publications, warning = F, message = F}
-pubs <- read_csv("data/publications.csv")
+pubs <- read_csv("../data/publications.csv")
 ```
 
 ```{r}
@@ -260,7 +260,7 @@ pubs2html <- function(data) {
 
 <div class="divReferences">
 ```{r posters, warning = F, message = F, fig.width = 5, fig.height = 2, fig.asp = T}
-posters <- read_csv("data/posters.csv")
+posters <- read_csv("../data/posters.csv")
 posters$Authors <- gsub("Pongpipat, E. E.", "<b>Pongpipat, E. E.</b>", posters$Authors)
 posters <- posters %>%
   arrange(desc(Year), desc(Month), Authors) %>%
@@ -313,7 +313,7 @@ ggplot(df_poster, aes(x = Year, y = Frequency)) +
 ---
 
 ```{r talks, results = 'asis'}
-df_talks <- read.csv("data/talks-and-workshops.csv") |>
+df_talks <- read.csv("../data/talks-and-workshops.csv") |>
   rowwise() |>
   mutate(date = glue("<b>{date}</b>"),
          description = glue("<b>{description}</b><br>{institution}"),
@@ -355,9 +355,8 @@ gt(df_talks) |>
 ---
 
 ```{r honors_awards}
-df_honors_awards <- read.csv("data/honors-and-awards.csv") |>
+df_honors_awards <- read.csv("../data/honors-and-awards.csv") |>
   select(Year, Honor, Institution, Award)
-
 gt(df_honors_awards, rowname_col = 'Year') |>
   fmt_markdown() |>
   cols_width(
@@ -386,7 +385,7 @@ gt(df_honors_awards, rowname_col = 'Year') |>
 ---
 
 ```{r professional_society_membership}
-df_professional_society_membership <- read.csv("data/professional-society-membership.csv")
+df_professional_society_membership <- read.csv("../data/professional-society-membership.csv")
 gt(df_professional_society_membership) |>
   fmt_markdown() |>
   cols_width(

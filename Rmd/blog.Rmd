@@ -1,27 +1,36 @@
 ---
-title: "eBooks"
+title: "Blog"
+subtitle: "Mostly a reference"
 output: html_document
 ---
 
 ---
 
+<link href="../docs/site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="../docs/site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
 ```{r include = F}
-knitr::opts_chunk$set(dev = 'svg', 
+knitr::opts_chunk$set(dev = 'png', 
                       echo = FALSE,
                       message = FALSE)
 packages <- c("readr", "glue", "tidyverse", "psych", "zoo")
 xfun::pkg_attach(packages, message = F)
 ```
 
+```{r paths}
+in_paths <- list()
+in_paths['blogs'] <- "../data/blogs.csv"
+in_paths['collaborator_urls'] <- "../data/collaborator-urls.csv"
+in_paths['tag_colors'] <- "../data/tag-colors.csv"
+```
+
 ```{r}
-df <- read_csv("books.csv") %>%
-  mutate(date = glue("{year}-{str_pad(month, 2, 'left', 0)}"),
-         date_r = as.Date(glue("{year}-{month}-01"))) %>%
-  arrange(desc(date_r))
-
-df_collab <- read_csv("collaborator-urls.csv")
-
-df_tags <- read_csv("tag-colors.csv")
+df <- read_csv(in_paths[['blogs']]) %>%
+  mutate(date = glue("{year}-{month}-{day}")) %>%
+  mutate(date = as.Date(date)) %>%
+  arrange(desc(date))
+df_collab <- read_csv(in_paths[['collaborator_urls']])
+df_tags <- read_csv(in_paths[['tag_colors']])
 ```
 
 ```{r, results = 'asis'}
@@ -53,7 +62,7 @@ html_row <- function(df, i) {
     tag_color <- df_tags$color[which(df_tags$tag == tags[j])]
     tags_code <- glue("{tags_code} <span class='badge badge-pill badge-{tag_color}'>{tags[j]}</span>")
   }
-  
+
   code <- glue("{code}<br>*Tags*: {tags_code}")
   
   code <- glue("{code}</div></div>")
@@ -61,7 +70,7 @@ html_row <- function(df, i) {
   return(code)
 }
 
-code_all <- "<div class='divTable'><div class='divTableBody'><div class='divTableRow'><div class='divTableCell'>**Date**</div><div class='divTableCell'>**Book**</div></div>"
+code_all <- "<div class='divTable'><div class='divTableBody'><div class='divTableRow'><div class='divTableCell'>**Date**</div><div class='divTableCell'>**Post**</div></div>"
 for (i in 1:nrow(df)) {
   code_all <- glue("{code_all}<br>{html_row(df, i)}")
 }

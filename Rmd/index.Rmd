@@ -1,5 +1,5 @@
 ---
-title: "Ekarin Eric Pongpipat, M.A."
+title: "Ekarin Eric Pongpipat, Ph.D."
 output: html_document
 
 ---
@@ -10,16 +10,19 @@ h1.title {
 }
 </style>
 
+<link href="../docs/site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="../docs/site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
 <center>
 
 <img src="https://ekarinpongpipat.com/images/profile-picture-circle.png" width="150px">
 
-## Ekarin Eric Pongpipat, M.A.
+## Ekarin Eric Pongpipat, Ph.D.
 
 <br>
 
 ### <i class="fas fa-info-circle"></i> &nbsp; About Me
-<br>I'm a Ph.D. student studying cognitive neuroscience at the University of Texas at Dallas. I am primarly interested in understanding the relationship between brain networks and cognition and how this relationship can change as we age and for different groups of individuals (e.g., disease-disorder states and genetic predispositions). I'm also interested in statistics, research methods, intuitive data visualization, open source, and open science.
+<br>I am primarly interested in understanding the relationship between brain networks and cognition and how this relationship can change as we age and for different groups of individuals (e.g., disease-disorder states and genetic predispositions). I'm also interested in statistics, research methods, intuitive data visualization, open source, and open science.
 
 <br>
 
@@ -31,7 +34,7 @@ h1.title {
 pkgs <- c("dplyr", "kableExtra", "glue")
 xfun::pkg_attach2(pkgs, message = F)
 
-df <- read.csv("updates.csv") %>%
+df <- read.csv("../data/updates.csv") %>%
   arrange(desc(date)) %>%
   mutate(link = case_when(
     external == TRUE ~ glue("<a href='{link}', target='_blank'><i class='fas fa-link'></i></a>"),
