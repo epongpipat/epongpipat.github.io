@@ -1,0 +1,10 @@
+books
+*editing*
+archive-*
+/rsconnect
+.*
+!.gitignore
+!.travis.yml
+
+/.quarto/
+_site/*
