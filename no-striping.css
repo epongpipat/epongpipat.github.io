@@ -1,0 +1,4 @@
+/* Remove row striping from gt tables */
+.gt_table tr:nth-child(even) {
+  background-color: white !important;
+}
