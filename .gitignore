@@ -5,3 +5,6 @@ archive-*
 .*
 !.gitignore
 !.travis.yml
+
+/.quarto/
+_site/*

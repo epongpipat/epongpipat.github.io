@@ -1,12 +1,5 @@
 [
   {
-    "listing": "/index.html",
-    "items": [
-      "/posts/post-with-code/index.html",
-      "/posts/welcome/index.html"
-    ]
-  },
-  {
     "listing": "/blog.html",
     "items": [
       "/posts/solving-ols-regression-using-gradient-descent/index.html",
@@ -16,13 +9,6 @@
       "/posts/boot-perm-dash/index.html",
       "/posts/calculate-motion-regressors/index.html",
       "/posts/multilevel-modeling-in-r-with-nhl-power-play-data/index.html"
-    ]
-  },
-  {
-    "listing": "/blogs.html",
-    "items": [
-      "/posts/post-with-code/index.html",
-      "/posts/welcome/index.html"
     ]
   }
 ]
