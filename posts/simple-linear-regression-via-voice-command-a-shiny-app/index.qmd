@@ -1,0 +1,13 @@
+---
+title: "Simple Linear Regression via Voice Command: A Shiny App"
+date: "2018-06-17"
+date-modified: "2018-08-15"
+categories: [general linear model (GLM), shiny app, statistics]
+description: "Change variables of a simple linear regression via voice commands. (Note: Link may or not work depending on if my free hours have been used up for the month, but feel free to download the code and run locally from my GitHub.)"
+external: true
+link: https://epongpipat.shinyapps.io/lm_voice_dashboard/
+image: screenshot.png
+---
+
+<meta http-equiv="refresh" content="0; url=https://epongpipat.shinyapps.io/lm_voice_dashboard/" />
+If you are not redirected, please <a href="https://epongpipat.shinyapps.io/lm_voice_dashboard/" target="_blank">click here</a>.

@@ -1,0 +1,13 @@
+---
+title: "Bootstrapping and Permutation Testing: A Shiny App"
+date: "2018-06-07"
+date-modified: "2018-09-01"
+categories: [bootstrapping, permutation, R, shiny app, statistics]
+description: "A collaboration post with Matt Kmiecik about the differences between bootstrapping and permutation testing with input variables that change on the fly."
+external: true
+link: https://mattkmiecik.shinyapps.io/boot-perm-dash/
+image: screenshot.png
+---
+
+<meta http-equiv="refresh" content="0; url=https://mattkmiecik.shinyapps.io/boot-perm-dash/" />
+If you are not redirected, please <a href="https://mattkmiecik.shinyapps.io/boot-perm-dash/" target="_blank">click here</a>

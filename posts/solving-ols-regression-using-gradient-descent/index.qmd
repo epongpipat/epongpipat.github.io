@@ -1,0 +1,494 @@
+---
+title: "Solving Ordinary Least Squares (OLS) Regression using Gradient Descent"
+date: "2019-06-10"
+date-modified: "2019-06-17"
+format:
+  html:
+    toc: true
+    toc-title: "Table of Contents"
+    toc-depth: 3
+    toc-location: left
+    number-sections: true
+    code-fold: show
+    warning: false
+categories: [general linear model (GLM), gradient descent, R, statistics]
+
+---
+
+```{r, include=F}
+# knitr::opts_chunk$set(dev = 'svg', 
+#                       warning = FALSE)
+options(scipen = 999, digits = 3)
+```
+
+<br>
+
+Already familiar with OLS regression and wanted to learn about gradient descent? This blog post will provide a brief tutorial on solving OLS using gradient descent using R.
+
+<br>
+
+Remember that the equation for OLS is:
+
+$$
+\tag{1}
+Y = X\beta + \epsilon
+$$
+
+where $Y$ is a column-wise vector of DVs, $X$ is a matrix of IVs, $\beta$ is a column-wise vector of regression coefficients, and $\epsilon$ is a column-wise vector of error.
+
+$$
+\begin{bmatrix}
+\tag{2}
+y_1 \\
+y_2 \\
+. \\
+. \\
+. \\
+y_n \\
+\end{bmatrix} = 
+\begin{bmatrix}
+1 & x_{1, 1} & x_{1, 2} & . & . & . & x_{1, n} \\
+1 & x_{2, 1} & x_{2, 2} & . & . & . & x_{2, n}\\
+. & . & . & . & . & . & .\\
+. & . & . & . & . & . & .\\
+. & . & . & . & . & . & .\\
+1 & x_{n, 1} & x_{n, 2} & . & . & . & x_{n, n}\\
+\end{bmatrix}
+\begin{bmatrix}
+b_0 \\
+b_1 \\
+. \\
+. \\
+. \\
+b_n \\
+\end{bmatrix} +
+\begin{bmatrix}
+e_1 \\
+e_2 \\
+. \\
+. \\
+. \\
+e_n \\
+\end{bmatrix}
+$$
+
+For a review of matrix multiplication, check out my [previous blog post](../posts/solving-ols-regression-using-matrix/index.html).
+
+<br>
+
+OLS tries to minimize error using the mean squared error (MSE) formula:
+
+$$
+\tag{3}
+MSE = \frac{\Sigma (Y-\hat{Y})^2}{N} = \frac{\Sigma e_i^2}{N} = mean(e_i^2)
+$$
+
+<center>where $\hat{Y} = X\beta$</center>
+
+<br>
+
+Note: MSE is a single cost function (or formula) from many that we could choose from. For example, another cost function is mean absolute error (MAE): 
+
+$$
+\tag{4}
+MAE = \frac{\Sigma |Y-\hat{Y}|}{N} = \frac{\Sigma|e_i|}{N} = mean(abs(e_i))
+$$
+
+
+```{r cost}
+obtain_cost <- function(y, x, b) {
+  y_pred <- x %*% b
+  e <- y - y_pred
+  se <- e^2
+  mse <- mean(se)
+  return(mse)
+}
+```
+
+<br>
+
+> Let's say that we are interested in understanding if the number of years a professor has had their Ph.D. is associated with a higher 9-month academic salary. 
+
+<br>
+
+## R Libraries
+
+First, let's load some packages. 
+
+```{r pkgs}
+packages <- c("tidyverse",    # data manipulation and visualization
+              "carData",      # data set to obtain professor's 9-month salary
+              "broom",        # nice table format of cofficients from lm()
+              "ggrepel",      # ggplot extension to repel text and extra features
+              "glue",         # concatenate strings and alias
+              "RColorBrewer", # load color palettes
+              "plotly"        # plot 3D figures
+              )
+xfun::pkg_attach2(packages, message = F)
+n_round <- 3
+```
+
+<br>
+
+## Data
+
+Then, let's define our independent variable (IV: `yrs.since.phd`) as `x` and our dependent variable  (DV: `salary`) as `y` using the `Salaries` dataset in the `carData` package.
+```{r data}
+x <- model.matrix(~ scale(yrs.since.phd, scale = F), Salaries)
+colnames(x) <- c("(Intercept)", "yrs.since.phd")
+dim(x)
+head(x)
+y <- Salaries$salary %>% as.matrix()
+colnames(y) <- c("salary")
+dim(y)
+head(y)
+```
+
+<br>
+
+## Gradient Descent
+
+What is gradient descent?
+
+Starting at any position (e.g., intercept and slope combination), gradient descent takes the partial derivative of each coefficient ($\beta$) from the cost function (MSE) and moves (or descends) in the direction that will continue to minimize the cost (or gradient) function.
+
+```{r gd}
+# random sample of possible intercepts and slopes
+# then calculate cost function (mse) for each intercept and slope combination
+n_sample <- 200000
+df_gd <- tibble(
+  int = sample(seq(0, 200000), n_sample, T),
+  slope = sample(seq(-10000, 10000), n_sample, T)
+) %>%
+  rowwise() %>%
+  mutate(cost = obtain_cost(y, x, b = c(int, slope)))
+```
+
+```{r plot_gd_3d}
+plot_ly(data = df_gd, x = ~slope, y = ~int, z = ~cost, 
+        color = ~cost, colors = c("#08306b", "#f7fbff"))
+```
+
+```{r plot_gd_2d}
+# plot intercept and slope, and color by cost (mse)
+# highlight and label min(cost)
+ggplot(df_gd, aes(slope, int, color = cost)) +
+  geom_point() +
+  geom_point(data = subset(df_gd, cost == min(cost)), color = "white", shape = 21, alpha = .5) +
+  geom_text_repel(
+    data = subset(df_gd, cost == min(cost)),
+    mapping = aes(label = paste0("min(cost) = ", round(cost, n_round), "\nintercept = ", round(int, n_round), "\nslope = ", round(slope, n_round))),
+    nudge_y = 30000,
+    nudge_x = 1000,
+    box.padding = 1.5,
+    point.padding = 0.5,
+    segment.size = 0.2,
+    segment.color = "white",
+    color = "white"
+  ) +
+  labs(
+    title = "Gradient Descent (2D View)",
+    y = "intercept",
+    color = "cost (mse)"
+  ) +
+  scale_color_distiller(palette = "Blues") +
+  theme_minimal()
+
+```
+
+We can see from these random samples of intercepts and slopes that the lowest cost is `r subset(df_gd, cost == min(cost))$cost` with an intercept of `r subset(df_gd, cost == min(cost))$int` and slope of `r subset(df_gd, cost == min(cost))$slope`. So no matter where we start (any intercept and slope combination), we should descend and ultimately end up with the lowest cost value of `r subset(df_gd, cost == min(cost))$cost`.
+
+<br>
+
+## Partial Derivatives
+
+What are partial derivatives?
+
+Partial derivatives allow us to obtain a slope at any point that is specific to a variable on any function (or line). In our case, partial derivatives allow us to obtain a slope at any specific $\beta$ on the cost function of MSE, which can be denoted as $\frac{\partial MSE}{\partial \hat{\beta}}$. 
+
+<br>
+
+How do we calculate the partial derivatives?
+
+First, we expand MSE.
+
+$$ 
+\tag{5}
+\begin{align}
+MSE & = \frac{(Y-X\beta)^2}{N} \\
+& = \frac{(Y-X\beta)(Y-X\beta)}{N} \\
+& = \frac{(Y^2-2YX\beta+X^2\beta^2)}{N} \\
+& = \frac{Y^2}{N} - \frac{2YX\beta}{N}+\frac{X^2\beta^2}{N} \\
+\end{align}
+$$
+
+To calculate the partial derivative, we repeat the following for each term:
+
+1. Set the term without $\beta$ to 0 
+2. Multiply the term by the exponent of $\beta$
+3. Subtract 1 from the exponent of $\beta$
+
+and simplify.
+
+$$
+\tag{6}
+\begin{align}
+\frac{\partial MSE}{\partial \hat{\beta}} & = 0 - \frac{1*2YX\beta^0}{N} + \frac{2X^2\beta^1}{N} \\
+& = \frac{-2YX+2X^2\beta}{N} \\
+& = \frac{-2X(Y-X\beta)}{N} \\
+& = \frac{-2X\epsilon}{N}
+\end{align}
+$$
+Note: We set the term without $\beta$ to 0 in step 1 because that term can be thought of as having $\beta^0$, which equals 1. When we then multiply the term by the exponent of 0, we end up with a term of 0.
+
+<br>
+
+## Update Coefficients
+
+We can then use the information from partial derivatives to update the coefficients ($\beta$) so that coefficients ($\beta$) change and descend into a lower MSE. 
+
+<br>
+
+How do we update the coefficients?
+
+We can update the coefficients $\beta$ by subtracting the partial derivatives multiplied by the learning rate.
+
+$$
+\tag{7}
+\hat{\beta} = \hat{\beta} - \frac{\partial MSE}{\partial \hat{\beta}}*learning\ rate
+$$
+
+A $\beta$ lower than it should be will have a negative slope and when we subtract the partial derivative ($\frac{\partial MSE}{\partial \hat{\beta}}$) from the old $\beta$, the new $\beta$ will then be less negative. Conversely, a $\beta$ higher than should be will have a positive slope and when we subtract the partial derivative ($\frac{\partial MSE}{\partial \hat{\beta}}$), the new $\beta$ will be less positive. When we are at the lowest cost value, the partial derivative ($\frac{\partial MSE}{\partial \hat{\beta}}$) will be 0 and $\beta$ will stop updating.
+
+<br>
+
+What is the learning rate?
+
+The learning rate determines how fast the coefficients update (descends). A higher learning rate descends quickly but may be susceptible to skipping or moving past the global minima. A lower learning rate is more precise but is slower as it takes more time to compute.
+
+```{r update_b}
+update_b <- function(y, x, b, lr) {
+  y_pred <- x %*% b
+  e <- y - y_pred
+  derivatives <- (-2 * t(x) %*% e ) / nrow(x)
+  b <- b - derivatives * lr
+  return(b)
+}
+```
+
+<br>
+
+## Train
+
+Now let's train the data, arbitrarily starting the coefficients at 0 and a learning rate of 0.0001 for 50,000 iterations.
+
+```{r train}
+# set number of iterations
+iter <- 50000
+
+# set learning rate
+lr <- 0.0001
+
+# set initial values of coefficients
+b <- NULL
+for (i in 1:ncol(x)) {
+  b[i] <- 0
+}
+b <- as.matrix(b)
+
+cat(paste("iteration", "intercept", "slope", "cost\n", 
+          "0", round(b[1], n_round), round(b[2], n_round), round(obtain_cost(y, x, b), n_round)))
+
+# set initial training dataset
+df_train <- tibble(
+  iter = NA,
+  int = NA,
+  slope = NA,
+  cost = NA,
+  .rows = iter
+)
+
+# train and save training history using for loop
+for (i in 1:iter) {
+  b <- update_b(y, x, b, lr)
+  df_train$iter[i] <- i
+  df_train$int[i] <- b[1]
+  df_train$slope[i] <- b[2]
+  df_train$cost[i] <- obtain_cost(y, x, b)
+  if (i %in% round(seq(1, iter, length.out = 10), 0)) {
+    cat(paste("\n", round(i, n_round), round(b[1], n_round), round(b[2], n_round), round(obtain_cost(y, x, b), n_round)))
+  }
+}
+```
+
+<br>
+
+### Plot Training
+
+```{r plot_training}
+ggplot(df_train, aes(iter, cost)) +
+  geom_line() +
+  theme_minimal() +
+  labs(
+    x = "iterations",
+    y = "cost (mse)"
+  )
+```
+
+We can see that cost (MSE) flattens out around 15,000 iterations. 
+
+<br>
+
+### Plot Gradient Descent Path
+
+Let's visualize the path that the gradient descent took, starting from our initial intercept and slope value of 0.
+
+```{r training_gd_path}
+n_sample <- 100000
+df_gd <- tibble(
+  int = sample(seq(0, 150000), n_sample, T),
+  slope = sample(seq(0, 2000), n_sample, T)
+) %>%
+  rowwise() %>%
+  mutate(cost = obtain_cost(y, x, b = c(int, slope)))
+
+df_train_sorted <- df_train %>% arrange(cost, iter)
+df_min <- df_train_sorted[1, ]
+
+ggplot(df_gd, aes(slope, int, color = cost)) +
+  geom_point() +
+  scale_color_distiller(palette = "Blues") +
+  theme_minimal() +
+  labs(
+    y = "intercept",
+    color = "cost (mse)"
+  ) +
+  geom_line(data = df_train, mapping = aes(slope, int), color = "black", size = 0.5, alpha = 0.5) +
+  geom_point(data = df_min, mapping = aes(slope, int), color = "white", shape = 21, alpha = .5) +
+  geom_text_repel(
+    data = df_min,
+    mapping = aes(label = paste0("min(cost) = ", round(cost, n_round), "\nintercept = ", round(int, n_round), "\nslope = ", round(slope, n_round))),
+    nudge_y = 30000,
+    nudge_x = 1000,
+    box.padding = 1.5,
+    point.padding = 0.5,
+    segment.size = 0.2,
+    segment.color = "white",
+    color = "white"
+  )
+```
+
+We can see that most of the iterations were spent optimizing the slope with minimal changes to the intercept as well as the cost (MSE) up until around iteration 1000. Then, the optimal intercept was found within a few iterations, which dramatically reduced cost (MSE).
+
+<br>
+
+## Compare Gradient Descent and `lm()`
+
+We can compare the results of gradient descent with `lm()` to ensure that we did this correctly. We should approximately have the same results within rounding error because OLS is a convex shape with only one global minima.
+
+<br>
+
+### Solve OLS using Gradient Descent
+```{r ols_gb}
+coef <- c("(Intercept)" = df_min$int, "yrs.since.phd" = df_min$slope)
+rmse_coef <- (solve(t(x) %*% x) * df_min$cost) %>%
+  diag() %>%
+  sqrt()
+t_stat <- coef / rmse_coef
+n <- nrow(x)
+p <- ncol(x)
+df <- n - p
+p_value <- 2 * pt(t_stat, df, lower = FALSE)
+tibble(
+  term = colnames(x),
+  estimate = coef,
+  std.error = rmse_coef,
+  statistic = t_stat,
+  p.value = p_value
+)
+```
+
+<br>
+
+### Solve OLS using `lm()`
+```{r ols_lm}
+model <- lm(y ~ 0 + x)
+tidy(model)
+```
+
+<br>
+
+### Cost
+```{r compare}
+glue("Cost using GD: {round(df_min$cost, n_round)}")
+glue("Cost using lm(): {round(glance(model)$sigma^2, n_round)}")
+```
+
+We can see that solving OLS regression using gradient descent produced a lower cost function (MSE) than by using `lm()`. The lower MSE using gradient descent was produced from using a smaller intercept. Since MSE was smaller using gradient descent, the standard error was also smaller using gradient descent and subsequently a larger statistic and lower p-value.
+
+<br>
+
+### Figure
+```{r plot4}
+fig_gd <- ggplot(mapping = aes(x[, 2], y)) +
+  geom_point(alpha = 0.5) +
+  geom_abline(intercept = coef[1], slope = coef[2], size = 1) +
+  theme_minimal() +
+  labs(
+    title = "Solved using Gradient Descent",
+    x = "yrs.since.phd",
+    y = "salary"
+  )
+
+fig_lm <- ggplot(mapping = aes(x[, 2], y)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(color = "black", method = "lm", se = F) +
+  theme_minimal() +
+  labs(
+    title = "Solved using lm()",
+    x = "yrs.since.phd",
+    y = "salary"
+  )
+
+gridExtra::grid.arrange(fig_gd, fig_lm, nrow = 1)
+```
+
+However, since the range of salary is so large, each method produced nearly identical graphs.
+
+<br>
+
+## Acknowledgements
+
+* <a href="https://ml-cheatsheet.readthedocs.io/en/latest/gradient_descent.html" target="_blank">@bfortuner</a> for his gradient descent in python tutorial.
+
+* <a href='https://github.com/mychan24' target='_blank'>@mychan24</a> for her helpful feedback and suggestions to this blog.
+
+* <a href='https://github.com/praxling' target='_blank'>@praxling</a> for her proofing and feedback to this blog.
+
+<br>
+
+<hr>
+
+<br>
+
+<!-- disqus START -->
+<div id="disqus_thread"></div>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = 'https://ekarinpongpipat.com/blog-solving-ols-regression-using-gradient-descent.html';  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = 'blog_solving_ols_regression_using_gradient_descent'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://epongpipat.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<!-- disqus END -->

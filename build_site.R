@@ -2,7 +2,7 @@
 
 # read .Rmd files in directory
 # do not include files that are still being edited
-files <- grep("editing", list.files(pattern = ".Rmd"), value = T, invert = T)
+in_paths <- list.files(".", pattern = ".qmd", full.names = TRUE, recursive = TRUE)
 
 # render site
-lapply(files, rmarkdown::render_site)
+lapply(in_paths, quarto::quarto_render)

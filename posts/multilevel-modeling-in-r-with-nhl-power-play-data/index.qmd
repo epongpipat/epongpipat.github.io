@@ -1,0 +1,12 @@
+---
+title: "Multilevel Modeling in R with NHL Power Play Data"
+date: "2018-02-11"
+categories: [multilevel modeling (MLM), R, statistics]
+description: "A collaboration post with Matt Kmiecik about multilevel modeling in R using professional hockey data from the NHL."
+external: true
+link: https://mattkmiecik.com/posts/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data.html
+image: https://mattkmiecik.com/posts/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data_files/figure-html/vis2-1.png
+---
+  
+  <meta http-equiv="refresh" content="0; url=https://mattkmiecik.com/posts/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data.html" />
+  If you are not redirected, please <a href="https://mattkmiecik.com/posts/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data/post-Multilevel-Modeling-in-R-with-NHL-Power-Play-Data.html" target="_blank">click here</a>

@@ -1,0 +1,257 @@
+---
+title: "Calculate 24-Motion Variables"
+subtitle: "A quick guide to calculating 24-motion variables"
+date: "2018-03-20"
+date-modified: "2019-03-24"
+format:
+  html:
+    toc: true
+    toc-title: "Table of Contents"
+    toc-depth: 3
+    toc-location: left
+    number-sections: true
+    code-fold: show
+    warning: false
+categories: [fMRI, motion, R, preprocessing]
+
+---
+
+This is a quick guide to calculate the 24 motion parameters from the original six motion parameters. These 24 motion parameters can be used as control variables (covariates of no interest; nuisance regressors) that is typically performed in fMRI first-level analyses, especially in resting-state and task-based functional connectivity analyses. 
+
+<BR><BR>
+
+## R Libraries
+```{r, message = F}
+# data loading, manipulation, and writing
+library(tidyverse)
+```
+
+<BR><BR>
+
+## Function
+
+A helper function to plot the motion parameters.
+
+```{r}
+# graph motion parameters and facet by motion type
+graph_motion <- function(dataset, title) {
+  require(reshape2)
+  data_long <- melt(dataset, id.var = "Duration") %>%
+    mutate(variable = gsub("_", " ", variable))
+  figure <- ggplot(data_long, aes(x = Duration, y = value)) +
+    geom_line(color = '#737373') +
+    theme_minimal() +
+    facet_wrap(~ variable, scales = "free_y", ncol = 3) +
+    labs(title = title,
+         y = NULL) +
+    theme(plot.title = element_text(hjust = 0.5))
+  print(figure)
+}
+```
+
+<BR><BR>
+
+## Calculate 24-Motion Parameters
+
+### 6-Rigid Body Motion Regressors
+
+The first six motion parameters are the standard motion parameters and include:
+
+1. $t_x$, translation in the x-direction
+2. $t_y$, translation in the y-direction
+3. $t_z$, translation in the z-direction
+4. $\theta_x$, rotation around the x-axis
+5. $\theta_y$, rotation around the y-axis
+6. $\theta_z$, rotation around the z-axis
+
+```{r m6}
+# load 6-rigid body motion parameters
+# add duration
+motion_file <- "data/data_demeaned.csv"
+motion_demeaned <- read_csv(motion_file, col_names = F) %>%
+  mutate(Duration = c(1:nrow(.)))
+
+# rename columns
+motion_variables <- c(paste0("Translation_", c("X", "Y", "Z")),
+                      paste0("Rotation_", c("X", "Y", "Z")))
+colnames(motion_demeaned) <- c(motion_variables, "Duration")
+
+# graph motion parameters
+graph_motion(motion_demeaned, "6-Rigid Body Motion Parameters")
+```
+
+<BR><BR>
+
+### 12-Motion Regressors
+
+The next six motion parameters are the first temporal derivatives of the original six rigid body motion parameters. Specifically, it is the motion minus the motion from the previous time point.
+
+7. $t_{x_{TD1}}$, first temporal derivative of the translation in the x-direction
+8. $t_{y_{TD1}}$, first temporal derivative of the translation in the y-direction
+9. $t_{z_{TD1}}$, first temporal derivative of the translation in the z-direction
+10. $\theta_{x_{TD1}}$ first temporal derivative of the rotation around the x-axis
+11. $\theta_{y_{TD1}}$, first temporal derivative of the rotation around the y-axis
+12. $\theta_{z_{TD1}}$, first temporal derivative of the rotation around the z-axis
+
+```{r m12}
+# calculate first temporal derivative
+motion_demeaned_td1 <- motion_demeaned %>%
+  sapply(., FUN = function(x) c(NA, diff(x))) %>%
+  as_tibble() %>%
+  mutate(Duration = c(1:nrow(.)))
+  
+# rename columns
+colnames(motion_demeaned_td1) <- c(paste0(motion_variables, "_TD1"), "Duration")
+
+# graph motion parameters
+graph_motion(motion_demeaned_td1, "First Temporal Derivatives of the 6-Rigid Body Motion Parameters")
+```
+
+<BR><BR>
+
+### 18-Motion Regressors
+
+The next six motion parameters are the original six rigid body motion parameters squared:
+
+13. $t_x^2$, translation in the x-direction squared
+14. $t_y^2$, translation in the y-direction squared
+15. $t_z^2$, translation in the z-direction squared
+16. $\theta_x^2$, rotation around the x-axis squared
+17. $\theta_y^2$, rotation around the y-axis squared
+18. $\theta_z^2$, rotation around the z-axis squared
+
+```{r m18}
+# square 6-rigid body motion parameters
+motion_demeaned_sq <- motion_demeaned^2 %>%
+  as_tibble() %>%
+  mutate(Duration = c(1:nrow(.)))
+  
+# rename columns
+colnames(motion_demeaned_sq) <- c(paste0(motion_variables, "_Squared"), "Duration")
+
+# graph motion parameters
+graph_motion(motion_demeaned_sq, "6-Rigid Body Motion Parameters Squared")
+```
+
+<BR><BR>
+
+### 24-Motion Regressors
+
+The next six motion parameters are the first temporal derivatives squared.
+
+19. $t_{x_{TD1}}^2$, first temporal derivative of the translation in the x-direction squared
+20. $t_{y_{TD1}}^2$, first temporal derivative of the translation in the y-direction squared
+21. $t_{z_{TD1}}^2$, first temporal derivative of the translation in the z-direction squared
+22. $\theta_{x_{TD1}}^2$, first temporal derivative of the rotation around the x-axis squared
+23. $\theta_{y_{TD1}}^2$ first temporal derivative of the rotation around the y-axis squared
+24. $\theta_{z_{TD1}}^2$, first temporal derivative of the rotation around the z-axis squared
+
+```{r m24}
+
+# square the first temporal derivative
+motion_demeaned_td1_sq <- motion_demeaned_td1^2 %>%
+  as_tibble() %>%
+  mutate(Duration = 1:nrow(.)) 
+
+# rename columns
+colnames(motion_demeaned_td1_sq) <- c(paste0(motion_variables, "_TD1_Squared"), "Duration")
+
+# plot motion.td1.sq into one figure
+graph_motion(motion_demeaned_td1_sq, "First Temporal Derivatives of the 6-Rigid Body Motion Parameters Squared")
+```
+
+<BR><BR>
+
+## Full R Code Example
+```{r script}
+#| eval: false
+#| 
+# function to create 24 motion variables =======================================
+create_24_motion_variables <- function(dataset) {
+  # mean-center (demean) ----
+  # subtract each score from its respective column mean
+  dataset_motion_demeaned <- scale(x = dataset, center = T, scale = F)
+
+  # first temporal derivatives ----
+  # subtract motion from prior motion time point
+  dataset_motion_td1 <- sapply(dataset_motion_demeaned, FUN = function(x) c(NA, diff(x)))
+
+  # combine the variables into one dataset
+  dataset_motion <- data.frame(dataset_motion_demeaned, dataset_motion_td1)
+
+  # squares ----
+  # square 6-rigid body motion parameters and its temporal derivatives
+  dataset_motion_squared <- dataset_motion^2
+
+  # combine the variables into one dataset
+  dataset_motion <- data.frame(dataset_motion, dataset_motion_squared)
+
+  return(dataset_motion)
+}
+
+# load 6-rigid body motion parameters file =====================================
+# assign to dataset_motion
+dataset_motion <- read_csv(file.choose())
+
+# create 24 motion variables using function ====================================
+# assign output to dataset_motion_24
+dataset_motion_24 <- create_24_motion_variables(dataset = dataset_motion)
+
+# rename columns ===============================================================
+# assign original motion variables
+motion_variables <- c(
+  "trans_x", "trans_y", "trans_z",
+  "rot_x", "rot_y", "rot_z"
+)
+
+# rename columns
+colnames(dataset_motion_24) <- c(
+  motion_variables,
+  paste0(motion_variables, "_td1"),
+  paste0(motion_variables, "_sq"),
+  paste0(motion_variables, "_td1_sq")
+)
+
+# export 24-motion variables ===================================================
+write_csv(x = dataset_motion_24, file = "dataset-motion-24.csv")
+```
+
+<BR><BR>
+
+**Note**: Similar logic can also be applied to cerebral spinal fluid (CSF) and white matter (WM) time series to obtain an additional 8 nuisance regressors (32 nuisance regressors in total).
+
+## References
+
+<div class="divReferences">
+Friston, K. J., Williams, S., Howard, R., Frackowiak, R. S. J., & Turner, R. (1996). Movement-related effects in fMRI time-series. *Magnetic Resonance in Medicine, 35*(3), 346–355. http://doi.org/10.1002/mrm.1910350312
+
+Yan, C.-G., Cheung, B., Kelly, C., Colcombe, S., Craddock, R. C., Di Martino, A., … Milham, M. P. (2013). A comprehensive assessment of regional variation in the impact of head micromovements on functional connectomics. *NeuroImage, 76*, 183–201. http://doi.org/10.1016/j.neuroimage.2013.03.004
+</div>
+
+<!-- disqus START -->
+<br>
+
+<hr>
+
+<br>
+
+<div id="disqus_thread"></div>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = 'https://ekarinpongpipat.com/blog_Calculate_Motion_Regressors.html';  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = 'blog_Calculate_Motion_Regressors'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://epongpipat.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<!-- disqus END -->

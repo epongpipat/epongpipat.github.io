@@ -1,0 +1,13 @@
+---
+title: "Exploring 11 Years of Chicago Blackhawk’s Data using Principal Components Analysis"
+date: "2019-03-07"
+categories: [principal components analysis (PCA), R, statistics]
+description: "A collaboraion with Matt Kmiecik using principal components analysis to analyze Blackhawk’s data."
+external: true
+link: https://mattkmiecik.com/posts/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis.html
+image: https://mattkmiecik.com/posts/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis_files/figure-html/unnamed-chunk-6-1.png
+---
+
+<meta http-equiv="refresh" content="0; url=https://mattkmiecik.com/posts/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis.html" />
+If you are not redirected, please <a href="https://mattkmiecik.com/posts/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis/post-Exploring-11-Years-of-Chicago-Blackhawks-Data-using-Principal-Components-Analysis.html" target="_blank">click here</a>.
+
