@@ -1,7 +1,7 @@
 ---
 title: "Ekarin Eric Pongpipat"
 subtitle: "Ph.D. in Cognition and Neuroscience"
-image: https://ekarinpongpipat.com/images/profile-picture-circle.png
+image: images/profile-picture-circle.png
 about:
   template: jolla
   links:
