@@ -1,0 +1,33 @@
+---
+title: "Books"
+echo: false
+warning: false
+---
+
+```{r pkgs}
+pkgs <- c('gt', 'glue', 'dplyr', 'stringr')
+xfun::pkg_attach2(pkgs, message = F)
+```
+
+```{r paths}
+in_paths <- list()
+in_paths['books'] <- 'data/books.csv'
+```
+
+```{r data}
+ds <- list()
+ds$books <- read.csv(in_paths$books)
+```
+
+```{r}
+ds$books <- ds$books |>
+  mutate(date = glue("{year}-{str_pad(month, 2, 'left', 0)}"),
+         description_md = glue("**{title}** ({year})<br>By {authors}<br>{description}<br>[<a href='{link}'>url</a>] [<a href='{github_link}' target='_blank'>github</a>]"))
+```
+
+```{r}
+#| results: asis
+for (i in 1:nrow(ds$books)) {
+  cat('\n', ds$books$description_md[i], '\n')
+}
+```

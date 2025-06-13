@@ -1,0 +1,404 @@
+---
+title: "Curriculum Vitae"
+format:
+  html:
+    toc: true
+    toc-title: "Table of Contents"
+    toc-depth: 2
+    toc-location: left
+    number-sections: false
+    echo: false
+    warning: false
+
+---
+
+<style>
+  .indent {
+    padding-left: 30px;
+  }
+  .hanging-indent {
+    padding-left: 30px;
+    text-indent: -30px;
+  }
+</style>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+
+
+<br>
+
+```{r pkgs}
+pkgs <- c("tidyverse", "glue", "psych", "scales", "tibble", 'gt')
+xfun::pkg_attach(pkgs, install = T, message = F)
+```
+
+```{r paths}
+in_paths <- list()
+in_paths[['edu']] <- "data/education.csv"
+in_paths[['pubs']] <- "data/publications.csv"
+in_paths[['posters']] <- "data/posters.csv"
+in_paths[['talks']] <- "data/talks-and-workshops.csv"
+in_paths[['honors_awards']] <- "data/honors-and-awards.csv"
+in_paths[['professional_society_membership']] <- "data/professional-society-membership.csv"
+```
+
+```{r data}
+ds <- list()
+ds$education <- read.csv(in_paths$edu)
+ds$pubs <- read.csv(in_paths$pubs)
+ds$posters <- read.csv(in_paths$posters)
+ds$talks <- read.csv(in_paths$talks)
+ds$honors_awards <- read.csv(in_paths$honors_awards)
+ds$professional_society_membership <- read.csv(in_paths$professional_society_membership)
+```
+
+<table>
+  <colgroup>
+    <col style="width: 50px">
+    <col style="width: 50px">
+    <col style="width: 50px">
+    <col style="width: 50px">
+    <col style="width: 50px">
+  </colgroup>
+<tr>
+<td><a href="https://orcid.org/0000-0002-8280-3370" target="blank"><img src="images/logo_orcid_24x24.png" width="24" height="24"></a></td>
+<td><a href="https://scholar.google.com/citations?user=-d4Jj1UAAAAJ&hl=en" target="blank"><img src="images/logo_google_scholar.png" width="24" height="24"></a></td>
+<td><a href="https://www.researchgate.net/profile/Ekarin_Pongpipat" target="blank">
+<img src="images/logo_researchgate.svg" width="24" height="24"></a></td>
+<td><a href="https://www.webofscience.com/wos/author/record/AEU-4061-2022" target="blank"><img src="images/logo_clarivate.png" width="24" height="24"></a></td>
+<td><a href="https://www.linkedin.com/in/epongpipat/" target="blank">
+<img src="images/logo_linkedin.png" width="24" height="24"></a></td>
+</tr>
+</table>
+<br><br>
+
+## Education
+
+<table>
+  <colgroup>
+    <col style="width: 150px">
+  </colgroup>
+  <tr>
+    <td style="text-align: center; vertical-align: top;">
+      <img src="images/logo_utd.svg" width="100">
+    </td>
+    <td>
+      <B>Ph.D., Cognition and Neuroscience</B> (2025)
+      <BR> The University of Texas at Dallas
+      <BR> Advisors: Dr. Karen M. Rodrigue & Dr. Kristen M. Kennedy
+      <BR> Dissertation: The effects of age and dopaminergic predisposition on neurite microstructural properties and working memory
+      <BR><BR>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; vertical-align: top;">
+      <img src="images/logo_sdsu.svg" width="100">
+    </td>
+    <td>
+      <B>M.A., Psychology</B> (2016)
+      <BR> San Diego State University
+      <BR> Advisor: Dr. Claire Murphy
+      <BR> Thesis: Altered functional connectivity and eating disinhibition in individuals with Metabolic Syndrome [<a href="https://digitalcollections.sdsu.edu/do/19d8c36d-c6ad-432b-ac37-a885224821b5" target="_blank">url</a>]
+      <BR><BR>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; vertical-align: top;">
+      <img src="images/logo_csun.svg" width="100">
+    </td>
+    <td>
+      <B>B.A., Psychology</B> (2012)
+      <BR> California State University, Northridge
+      <BR> Advisor: Dr. Jose P. Abara
+      <BR><BR>
+    </td>
+  </tr>
+</table>
+
+## Research Experience
+
+<table>
+  <colgroup>
+    <col style="width: 150px">
+  </colgroup>
+  <tr>
+    <td style="text-align: center; vertical-align: top;">
+      <img src="images/logo_utd.svg" width="100">
+    </td>
+    <td>
+      <B>Graduate Research Assistant</B> (2017 - 2025)
+      <BR>Cognitive Neuroscience of Aging Laboratory
+      <BR>Center for Vital Longevity
+      <BR>School of Behavioral and Brain Sciences
+      <BR>The University of Texas at Dallas
+      <BR><BR>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; vertical-align: top;">
+      <img src="images/logo_sdsu.svg" width="100">
+    </td>
+    <td>
+      <B>Graduate Research Assistant</B> (2014 - 2016)
+      <BR>Lifespan Human Senses Laboratory
+      <BR>Department of Psychology
+      <BR>San Diego State University
+      <BR><BR>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; vertical-align: top;">
+      <img src="images/logo_csun.svg" width="100">
+    </td>
+    <td>
+      <B>Undergraduate Research Assistant</B> (2011 - 2013)
+      <BR>Neuroscience Laboratory
+      <BR>Department of Psychology
+      <BR>California State University, Northridge
+      <BR><BR>
+    </td>
+  </tr>
+</table>
+
+
+
+## Teaching Experience
+<table>
+  <colgroup>
+    <col style="width: 150px">
+  </colgroup>
+  <tr>
+    <td style="text-align: center; vertical-align: top;">
+      <img src="images/logo_utd.svg" width="100">
+    </td>
+    <td>
+      <B>Graduate Teaching Assistant</B> (2017 - 2019)
+      <BR>The University of Texas at Dallas
+      <BR>&nbsp;&nbsp;&nbsp;&nbsp;1. Statistics for Psychology, ACN6312/HCS6312 (Spring 2019)
+      <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Under the supervision of Dr. Nancy Juhn</div>
+      <BR>&nbsp;&nbsp;&nbsp;&nbsp;2. Statistics for Psychology, PSY2317 (Fall 2017, Spring 2018, Fall 2018)
+      <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Under the supervision of Dr. Nancy Juhn
+      <BR><BR>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; vertical-align: top;">
+      <img src="images/logo_sdsu.svg" width="100">
+    </td>
+    <td>
+      <B>Graduate Teaching Assistant</B> (2014 - 2016)
+      <BR>San Diego State University
+      <BR>&nbsp;&nbsp;&nbsp;&nbsp;1. Advanced Statistics in Psychology, PSY670A/B (Fall 2015, Spring 2016)
+      <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Under the supervision of Dr. Melody Sadler</div>
+      <BR>&nbsp;&nbsp;&nbsp;&nbsp;2. Statistical Methods in Psychology Laboratory, PSY280L (Fall 2014, Spring 2015)
+      <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Under the supervision of Dr. Melody Sadler, Dr. Amy Spilkin, and Dr. Dale Glaser
+      <BR><BR>
+    </td>
+  </tr>
+</table>
+
+
+## Publications
+
+```{r}
+pubs2html <- function(data) {
+  
+  data <- data %>%
+    arrange(desc(status), desc(year), desc(month))
+  
+  html_code <- ""
+  for (i in 1:nrow(data)) {
+    
+    reference <- '<div class="hanging-indent">'
+    authors <- str_replace(data$authors[i], "Pongpipat, E. E.", "**Pongpipat, E. E.**")
+    reference <- glue("{reference}{authors}")
+    
+    if (tolower(data$status[i]) == "accepted") {
+      reference <- glue("{reference} ({data$year[i]}).")
+    } else if (tolower(data$status[i]) == "in press") {
+      reference <- glue("{reference} ({data$year[i]}, *{data$status[i]}*).")
+    } else {
+      reference <- glue("{reference} (*{data$status[i]}*).")
+    }
+  
+    reference <- glue("{reference} {data$title[i]}.")
+    
+    if (!is.na(data$journal[i]) & !is.na(data$volume[i])) {
+      reference <- glue("{reference} *{data$journal[i]}, {data$volume[i]}*")
+    } else if (!is.na(data$journal[i]) & is.na(data$volume[i])) {
+      reference <- glue("{reference} *{data$journal[i]}*")
+    }
+    
+    if (!is.na(data$issue[i])) {
+      reference <- glue("{reference}({data$issue[i]})")
+    } 
+      
+    if (!is.na(data$pages[i])) {
+      reference <- glue("{reference}, {data$pages[i]}")
+    } 
+    reference <- glue("{reference}.")
+      
+    if (!is.na(data$doi[i])) {
+      reference <- glue("{reference} <a href='https://doi.org/{data$doi[i]}' target='_blank'>https://doi.org/{data$doi[i]}</a>.")
+    }
+    
+    if (!is.na(data$note[i])) {
+      reference <- glue("{reference} ({data$note[i]}).")
+    }
+    
+    if (!is.na(data$pdf[i])) {
+      reference <- glue("{reference} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='{data$pdf[i]}' target='_blank'><i class='fas fa-file-pdf'></i></a>")
+    }
+    
+    reference <- glue("{reference}</div>") 
+    
+    if (i > 1) {
+      html_code <- glue("{html_code}<br>{reference}")
+    } else {
+      html_code <- reference 
+    }
+  }
+  
+  return(html_code)
+}
+```
+
+`r pubs2html(ds$pubs)`
+
+
+## Conference Posters
+
+```{r posters, warning = F, message = F, fig.width = 5, fig.height = 2, fig.asp = T}
+posters <- ds$posters
+posters$Authors <- gsub("Pongpipat, E. E.", "<b>Pongpipat, E. E.</b>", posters$Authors)
+posters <- posters %>%
+  arrange(desc(Year), desc(Month), Authors) %>%
+  rowwise() %>%
+  mutate(Date = ifelse(Status != "Complete", paste(Year, Month, tolower(Status), sep = ", "), paste(Year, Month, sep = ", "))) %>%
+  mutate(html = paste0(Authors, " (", Date, "). <i>", Title, "</i>. Poster session presented at the ", Conference, ", ", Location, ifelse(Note == "", "", paste0(". (", Note, ")."))))
+
+posters_html <- paste(posters$html, collapse = "\n\n")
+
+poster_summary <- posters %>%
+  select(Year) %>%
+  group_by(Year) %>%
+  summarize(Frequency = n())
+
+poster_summary <- rbind(poster_summary, c(2017, 0))
+
+poster_summary <- poster_summary %>%
+  arrange(Year)
+
+poster_mean_per_year <- round(describe(poster_summary$Frequency)[["mean"]], 2)
+poster_se_per_year <- round(describe(poster_summary$Frequency)[["se"]], 2)
+poster_total <- sum(poster_summary$Frequency)
+
+df_poster <- data.frame(Year = min(poster_summary$Year):max(poster_summary$Year)) %>%
+  left_join(poster_summary) %>%
+  mutate(Frequency = ifelse(is.na(Frequency), 0, Frequency),
+         Year = as.Date(paste0(Year,"-01-01"), "%Y-%m-%d"))
+
+hex_color <- "#106a8c"
+ggplot(df_poster, aes(x = Year, y = Frequency)) +
+  geom_line(color = hex_color) +
+  geom_point(color = hex_color) +
+  theme_classic() +
+  scale_x_date(labels = date_format("%Y"), date_breaks= "1 year") +
+  labs(subtitle = paste0("Total: ", poster_total, ", Mean Per Year: ",poster_mean_per_year," ± ",poster_se_per_year),
+       x = "Year") +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+<div class="hanging-indent">
+`r posters_html`
+</div>
+
+## Talks and Workshops
+
+```{r talks}
+ds$talks <- ds$talks |>
+  rowwise() |>
+  mutate(date = glue("<b>{date}</b>"),
+         gh_link = ifelse(gh != "", glue("[<a href='{gh}' target='_blank'>github</a>]"), ""),
+         url_link = ifelse(url != "", glue("[<a href='{url}' target='_blank'>url</a>]"), ""),
+         links = glue("{url_link} {gh_link}"),
+         description = ifelse(str_trim(links) == "", glue("<b>{description}</b><br>{institution}"), glue("<b>{description}</b><br>{institution}<br>{str_trim(links)}"))
+         ) |>
+  ungroup() |>
+  select(-gh, -url, -gh_link, -url_link, -institution, -links)
+```
+
+
+```{r}
+#| results: asis
+
+cat('<table>')
+cat('<colgroup><col style="width: 100px;"></colgroup>')
+for (i in 1:nrow(ds$talks)) {
+  cat(glue("<tr><td style='vertical-align:top;'>{ds$talks$date[i]}</td><td>{ds$talks$description[i]}<br><br></td></tr>"), '\n')
+}
+cat('</table>')
+```
+
+## Service to the Profession
+
+* Reviewer for Psychophysiology
+* Co-reviewer with Dr. Kristen Kennedy for:
+  * Journal of Cognitive Neuroscience
+  * NeuroImage
+* Co-reviewer with Dr. Karen Rodrigue for:
+  * Cerebral Cortex
+  * Journal of Neuroscience
+
+## Honors and Awards
+
+```{r honors_awards}
+ds$honors_awards |>
+  select(Year, Honor, Institution, Award) |>
+  gt(rowname_col = 'Year') |>
+  fmt_markdown() |>
+  cols_width(
+    Year ~ pct(10),
+    Honor ~ pct(40),
+    Institution ~ pct(40),
+    Award ~ pct(10)
+  ) |>
+  tab_style(style = cell_text(align = 'left', v_align = 'top'), 
+            locations = cells_body(columns = c('Year', 'Institution', 'Honor'))) |>
+  tab_style(style = cell_text(align = 'right', v_align = 'top'), 
+            locations = cells_body(columns = c('Award'))) |>
+  tab_options(ihtml.use_highlight = TRUE, 
+              # table.font.size = 12,
+              ) |>
+  fmt_currency(columns = 'Award', decimals = 0) |>
+  sub_missing(missing_text = "") |>
+  grand_summary_rows(columns = 'Award', 
+                     label = 'Total',
+                     fn = 'sum', 
+                     id = 'total',
+                     fmt = ~fmt_currency(., decimals = 0))
+```
+
+## Professional Society Memberships
+
+```{r professional_society_membership}
+gt(ds$professional_society_membership) |>
+  fmt_markdown() |>
+  cols_width(
+    date ~ px(125),
+  ) |>
+  tab_style(style = cell_text(align = 'left', v_align = 'top'), 
+            locations = cells_body()) |>
+  tab_options(ihtml.use_highlight = TRUE, 
+              table.width = pct(100),
+              table.align = "left",
+              # table.font.size = 12,
+              ) |>
+  cols_label(date = "Year",
+             organization = "Organization")
+```
+
