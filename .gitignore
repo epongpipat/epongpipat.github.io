@@ -7,4 +7,6 @@ archive-*
 !.travis.yml
 
 /.quarto/
+_site
 _site/*
+*.html

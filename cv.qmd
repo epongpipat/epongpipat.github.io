@@ -1,5 +1,7 @@
 ---
 title: "Curriculum Vitae"
+date-modified: "`r format(Sys.Date(), '%Y-%m-%d')`"
+date-format: iso
 format:
   html:
     toc: true
@@ -25,7 +27,6 @@ format:
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
 />
-
 
 <br>
 
