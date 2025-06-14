@@ -9,4 +9,5 @@ archive-*
 /.quarto/
 _site
 _site/*
+_freeze/
 *.html
