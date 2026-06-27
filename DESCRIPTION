@@ -1,5 +1,5 @@
 Package: epongpipat.github.io
 Title: epongpipat.github.io
 Version: 0.0.1
-Imports: rmarkdown, tidyverse, knitr, kableExtra, xfun
+Imports: rmarkdown, tidyverse, knitr, kableExtra, xfun, reshape2
 Remotes: rstudio/bookdown
