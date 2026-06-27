@@ -89,7 +89,9 @@ ds$professional_society_membership <- read.csv(in_paths$professional_society_mem
       <B>Ph.D., Cognition and Neuroscience</B> (2025)
       <BR> The University of Texas at Dallas
       <BR> Advisors: Dr. Karen M. Rodrigue & Dr. Kristen M. Kennedy
-      <BR> Dissertation: The effects of age and dopaminergic predisposition on neurite microstructural properties and working memory
+      <BR> Dissertation: The effects of age and dopaminergic predisposition on neurite microstructural properties and working memory [<a href="https://utd.idm.oclc.org/login?url=https://www.proquest.com/pqdtlocal1006281/dissertations-theses/effects-age-dopaminergic-predisposition-on/docview/3279229519/sem-2?accountid=7120" target="_blank">url</a>]
+      <BR> Dissertation Committee: Karen M. Rodrigue (Chair), Kristen M.
+Kennedy (Co-Chair), Ana Solodkin, Jackie A. Nelson
       <BR><BR>
     </td>
   </tr>
@@ -102,6 +104,8 @@ ds$professional_society_membership <- read.csv(in_paths$professional_society_mem
       <BR> San Diego State University
       <BR> Advisor: Dr. Claire Murphy
       <BR> Thesis: Altered functional connectivity and eating disinhibition in individuals with Metabolic Syndrome [<a href="https://digitalcollections.sdsu.edu/do/19d8c36d-c6ad-432b-ac37-a885224821b5" target="_blank">url</a>]
+      <BR> Thesis Committee: Claire Murphy (Chair), Paul Gilbert, Charles
+Degeneffe
       <BR><BR>
     </td>
   </tr>
@@ -124,6 +128,19 @@ ds$professional_society_membership <- read.csv(in_paths$professional_society_mem
   <colgroup>
     <col style="width: 150px">
   </colgroup>
+  <tr>
+    <td style="text-align: center; vertical-align: top;">
+      <img src="images/logo_utd.svg" width="100">
+    </td>
+    <td>
+      <B>Post-Doctoral Scientist</B> (2025 - Present)
+      <BR>Cognitive Neuroscience of Aging Laboratory
+      <BR>Center for Vital Longevity
+      <BR>School of Behavioral and Brain Sciences
+      <BR>The University of Texas at Dallas
+      <BR><BR>
+    </td>
+  </tr>
   <tr>
     <td style="text-align: center; vertical-align: top;">
       <img src="images/logo_utd.svg" width="100">
@@ -214,7 +231,7 @@ pubs2html <- function(data) {
     
     reference <- '<div class="hanging-indent">'
     authors <- str_replace(data$authors[i], "Pongpipat, E. E.", "**Pongpipat, E. E.**")
-    reference <- glue("{reference}{authors}")
+    reference <- glue("{reference}M{nrow(data)-i+1}. {authors}")
     
     if (tolower(data$status[i]) == "accepted") {
       reference <- glue("{reference} ({data$year[i]}).")
@@ -276,9 +293,14 @@ posters <- ds$posters
 posters$Authors <- gsub("Pongpipat, E. E.", "<b>Pongpipat, E. E.</b>", posters$Authors)
 posters <- posters %>%
   arrange(desc(Year), desc(Month), Authors) %>%
+  mutate(ninv = n() - row_number() + 1,
+         ninvp = str_pad(ninv, 
+                         width = str_length(n()), 
+                         side = 'left', 
+                         pad = 0)) |>
   rowwise() %>%
   mutate(Date = ifelse(Status != "Complete", paste(Year, Month, tolower(Status), sep = ", "), paste(Year, Month, sep = ", "))) %>%
-  mutate(html = paste0(Authors, " (", Date, "). <i>", Title, "</i>. Poster session presented at the ", Conference, ", ", Location, ifelse(Note == "", "", paste0(". (", Note, ")."))))
+  mutate(html = paste0("C", ninvp, ". ", Authors, " (", Date, "). <i>", Title, "</i>. Poster session presented at the ", Conference, ", ", Location, ifelse(Note == "", "", paste0(". (", Note, ")."))))
 
 posters_html <- paste(posters$html, collapse = "\n\n")
 
@@ -326,7 +348,7 @@ ds$talks <- ds$talks |>
   mutate(date = glue("<b>{date}</b>"),
          gh_link = ifelse(gh != "", glue("[<a href='{gh}' target='_blank'>github</a>]"), ""),
          url_link = ifelse(url != "", glue("[<a href='{url}' target='_blank'>url</a>]"), ""),
-         links = glue("{url_link} {gh_link}"),
+         links = glue("{gh_link} {url_link}"),
          description = ifelse(str_trim(links) == "", glue("<b>{description}</b><br>{institution}"), glue("<b>{description}</b><br>{institution}<br>{str_trim(links)}"))
          ) |>
   ungroup() |>
@@ -347,13 +369,14 @@ cat('</table>')
 
 ## Service to the Profession
 
-* Reviewer for Psychophysiology
-* Co-reviewer with Dr. Kristen Kennedy for:
-  * Journal of Cognitive Neuroscience
-  * NeuroImage
-* Co-reviewer with Dr. Karen Rodrigue for:
-  * Cerebral Cortex
-  * Journal of Neuroscience
+*Ad Hoc* Reviewer for 
+
+* Cerebral Cortex
+* Journal of Cognitive Neuroscience
+* Journal of Neuroscience
+* NeuroImage
+* Network Neuroscience
+* Psychophysiology
 
 ## Honors and Awards
 

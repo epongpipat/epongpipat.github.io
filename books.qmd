@@ -22,7 +22,7 @@ ds$books <- read.csv(in_paths$books)
 ```{r}
 ds$books <- ds$books |>
   mutate(date = glue("{year}-{str_pad(month, 2, 'left', 0)}"),
-         description_md = glue("**{title}** ({year})<br>By {authors}<br>{description}<br>[<a href='{link}'>url</a>] [<a href='{github_link}' target='_blank'>github</a>]"))
+         description_md = glue("**{title}** ({year})<br>By {authors}<br>{description}<br>[<a href='{github_link}' target='_blank'>github</a>] [<a href='{link}'>url</a>]"))
 ```
 
 ```{r}
