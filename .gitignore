@@ -5,7 +5,8 @@ archive-*
 .*
 !.gitignore
 !.travis.yml
-!.github/workflows/*
+!.github/
+!.github/workflows/
 /.quarto/
 _site
 _site/*

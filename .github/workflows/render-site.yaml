@@ -1,0 +1,51 @@
+name: render site
+
+on:
+  push:
+    branches: main
+    paths:
+      - "**/*.qmd"
+      - "**/*.yml"
+      - "**/*.R"
+      - "**/*.css"
+      - "**/*.csv"
+  pull_request:
+    branches: main
+    paths:
+      - "**/*.qmd"
+      - "**/*.yml"
+      - "**/*.R"
+      - "**/*.css"
+      - "**/*.csv"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    name: render site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Install R dependencies
+        uses: r-lib/actions/setup-renv@v2
+
+      - name: Publish to GitHub Pages (gh-pages branch)
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
