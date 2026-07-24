@@ -224,7 +224,7 @@ Degeneffe
 pubs2html <- function(data) {
   
   data <- data %>%
-    arrange(desc(status), desc(year), desc(month))
+    arrange(desc(year), desc(month), desc(status))
   
   html_code <- ""
   for (i in 1:nrow(data)) {
@@ -233,9 +233,9 @@ pubs2html <- function(data) {
     authors <- str_replace(data$authors[i], "Pongpipat, E. E.", "**Pongpipat, E. E.**")
     reference <- glue("{reference}M{nrow(data)-i+1}. {authors}")
     
-    if (tolower(data$status[i]) == "accepted") {
+    if (tolower(data$status[i]) == "published") {
       reference <- glue("{reference} ({data$year[i]}).")
-    } else if (tolower(data$status[i]) == "in press") {
+    } else if (tolower(data$status[i]) %in% c('accepted', "in press")) {
       reference <- glue("{reference} ({data$year[i]}, *{data$status[i]}*).")
     } else {
       reference <- glue("{reference} (*{data$status[i]}*).")
