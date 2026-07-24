@@ -6,8 +6,9 @@ format:
   html:
     toc: true
     toc-title: "Table of Contents"
-    toc-depth: 2
+    toc-depth: 3
     toc-location: left
+    toc-expand: true
     number-sections: false
     echo: false
     warning: false
@@ -288,10 +289,75 @@ pubs2html <- function(data) {
 
 ## Conference Posters
 
-```{r posters, warning = F, message = F, fig.width = 5, fig.height = 2, fig.asp = T}
+```{r poster_total, warning = F, message = F, fig.width = 8, fig.height = 3, fig.asp = T}
+posters <- ds$posters
+poster_summary <- posters |>
+  select(Year) |>
+  group_by(Year) |>
+  summarize(Frequency = n())
+
+poster_summary_p <- posters |>
+  filter(First_Author == 1) |>
+  select(Year) |>
+  group_by(Year) |>
+  summarize(Frequency = n())
+
+poster_years <- min(poster_summary$Year):max(poster_summary$Year)
+df_poster_t <- data.frame(Year = poster_years) %>%
+  left_join(poster_summary, by = 'Year') %>%
+  mutate(Frequency = ifelse(is.na(Frequency), 0, Frequency),
+         Year = as.Date(paste0(Year,"-01-01"), "%Y-%m-%d"),
+         type = 'Presenter + Co-Authored')
+poster_mean_per_year <- sprintf("%.02f", describe(df_poster_t$Frequency)[["mean"]])
+poster_se_per_year <- sprintf("%.02f", describe(df_poster_t$Frequency)[["se"]])
+poster_total <- sum(df_poster_t$Frequency)
+
+df_poster_p <- data.frame(Year = poster_years) %>%
+  left_join(poster_summary_p, by = 'Year') %>%
+  mutate(Frequency = ifelse(is.na(Frequency), 0, Frequency),
+         Year = as.Date(paste0(Year,"-01-01"), "%Y-%m-%d"),
+         type = 'Presenter')
+
+poster_p_mean_per_year <- sprintf("%.02f", describe(df_poster_p$Frequency)[["mean"]])
+poster_p_se_per_year <- sprintf("%.02f", describe(df_poster_p$Frequency)[["se"]])
+poster_p_total <- sum(df_poster_p$Frequency)
+
+df_poster <- bind_rows(df_poster_t, df_poster_p)
+hex_color <- '#0072B2'
+font_size <- 12
+font_family = 'Arial'
+ggplot(df_poster, aes(x = Year, y = Frequency, color = type, group = type)) +
+  geom_line() +
+  geom_point() +
+  theme_classic() +
+  scale_x_date(labels = date_format("%Y"), date_breaks= "1 year") +
+  labs(title = paste0("Total: ", poster_total, ", Mean Per Year: ", poster_mean_per_year," ± ",poster_se_per_year),
+       subtitle = paste0("Total: ", poster_p_total, ", Mean Per Year: ", poster_p_mean_per_year," ± ",poster_p_se_per_year),
+       x = "Year",
+       color = NULL) +
+  theme(
+    plot.title = element_text(family = font_family, size = font_size),
+    plot.subtitle = element_text(family = font_family, size = font_size, color = hex_color),
+    axis.title.x = element_text(family = font_family, size = font_size),
+    axis.title.y = element_text(family = font_family, size = font_size),
+    axis.text.x = element_text(family = font_family, angle = 45, hjust = 1, size = font_size-2),
+    axis.text.y = element_text(family = font_family, size = font_size-2),
+    legend.position = "bottom",
+    legend.title.position = "top",
+    legend.title.align = 0.5,
+    legend.text = element_text(family = font_family, size = font_size - 2)
+  ) +
+  scale_color_manual(values = c('Presenter + Co-Authored' = 'black', 
+                       'Presenter' = hex_color))
+```
+
+### Presenter
+
+```{r poster_presenter, warning = F, message = F, fig.width = 5, fig.height = 2, fig.asp = T}
 posters <- ds$posters
 posters$Authors <- gsub("Pongpipat, E. E.", "<b>Pongpipat, E. E.</b>", posters$Authors)
 posters <- posters %>%
+  filter(First_Author == 1) %>%
   arrange(desc(Year), desc(Month), Authors) %>%
   mutate(ninv = n() - row_number() + 1,
          ninvp = str_pad(ninv, 
@@ -300,44 +366,36 @@ posters <- posters %>%
                          pad = 0)) |>
   rowwise() %>%
   mutate(Date = ifelse(Status != "Complete", paste(Year, Month, tolower(Status), sep = ", "), paste(Year, Month, sep = ", "))) %>%
-  mutate(html = paste0("C", ninvp, ". ", Authors, " (", Date, "). <i>", Title, "</i>. Poster session presented at the ", Conference, ", ", Location, ifelse(Note == "", "", paste0(". (", Note, ")."))))
+  mutate(html = paste0("P-P", ninvp, ". ", Authors, " (", Date, "). <i>", Title, "</i>. Poster session presented at the ", Conference, ", ", Location, ifelse(Note == "", "", paste0(". (", Note, ")."))))
 
-posters_html <- paste(posters$html, collapse = "\n\n")
-
-poster_summary <- posters %>%
-  select(Year) %>%
-  group_by(Year) %>%
-  summarize(Frequency = n())
-
-poster_summary <- rbind(poster_summary, c(2017, 0))
-
-poster_summary <- poster_summary %>%
-  arrange(Year)
-
-poster_mean_per_year <- round(describe(poster_summary$Frequency)[["mean"]], 2)
-poster_se_per_year <- round(describe(poster_summary$Frequency)[["se"]], 2)
-poster_total <- sum(poster_summary$Frequency)
-
-df_poster <- data.frame(Year = min(poster_summary$Year):max(poster_summary$Year)) %>%
-  left_join(poster_summary) %>%
-  mutate(Frequency = ifelse(is.na(Frequency), 0, Frequency),
-         Year = as.Date(paste0(Year,"-01-01"), "%Y-%m-%d"))
-
-hex_color <- "#106a8c"
-ggplot(df_poster, aes(x = Year, y = Frequency)) +
-  geom_line(color = hex_color) +
-  geom_point(color = hex_color) +
-  theme_classic() +
-  scale_x_date(labels = date_format("%Y"), date_breaks= "1 year") +
-  labs(subtitle = paste0("Total: ", poster_total, ", Mean Per Year: ",poster_mean_per_year," ± ",poster_se_per_year),
-       x = "Year") +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1)
-  )
+posters_html_pp <- paste(posters$html, collapse = "\n\n")
 ```
 
 <div class="hanging-indent">
-`r posters_html`
+`r posters_html_pp`
+</div>
+
+###  Co-Authored
+
+```{r poster_coauthor, warning = F, message = F, fig.width = 5, fig.height = 2, fig.asp = T}
+posters <- ds$posters
+posters$Authors <- gsub("Pongpipat, E. E.", "<b>Pongpipat, E. E.</b>", posters$Authors)
+posters <- posters %>%
+  filter(First_Author == 0) %>%
+  arrange(desc(Year), desc(Month), Authors) %>%
+  mutate(ninv = n() - row_number() + 1,
+         ninvp = str_pad(ninv, 
+                         width = str_length(n()), 
+                         side = 'left', 
+                         pad = 0)) |>
+  rowwise() %>%
+  mutate(Date = ifelse(Status != "Complete", paste(Year, Month, tolower(Status), sep = ", "), paste(Year, Month, sep = ", "))) %>%
+  mutate(html = paste0("P-C", ninvp, ". ", Authors, " (", Date, "). <i>", Title, "</i>. Poster session presented at the ", Conference, ", ", Location, ifelse(Note == "", "", paste0(". (", Note, ")."))))
+posters_html_pc <- paste(posters$html, collapse = "\n\n")
+```
+
+<div class="hanging-indent">
+`r posters_html_pc`
 </div>
 
 ## Talks and Workshops
