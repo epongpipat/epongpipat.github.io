@@ -129,12 +129,24 @@ Degeneffe
   <colgroup>
     <col style="width: 150px">
   </colgroup>
+    <tr>
+    <td style="text-align: center; vertical-align: top;">
+      <img src="images/logo_aecom.svg" width="100">
+    </td>
+    <td>
+      <B>Post-Doctoral Fellow</B> (2026 - Present)
+      <BR>Gruss Magnetic Resonance Research Center (MRRC)
+      <BR>Department of Radiology
+      <BR>Albert Einstein College of Medicine
+      <BR><BR>
+    </td>
+  </tr>
   <tr>
     <td style="text-align: center; vertical-align: top;">
       <img src="images/logo_utd.svg" width="100">
     </td>
     <td>
-      <B>Post-Doctoral Scientist</B> (2025 - Present)
+      <B>Post-Doctoral Scientist</B> (2025 - 2026)
       <BR>Cognitive Neuroscience of Aging Laboratory
       <BR>Center for Vital Longevity
       <BR>School of Behavioral and Brain Sciences
